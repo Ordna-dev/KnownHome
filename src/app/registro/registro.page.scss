@@ -1,0 +1,26 @@
+// AGM 03-01-24
+.custom-title {
+    text-align: center; // Esto centraliza el texto del título
+    width: 100%; // Usa el 100% del ancho para que el texto siempre esté en el centro
+    margin-top: 50%; // Añade un margen en la parte superior si es necesario
+    margin-bottom: 20px; // Añade un margen en la parte inferior para separarlo de la lista
+  }
+
+// AGM 03-01-24
+.custom-list {
+    width: 75%;
+    margin: 0 auto; // Esto centrará la lista si su contenedor tiene un width definido.
+    background: #121212; // Establece el color de fondo a blanco
+    ion-input {
+        margin-bottom: 10px; // Añade un margen inferior a cada ion-input
+        --background: #FFF;
+        color: #000;
+      }
+}
+
+// AGM 03-01-24
+.button-container {
+    display: flex;
+    justify-content: center; // Centra el botón horizontalmente
+    margin-top: 20px; // Añade un margen superior si es necesario
+}
