@@ -1,21 +1,21 @@
 // AGM 03-01-24
 .custom-title {
-    text-align: center; // Esto centraliza el texto del título
-    width: 100%; // Usa el 100% del ancho para que el texto siempre esté en el centro
-    margin-top: 50%; // Añade un margen en la parte superior si es necesario
-    margin-bottom: 20px; // Añade un margen en la parte inferior para separarlo de la lista
-  }
+  text-align: center; // Esto centraliza el texto del título
+  width: 100%; // Usa el 100% del ancho para que el texto siempre esté en el centro
+  margin-top: 35%; // Añade un margen en la parte superior si es necesario
+  margin-bottom: 20px; // Añade un margen en la parte inferior para separarlo de la lista
+}
 
 // AGM 03-01-24
 .custom-list {
-    width: 75%;
-    margin: 0 auto; // Esto centrará la lista si su contenedor tiene un width definido.
-    background: #121212; // Establece el color de fondo a blanco
-    ion-input {
-        margin-bottom: 10px; // Añade un margen inferior a cada ion-input
-        --background: #FFF;
-        color: #000;
-      }
+  width: 75%;
+  margin: 0 auto; // Esto centrará la lista si su contenedor tiene un width definido.
+  background: #121212; // Establece el color de fondo a blanco
+  ion-input {
+      margin-bottom: 10px; // Añade un margen inferior a cada ion-input
+      --background: #FFF;
+      color: #000;
+    }
 }
 
 // AGM 03-01-24
@@ -23,4 +23,47 @@
     display: flex;
     justify-content: center; // Centra el botón horizontalmente
     margin-top: 20px; // Añade un margen superior si es necesario
+}
+
+// AGM 04-01-24
+.separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+
+  .line {
+    background-color: currentColor; // Usa el color actual del texto
+    height: 1px;
+    flex: 1;
+    margin: 0 8px;
+  }
+
+  .separator-icon {
+    font-size: 14px; // Tamaño del círculo, ajústalo según sea necesario
+  }
+}
+
+.google-button {
+  display: flex;
+  justify-content: center; // Centra el botón horizontalmente
+  margin-top: 30px;
+  margin-bottom: 30px;
+  margin-right: 5%;
+  margin-left: 5%;
+  color: white; // Color del texto del botón de Google
+  font-size: 11px;
+
+  ion-icon {
+    margin-right: 8px;
+  }
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 15px;
+  a {
+    color: var(--ion-color-primary); // Usa el color primario de tu tema Ionic
+    text-decoration: none;
+  }
 }
