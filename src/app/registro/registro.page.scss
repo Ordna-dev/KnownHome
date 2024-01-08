@@ -1,18 +1,18 @@
 // AGM 03-01-24
 .custom-title {
-  text-align: center; // Esto centraliza el texto del título
-  width: 100%; // Usa el 100% del ancho para que el texto siempre esté en el centro
-  margin-top: 35%; // Añade un margen en la parte superior si es necesario
-  margin-bottom: 20px; // Añade un margen en la parte inferior para separarlo de la lista
+  text-align: center; 
+  width: 100%; 
+  margin-top: 35%; 
+  margin-bottom: 20px; 
 }
 
 // AGM 03-01-24
 .custom-list {
   width: 75%;
-  margin: 0 auto; // Esto centrará la lista si su contenedor tiene un width definido.
-  background: #121212; // Establece el color de fondo a blanco
+  margin: 0 auto; 
+  background: #121212; 
   ion-input {
-      margin-bottom: 10px; // Añade un margen inferior a cada ion-input
+      margin-bottom: 10px; 
       --background: #FFF;
       color: #000;
     }
@@ -21,8 +21,8 @@
 // AGM 03-01-24
 .button-container {
     display: flex;
-    justify-content: center; // Centra el botón horizontalmente
-    margin-top: 20px; // Añade un margen superior si es necesario
+    justify-content: center; 
+    margin-top: 20px; 
 }
 
 // AGM 04-01-24
@@ -33,25 +33,25 @@
   margin: 20px 0;
 
   .line {
-    background-color: currentColor; // Usa el color actual del texto
+    background-color: currentColor; 
     height: 1px;
     flex: 1;
     margin: 0 8px;
   }
 
   .separator-icon {
-    font-size: 14px; // Tamaño del círculo, ajústalo según sea necesario
+    font-size: 14px; 
   }
 }
 
 .google-button {
   display: flex;
-  justify-content: center; // Centra el botón horizontalmente
+  justify-content: center; 
   margin-top: 30px;
   margin-bottom: 30px;
   margin-right: 5%;
   margin-left: 5%;
-  color: white; // Color del texto del botón de Google
+  color: white; 
   font-size: 11px;
 
   ion-icon {
@@ -63,7 +63,7 @@
   text-align: center;
   margin-top: 15px;
   a {
-    color: var(--ion-color-primary); // Usa el color primario de tu tema Ionic
+    color: var(--ion-color-primary); 
     text-decoration: none;
   }
 }
