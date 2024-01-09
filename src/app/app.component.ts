@@ -22,6 +22,8 @@ export class AppComponent {
     { title: 'Spam', url: '/folder/spam', icon: 'warning' },
     { title: 'Registro', url: '/registro', icon: 'accessibility' },
     { title: 'Login', url: '/login', icon: 'log-in' },
+    { title: 'Validacion de correo', url: '/validacion-correo', icon: 'log-in' },
+    { title: 'Perfil', url: '/perfil', icon: 'log-in' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   constructor() {
