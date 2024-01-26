@@ -19,4 +19,12 @@ export const routes: Routes = [
     path: 'perfil',
     loadComponent: () => import('./perfil/perfil.page').then( m => m.PerfilPage)
   },
+  {
+    path: 'dashboard-maestro',
+    loadComponent: () => import('./dashboard-maestro/dashboard-maestro.page').then( m => m.DashboardMaestroPage)
+  },
+  {
+    path: 'dashboard-alumno',
+    loadComponent: () => import('./dashboard-alumno/dashboard-alumno.page').then( m => m.DashboardAlumnoPage)
+  },
 ];
