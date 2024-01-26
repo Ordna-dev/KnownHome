@@ -20,9 +20,7 @@ export class AppComponent {
     { title: 'Archived', url: '/folder/archived', icon: 'archive' },
     { title: 'Trash', url: '/folder/trash', icon: 'trash' },
     { title: 'Spam', url: '/folder/spam', icon: 'warning' },
-    { title: 'Registro', url: '/registro', icon: 'accessibility' },
     { title: 'Login', url: '/login', icon: 'log-in' },
-    { title: 'Validacion de correo', url: '/validacion-correo', icon: 'log-in' },
     { title: 'Perfil', url: '/perfil', icon: 'log-in' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];

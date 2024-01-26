@@ -7,35 +7,13 @@
   </div>
   
   <ion-list class="custom-list">
-
-    <ion-input label="Correo electrónico" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
+    <ion-input label="Nombre de usuario" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
 
     <ion-input label="Contraseña" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
   </ion-list>
 
   <!-- Botón de iniciar sesión -->
   <div class="button-container">
-    <ion-button expand="block" shape="round">Iniciar sesión</ion-button>
+    <ion-button expand="block" shape="round" (click)="onLogin()">Iniciar sesión</ion-button>
   </div>
-
-  <!-- Sección separadora con línea, círculo y línea -->
-  <div class="separator">
-    <div class="line"></div>
-    <ion-icon name="ellipse-outline" class="separator-icon"></ion-icon>
-    <div class="line"></div>
-  </div>
-
-  <!-- Botón de inicio de sesión con Google -->
-  <ion-button expand="block" color="danger" class="google-button">
-    <ion-icon name="logo-google" slot="start"></ion-icon>
-    Iniciar sesión con google (Próximamente)
-  </ion-button>
-
-
-  <!-- Enlace para registrarse -->
-  <p class="register-link">
-    ¿No tienes una cuenta? <a href="">Regístrate...</a>
-  </p>
-
-
 </ion-content>
