@@ -25,6 +25,8 @@ export class AppComponent {
     { title: 'Spam', url: '/folder/spam', icon: 'warning' },
     { title: 'Login', url: '/login', icon: 'log-in' },
     { title: 'Perfil', url: '/perfil', icon: 'log-in' },
+    { title: 'Dashboard Maestro', url: '/dashboard-maestro', icon: 'log-in' },
+    { title: 'Dashboard Alumno', url: '/dashboard-alumno', icon: 'log-in' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
@@ -32,6 +34,7 @@ export class AppComponent {
     addIcons({ ellipseOutline, logoGoogle, accessibilitySharp, logInSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp });
   }
 
+  //AGM 26/01/2024. BUG: Al iniciar la aplicación se muestra el slidemenu cuando no debería, al refrescar ya esta todo normal
   ngOnInit() {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)

@@ -20,6 +20,6 @@ export class LoginPage implements OnInit {
   }
 
   onLogin() {
-    this.router.navigate(['/perfil']);  // Redirige a la página de perfil
+    this.router.navigate(['/dashboard-alumno']);  // Redirige a la página del dashboard del alumno
   }
 }
