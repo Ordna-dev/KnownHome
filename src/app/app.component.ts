@@ -14,8 +14,6 @@ import { filter } from 'rxjs/operators';
   imports: [RouterLink, RouterLinkActive, CommonModule, IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet],
 })
 export class AppComponent {
-  showMenu = true;
-
   public appPages = [
     { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
     { title: 'Outbox', url: '/folder/outbox', icon: 'paper-plane' },
@@ -30,19 +28,8 @@ export class AppComponent {
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
-  constructor(private router: Router) {
+  constructor() {
     addIcons({ pencilSharp, ellipseOutline, logoGoogle, accessibilitySharp, logInSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp });
-  }
-
-  //AGM 26/01/2024. BUG: Al iniciar la aplicación se muestra el slidemenu cuando no debería, al refrescar ya esta todo normal
-  ngOnInit() {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: Event) => {
-      if (event instanceof NavigationEnd) {
-        this.showMenu = event.url !== '/login';
-      }
-    });
   }
   
 }

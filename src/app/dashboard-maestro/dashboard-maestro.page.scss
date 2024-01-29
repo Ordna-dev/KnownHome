@@ -24,3 +24,21 @@ ion-item {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+ion-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center; 
+}
+  
+.avatar-right {
+    width: 70px; 
+    height: 70px; 
+    margin: 5%;
+}
+
+ion-content h1:not(:first-child) {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    margin-top: 10px;
+}

@@ -1,131 +1,113 @@
-<!--<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>dashboard_alumno</ion-title>
-  </ion-toolbar>
-</ion-header> -->
-
 <ion-content [fullscreen]="true">
-  <b><h1 class="welcome-message">Bienvenido Carlos Daniel Medina Sahagún</h1></b>
+  <div id="main-content">
+    <b><h1 class="welcome-message">Bienvenido Carlos Daniel Medina Sahagún</h1></b>
 
-  <ion-card class="fixed-margin">
-    <ion-card-header>
-      <ion-card-title>¡Registra un grupo!</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content>
-      Si aún no sabes cómo registrar un grupo, puedes pulsar el botón de abajo.
-      <br>
-      <ion-button class="fixed-button" (click)="setOpen(true)">Registrar a un grupo</ion-button>
-    </ion-card-content>
-  </ion-card>
+    <ion-card class="fixed-margin">
+      <ion-card-header>
+        <ion-card-title>¡Registra un grupo!</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content>
+        Si aún no sabes cómo registrar un grupo, puedes pulsar el botón de abajo.
+        <br>
+        <ion-button class="fixed-button" (click)="setOpen(true)">Registrar a un grupo</ion-button>
+      </ion-card-content>
+    </ion-card>
 
-  <ion-modal [isOpen]="isModalOpen">
-    <ng-template>
+    <ion-menu side="end" contentId="main-content">
       <ion-header>
-        <ion-toolbar>
-          <ion-buttons slot="start">
-            <ion-button (click)="setOpen(false)" color="danger">Cancelar</ion-button>
-          </ion-buttons>
-          <ion-buttons slot="end">
-            <ion-button (click)="setOpen(false)" color="primary">Crear grupo</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
+        <ion-avatar class="avatar-right">
+          <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
       </ion-header>
-      <ion-content class="ion-padding ion-text-center">
-        <h1>Registro de un grupo</h1>
+      <ion-content class="ion-padding ion-text-right"> 
+        <h1>Usuario</h1>
+        <h5>Visualizar o ver perfil</h5>
+        <h5>Cerrar sesión</h5>
 
-        <ion-item class="separator">
-          <ion-input placeholder="  Nombre del grupo"></ion-input>
-        </ion-item>
+        <h1>Grupos</h1>
+        <h5>Ver o gestionar mis grupos</h5>
+        <h5>Registrar un grupo</h5>
 
-        <ion-item>
-          <ion-textarea placeholder="  Descripción del grupo"></ion-textarea>
-        </ion-item>
+        <h1>Alumnos</h1>
+        <h5>Registrar un alumno</h5>
+        <h5>Registrar varios alumnos</h5>
+        <h5>Alumnos registrados por mí</h5>
 
+        <h1>Ayuda</h1>
+        <h5>Preguntas frecuentes</h5>
+        <h5>Reportes o sugerencias</h5>
       </ion-content>
-    </ng-template>
-  </ion-modal>
+    </ion-menu>
 
-  <b><h3 class="groups-message">Tus grupos:</h3></b>
+    <!-- El modal está bugeado -->
+    <ion-modal [isOpen]="isModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button (click)="setOpen(false)" color="danger">Cancelar</ion-button>
+            </ion-buttons>
+            <ion-buttons slot="end">
+              <ion-button (click)="setOpen(false)" color="primary">Crear grupo</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding ion-text-center">
+          <h1>Registro de un grupo</h1>
 
-  <ion-card color="tertiary" class="fixed-margin">
-    <ion-card-header class="ion-text-center">
-      <ion-card-title>Grupo 4A</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content class="ion-text-center">
-      Profesor: Diaz Raygoza
-    </ion-card-content>
-  </ion-card>  
+          <ion-item class="separator">
+            <ion-input placeholder="  Nombre del grupo"></ion-input>
+          </ion-item>
 
-  <ion-card color="tertiary" class="fixed-margin">
-    <ion-card-header class="ion-text-center">
-      <ion-card-title>Grupo 4A</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content class="ion-text-center">
-      Profesor: Diaz Raygoza
-    </ion-card-content>
-  </ion-card>  
+          <ion-item>
+            <ion-textarea placeholder="  Descripción del grupo"></ion-textarea>
+          </ion-item>
 
-  <ion-card color="tertiary" class="fixed-margin">
-    <ion-card-header class="ion-text-center">
-      <ion-card-title>Grupo 4A</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content class="ion-text-center">
-      Profesor: Diaz Raygoza
-    </ion-card-content>
-  </ion-card>  
+        </ion-content>
+      </ng-template>
+    </ion-modal>
 
-  <ion-card color="tertiary" class="fixed-margin">
-    <ion-card-header class="ion-text-center">
-      <ion-card-title>Grupo 4A</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content class="ion-text-center">
-      Profesor: Diaz Raygoza
-    </ion-card-content>
-  </ion-card>  
+    <b><h3 class="groups-message">Tus grupos:</h3></b>
 
-  <ion-card color="tertiary" class="fixed-margin">
-    <ion-card-header class="ion-text-center">
-      <ion-card-title>Grupo 4A</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content class="ion-text-center">
-      Profesor: Diaz Raygoza
-    </ion-card-content>
-  </ion-card>  
+    <ion-card color="tertiary" class="fixed-margin">
+      <ion-card-header class="ion-text-center">
+        <ion-card-title>Grupo 4A</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content class="ion-text-center">
+        Profesor: Diaz Raygoza
+      </ion-card-content>
+    </ion-card>  
 
-  <ion-card color="tertiary" class="fixed-margin">
-    <ion-card-header class="ion-text-center">
-      <ion-card-title>Grupo 4A</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content class="ion-text-center">
-      Profesor: Diaz Raygoza
-    </ion-card-content>
-  </ion-card>  
+    <ion-card color="tertiary" class="fixed-margin">
+      <ion-card-header class="ion-text-center">
+        <ion-card-title>Grupo 4A</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content class="ion-text-center">
+        Profesor: Diaz Raygoza
+      </ion-card-content>
+    </ion-card>  
 
-  <ion-card color="tertiary" class="fixed-margin">
-    <ion-card-header class="ion-text-center">
-      <ion-card-title>Grupo 4A</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content class="ion-text-center">
-      Profesor: Diaz Raygoza
-    </ion-card-content>
-  </ion-card>  
+    <ion-card color="tertiary" class="fixed-margin">
+      <ion-card-header class="ion-text-center">
+        <ion-card-title>Grupo 4A</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content class="ion-text-center">
+        Profesor: Diaz Raygoza
+      </ion-card-content>
+    </ion-card>  
 
-  <ion-card color="tertiary" class="fixed-margin">
-    <ion-card-header class="ion-text-center">
-      <ion-card-title>Grupo 4A</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content class="ion-text-center">
-      Profesor: Diaz Raygoza
-    </ion-card-content>
-  </ion-card>  
-  
+    <ion-card color="tertiary" class="fixed-margin">
+      <ion-card-header class="ion-text-center">
+        <ion-card-title>Grupo 4A</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content class="ion-text-center">
+        Profesor: Diaz Raygoza
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
