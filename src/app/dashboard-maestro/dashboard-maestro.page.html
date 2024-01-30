@@ -7,17 +7,18 @@
   </ion-header>
   <ion-content class="ion-padding ion-text-right"> 
     <h1>Usuario</h1>
-    <h5>Visualizar o ver perfil</h5>
-    <h5>Cerrar sesión</h5>
+    <h5 (click)="irAPerfil()">Visualizar o ver perfil</h5>
+    <h5 (click)="cerrarSesion()">Cerrar sesión</h5>
 
     <h1>Grupos</h1>
-    <h5>Ver o gestionar mis grupos</h5>
-    <h5>Registrar un grupo</h5>
+    <!-- Este no se va a necesitar a lo que veo -->
+    <!-- <h5>Ver o gestionar mis grupos</h5> -->
+    <h5 (click)="setOpen(true)">Registrar un grupo</h5>
 
     <h1>Alumnos</h1>
     <h5 (click)="setSecondOpen(true)">Registrar un alumno</h5>
     <h5 (click)="setThirdOpen(true)">Registrar varios alumnos</h5>
-    <h5>Alumnos registrados por mí</h5>
+    <h5 (click)="setFourthOpen(true)">Alumnos registrados por mí</h5>
 
     <h1>Ayuda</h1>
     <h5>Preguntas frecuentes</h5>
@@ -122,10 +123,29 @@
       </ng-template>
     </ion-modal>
 
+    <!-- Modal para mostrar los alumnos registrados en el sistema -->
+    <ion-modal [isOpen]="isFourthModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setFourthOpen(false)"></ion-icon>
+          </ion-toolbar>
+        </ion-header>
+        
+        <ion-content class="ion-padding ion-text-center">
+          <h1>Alumnos registrados por mí</h1>
+          
+                 
+        
+
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
 
     <b><h3 class="groups-message">Tus grupos:</h3></b>
 
-    <ion-card [color]="getColorAleatorio()" class="fixed-margin-card">
+    <ion-card color="light" class="fixed-margin-card">
       <div class="icon-container">
         <ion-icon name="people-outline" class="icon-size"></ion-icon>
       </div>
@@ -141,7 +161,7 @@
       </div>
     </ion-card>
 
-    <ion-card [color]="getColorAleatorio()" class="fixed-margin-card">
+    <ion-card color="light" class="fixed-margin-card">
       <div class="icon-container">
         <ion-icon name="people-outline" class="icon-size"></ion-icon>
       </div>
@@ -157,7 +177,7 @@
       </div>
     </ion-card>
     
-    <ion-card [color]="getColorAleatorio()" class="fixed-margin-card">
+    <ion-card color="light" class="fixed-margin-card">
       <div class="icon-container">
         <ion-icon name="people-outline" class="icon-size"></ion-icon>
       </div>

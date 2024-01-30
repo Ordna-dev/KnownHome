@@ -14,12 +14,25 @@ import { AlertController } from '@ionic/angular/standalone';
 })
 export class DashboardMaestroPage implements OnInit {
 
-  constructor(private alertController: AlertController) {}
+  //AGM 30/01/2024 - Constructor de alertas y routers
+  constructor(private alertController: AlertController, private router: Router) {}
+
+  //AGM 30/01/2024 - Redireccionamiento a perfil, grupo y login (Logout)
+  irAPerfil() {
+    // Lógica adicional antes de la navegación
+    this.router.navigate(['/perfil']);
+  }
+  
+  cerrarSesion() {
+    // Acciones como limpiar datos de sesión
+    this.router.navigate(['/login']);
+  }
 
   //AGM 30/01/2024 - Declaración de variables bandera para cerrar o abrir los modal
   isModalOpen = false;
   isSecondModalOpen = false;
   isThirdModalOpen = false; 
+  isFourthModalOpen = false; 
 
   //AGM 30/01/2024 - Declarar la variable del archivo txt
   fileName: string | null = null;
@@ -40,12 +53,12 @@ export class DashboardMaestroPage implements OnInit {
   }
 
   //AGM 30/01/2024 - Pintar de colores aleatorios las cards
-  colores = ['primary', 'secondary', 'tertiary', 'success', 'warning', 'danger', 'light', 'medium', 'dark'];
+  /*colores = ['primary', 'secondary', 'tertiary', 'success', 'warning', 'danger', 'light', 'medium', 'dark'];
 
   getColorAleatorio(): string {
     const indiceAleatorio = Math.floor(Math.random() * this.colores.length);
     return this.colores[indiceAleatorio];
-  }
+  }*/
 
   
   //AGM 30/01/2024 - Abrir o cerrar el primer modal
@@ -61,6 +74,11 @@ export class DashboardMaestroPage implements OnInit {
   //AGM 30/01/2024 - Abrir o cerrar el tercer modal
   setThirdOpen(isOpen: boolean) {
     this.isThirdModalOpen = isOpen; 
+  }
+
+  //AGM 30/01/2024 - Abrir o cerrar el cuarto modal
+  setFourthOpen(isOpen: boolean) {
+    this.isFourthModalOpen = isOpen; 
   }
 
   //AGM 30/01/2024 - Cerrar el segundo modal cuando se abre el tercer modal

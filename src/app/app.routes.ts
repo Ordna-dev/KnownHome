@@ -27,4 +27,12 @@ export const routes: Routes = [
     path: 'dashboard-alumno',
     loadComponent: () => import('./dashboard-alumno/dashboard-alumno.page').then( m => m.DashboardAlumnoPage)
   },
+  {
+    path: 'grupo-maestro',
+    loadComponent: () => import('./grupo-maestro/grupo-maestro.page').then( m => m.GrupoMaestroPage)
+  },
+  {
+    path: 'grupo-alumno',
+    loadComponent: () => import('./grupo-alumno/grupo-alumno.page').then( m => m.GrupoAlumnoPage)
+  },
 ];

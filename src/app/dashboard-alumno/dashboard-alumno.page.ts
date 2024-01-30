@@ -15,12 +15,12 @@ export class DashboardAlumnoPage implements OnInit {
   constructor() { }
 
   //AGM 30/01/2024 - Pintar de colores aleatorios las cards
-  colores = ['primary', 'secondary', 'tertiary', 'success', 'warning', 'danger', 'light', 'medium', 'dark'];
+  /*colores = ['primary', 'secondary', 'tertiary', 'success', 'warning', 'danger', 'light', 'medium', 'dark'];
 
   getColorAleatorio(): string {
     const indiceAleatorio = Math.floor(Math.random() * this.colores.length);
     return this.colores[indiceAleatorio];
-  }
+  }*/
 
   isModalOpen = false;
 
