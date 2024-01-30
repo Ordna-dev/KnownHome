@@ -29,3 +29,25 @@ ion-content h1:not(:first-child) {
     padding-top: 10px;
     margin-top: 10px;
 }
+
+.fixed-margin-card {
+    display: flex;
+    align-items: center; 
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.icon-container {
+    margin-left: 10px; // Separación hacia la izquierda
+    flex-grow: 0; // Evita que el contenedor se estire
+    flex-shrink: 0; // Evita que el contenedor se encoja
+}
+  
+.icon-size {
+    font-size: 40px; 
+}
+  
+.text-container {
+    flex-grow: 1; // Permite que el contenedor del texto ocupe el espacio restante
+    padding-left: 2px; // Espacio entre el ícono y el texto
+}

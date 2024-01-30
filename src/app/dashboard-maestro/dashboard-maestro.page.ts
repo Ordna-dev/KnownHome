@@ -25,7 +25,6 @@ export class DashboardMaestroPage implements OnInit {
   fileName: string | null = null;
 
   //AGM 30/01/2024 - Declarar la variable de alerta de ayuda
-
   helpMessage: string = `Nombre usuario, Contraseña,
   Alejandro Guerrero, 12345,
   Carlos Daniel Medina, 125,`;
@@ -38,6 +37,14 @@ export class DashboardMaestroPage implements OnInit {
       buttons: ['Cerrar'],
     });
     await alert.present();
+  }
+
+  //AGM 30/01/2024 - Pintar de colores aleatorios las cards
+  colores = ['primary', 'secondary', 'tertiary', 'success', 'warning', 'danger', 'light', 'medium', 'dark'];
+
+  getColorAleatorio(): string {
+    const indiceAleatorio = Math.floor(Math.random() * this.colores.length);
+    return this.colores[indiceAleatorio];
   }
 
   
