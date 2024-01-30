@@ -16,7 +16,7 @@
 
     <h1>Alumnos</h1>
     <h5 (click)="setSecondOpen(true)">Registrar un alumno</h5>
-    <h5>Registrar varios alumnos</h5>
+    <h5 (click)="setThirdOpen(true)">Registrar varios alumnos</h5>
     <h5>Alumnos registrados por mí</h5>
 
     <h1>Ayuda</h1>
@@ -49,12 +49,7 @@
       <ng-template>
         <ion-header>
           <ion-toolbar>
-            <ion-buttons slot="start">
-              <ion-button (click)="setOpen(false)" color="danger">Cancelar</ion-button>
-            </ion-buttons>
-            <ion-buttons slot="end">
-              <ion-button (click)="setOpen(false)" color="primary">Crear grupo</ion-button>
-            </ion-buttons>
+            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setOpen(false)"></ion-icon>
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding ion-text-center">
@@ -68,6 +63,9 @@
             <ion-textarea placeholder="  Descripción del grupo"></ion-textarea>
           </ion-item>
 
+          <ion-button class="btn-cancelar" (click)="setOpen(false)" color="danger">Cancelar</ion-button>
+          <ion-button class="btn-registrar" (click)="setOpen(false)" color="primary">Registrar</ion-button>
+
         </ion-content>
       </ng-template>
     </ion-modal>
@@ -77,12 +75,8 @@
       <ng-template>
         <ion-header>
           <ion-toolbar>
-            <ion-buttons slot="start">
-              <ion-button (click)="setSecondOpen(false)" color="danger">Cancelar</ion-button>
-            </ion-buttons>
-            <ion-buttons slot="end">
-              <ion-button (click)="setOpen(false)" color="primary">Registrar alumno</ion-button>
-            </ion-buttons>
+            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setSecondOpen(false)"></ion-icon>
+            <ion-icon name="document-text" class="icon-modal-right" (click)="handleDocumentIconClick()"></ion-icon>
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding ion-text-center">
@@ -96,9 +90,38 @@
             <ion-input type="password" placeholder=" Contraseña del alumno"></ion-input>
           </ion-item>
 
+          <ion-button class="btn-cancelar" (click)="setSecondOpen(false)" color="danger">Cancelar</ion-button>
+          <ion-button class="btn-registrar" (click)="setSecondOpen(false)" color="primary">Registrar</ion-button>
         </ion-content>
       </ng-template>
     </ion-modal>
+
+    <!-- Modal para registrar alumnos en el sistema con txt -->
+    <ion-modal [isOpen]="isThirdModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setThirdOpen(false)"></ion-icon>
+            <!-- Falta desarrollar y definir qué es lo que vendrá en el recuadro de ayuda -->
+            <ion-icon name="help-circle-outline" class="icon-modal-right" (click)="helpAlert()"></ion-icon>
+          </ion-toolbar>
+        </ion-header>
+        
+        <ion-content class="ion-padding ion-text-center">
+          <h1>Registro de alumnos mediante un archivo de texto (.txt)</h1>
+          
+          <!-- Falta ver cómo se manejaran los delimitadores entre cada registro del alumno -->
+          <ion-item class="separator">
+            <input type="file" #fileInput accept=".txt" style="display: none;" (change)="handleFileInput($event)">
+            <ion-button color="medium" (click)="fileInput.click()">{{ fileName || 'Seleccionar archivo .txt' }}</ion-button>
+          </ion-item>          
+        
+          <ion-button class="btn-cancelar" (click)="setThirdOpen(false)" color="danger">Cancelar</ion-button>
+          <ion-button class="btn-registrar" (click)="setThirdOpen(false)" color="primary">Registrar</ion-button>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
 
     <b><h3 class="groups-message">Tus grupos:</h3></b>
 
