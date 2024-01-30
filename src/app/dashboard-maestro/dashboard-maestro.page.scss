@@ -80,8 +80,23 @@ ion-content h1:not(:first-child) {
     margin-right: 5%;
 }
 
+.fixed-margin-card-modal {
+    display: flex;
+    align-items: center; 
+}
+
+.fixed-title-modal {
+    margin-bottom: 5%;
+}
+
 .icon-container {
     margin-left: 10px; // Separación hacia la izquierda
+    flex-grow: 0; // Evita que el contenedor se estire
+    flex-shrink: 0; // Evita que el contenedor se encoja
+}
+
+.icon-container-v2 {
+    margin-right: 10px; // Separación hacia la izquierda
     flex-grow: 0; // Evita que el contenedor se estire
     flex-shrink: 0; // Evita que el contenedor se encoja
 }
@@ -92,5 +107,4 @@ ion-content h1:not(:first-child) {
   
 .text-container {
     flex-grow: 1; // Permite que el contenedor del texto ocupe el espacio restante
-    padding-left: 2px; // Espacio entre el ícono y el texto
 }
