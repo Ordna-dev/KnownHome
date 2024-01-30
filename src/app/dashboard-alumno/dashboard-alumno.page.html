@@ -1,5 +1,16 @@
+<ion-menu side="end" contentId="main-content2">
+  <ion-content class="ion-padding ion-text-right"> 
+    <h1>Grupos</h1>
+    <h5>Registrarse a un grupo</h5>
+    <h5>Mis grupos</h5>
+
+    <h1>Sesión</h1>
+    <h5>Cerrar sesión</h5>
+  </ion-content>
+</ion-menu>
+
 <ion-content [fullscreen]="true">
-  <div id="main-content">
+  <div id="main-content2">
     <b><h1 class="welcome-message">Bienvenido Carlos Daniel Medina Sahagún</h1></b>
 
     <ion-card class="fixed-margin">
@@ -10,21 +21,32 @@
       <ion-card-content>
         Si aún no sabes cómo registrarte a un grupo, puedes registrarte en un grupo mediante el botón de abajo.
         <br>
-        <ion-button class="fixed-button">Registrarse a un grupo</ion-button>
+        <ion-button class="fixed-button" (click)="setOpen(true)">Registrarse a un grupo</ion-button>
       </ion-card-content>
     </ion-card>
 
-    <ion-menu side="end" contentId="main-content">
-      <ion-content class="ion-padding ion-text-right"> 
+    <ion-modal [isOpen]="isModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button (click)="setOpen(false)" color="danger">Cancelar</ion-button>
+            </ion-buttons>
+            <ion-buttons slot="end">
+              <ion-button (click)="setOpen(false)" color="primary">Ingresar al grupo</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding ion-text-center">
+          <h1>Ingresa el código del grupo</h1>
 
-        <h1>Grupos</h1>
-        <h5>Registrarse a un grupo</h5>
-        <h5>Mis grupos</h5>
+          <ion-item class="separator">
+            <ion-input placeholder="  Código del grupo"></ion-input>
+          </ion-item>
 
-        <h1>Sesión</h1>
-        <h5>Cerrar sesión</h5>
-      </ion-content>
-    </ion-menu>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
 
     <b><h3 class="groups-message">Mis grupos:</h3></b>
 

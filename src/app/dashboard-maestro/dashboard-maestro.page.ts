@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonModal } from '@ionic/angular/common';
 import { IonicModule } from '@ionic/angular';
-import { OverlayEventDetail } from '@ionic/core/components'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-maestro',
@@ -14,13 +13,21 @@ import { OverlayEventDetail } from '@ionic/core/components'
 })
 export class DashboardMaestroPage implements OnInit {
 
-  constructor() { 
+  constructor(private router: Router) {}
+
+  navigateToLogin() {
+    this.router.navigateByUrl('/login');
   }
 
   isModalOpen = false;
+  isSecondModalOpen = false; // Para el segundo modal
 
   setOpen(isOpen: boolean) {
     this.isModalOpen = isOpen;
+  }
+
+  setSecondOpen(isOpen: boolean) {
+    this.isSecondModalOpen = isOpen;
   }
 
   ngOnInit() {

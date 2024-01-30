@@ -1,7 +1,37 @@
+<!-- Menú deslizante del maestro --> 
+<ion-menu side="end" contentId="main-content2">
+  <ion-header>
+    <ion-avatar class="avatar-right">
+      <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+    </ion-avatar>
+  </ion-header>
+  <ion-content class="ion-padding ion-text-right"> 
+    <h1>Usuario</h1>
+    <h5>Visualizar o ver perfil</h5>
+    <h5>Cerrar sesión</h5>
+
+    <h1>Grupos</h1>
+    <h5>Ver o gestionar mis grupos</h5>
+    <h5>Registrar un grupo</h5>
+
+    <h1>Alumnos</h1>
+    <h5 (click)="setSecondOpen(true)">Registrar un alumno</h5>
+    <h5>Registrar varios alumnos</h5>
+    <h5>Alumnos registrados por mí</h5>
+
+    <h1>Ayuda</h1>
+    <h5>Preguntas frecuentes</h5>
+    <h5>Reportes o sugerencias</h5>
+  </ion-content>
+</ion-menu>
+
+<!-- Contenido principal --> 
 <ion-content [fullscreen]="true">
-  <div id="main-content">
+  <div id="main-content2">
+    <!-- Mensaje de bienvenida al maestro --> 
     <b><h1 class="welcome-message">Bienvenido Carlos Daniel Medina Sahagún</h1></b>
 
+    <!-- Recuadro de inscripcion al grupo --> 
     <ion-card class="fixed-margin">
       <ion-card-header>
         <ion-card-title>¡Registra un grupo!</ion-card-title>
@@ -14,33 +44,7 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-menu side="end" contentId="main-content">
-      <ion-header>
-        <ion-avatar class="avatar-right">
-          <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-        </ion-avatar>
-      </ion-header>
-      <ion-content class="ion-padding ion-text-right"> 
-        <h1>Usuario</h1>
-        <h5>Visualizar o ver perfil</h5>
-        <h5>Cerrar sesión</h5>
-
-        <h1>Grupos</h1>
-        <h5>Ver o gestionar mis grupos</h5>
-        <h5>Registrar un grupo</h5>
-
-        <h1>Alumnos</h1>
-        <h5>Registrar un alumno</h5>
-        <h5>Registrar varios alumnos</h5>
-        <h5>Alumnos registrados por mí</h5>
-
-        <h1>Ayuda</h1>
-        <h5>Preguntas frecuentes</h5>
-        <h5>Reportes o sugerencias</h5>
-      </ion-content>
-    </ion-menu>
-
-    <!-- El modal está bugeado -->
+    <!-- Modal para registrar un grupo -->
     <ion-modal [isOpen]="isModalOpen">
       <ng-template>
         <ion-header>
@@ -62,6 +66,34 @@
 
           <ion-item>
             <ion-textarea placeholder="  Descripción del grupo"></ion-textarea>
+          </ion-item>
+
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <!-- Modal para registrar un alumno al sistema -->
+    <ion-modal [isOpen]="isSecondModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button (click)="setSecondOpen(false)" color="danger">Cancelar</ion-button>
+            </ion-buttons>
+            <ion-buttons slot="end">
+              <ion-button (click)="setOpen(false)" color="primary">Registrar alumno</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding ion-text-center">
+          <h1>Registro de un alumno en el sistema</h1>
+
+          <ion-item class="separator">
+            <ion-input placeholder="  Nombre del alumno"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input type="password" placeholder=" Contraseña del alumno"></ion-input>
           </ion-item>
 
         </ion-content>
