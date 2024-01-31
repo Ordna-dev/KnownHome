@@ -1,5 +1,5 @@
 <!-- Menú deslizante del maestro dentro de la vista del grupo --> 
-<ion-menu side="end" contentId="main-content4">
+<ion-menu side="end" contentId="main-content2">
   <ion-header>
     <ion-avatar class="avatar-right">
       <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
@@ -29,7 +29,7 @@
 </ion-menu>
 
 <ion-content [fullscreen]="true">
-  <div id="main-content4">
+  <div id="main-content2">
     <div class="header-group">
       <!-- Volver a la pagina anterior --> 
       <ion-icon name="arrow-back-outline" class="icon-left-back"></ion-icon>
@@ -197,7 +197,7 @@
               <ion-button color="primary">Sí</ion-button>
             </div>
             <div class="image-container">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/A_minusculetypes.svg/200px-A_minusculetypes.svg.png" alt="Fotografía de Carlos Daniel">
+              <img (click)="setSeventhOpen(true)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/A_minusculetypes.svg/200px-A_minusculetypes.svg.png" alt="Fotografía de Carlos Daniel">
               <p class="image-info ion-text-right">Fotografía de <u>Carlos Daniel.</u></p>
               <p class="image-date ion-text-right">Tomada el 10 de febrero de 2024, <b class="no-authorized">no autorizada.</b></p>
             </div>
@@ -209,19 +209,19 @@
               <ion-button color="primary">Sí</ion-button>
             </div>
             <div class="image-container">
-              <img src="https://bigimagesystems.com/wp-content/uploads/2023/10/microsoftteams-image-8.jpg" alt="Fotografía de Carlos Daniel">
+              <img (click)="setSeventhOpen(true)" src="https://bigimagesystems.com/wp-content/uploads/2023/10/microsoftteams-image-8.jpg" alt="Fotografía de Carlos Daniel">
               <p class="image-info ion-text-right">Fotografía de <u>Alejandro Guerrero.</u></p>
               <p class="image-date ion-text-right">Tomada el 10 de febrero de 2024, <b class="no-authorized">no autorizada.</b></p>
             </div>
           </div>
 
           <div class="image-authorization-container">
-            <div class="text-button-container">
+            <div (click)="setSeventhOpen(true)" class="text-button-container">
               <p class="authorize-text">¿Autorizar imagen?</p>
               <ion-button color="primary">Sí</ion-button>
             </div>
             <div class="image-container">
-              <img src="https://images.unsplash.com/photo-1544376798-89aa6b82c6cd?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dmVydGljYWx8ZW58MHx8MHx8fDA%3D" alt="Fotografía de Carlos Daniel">
+              <img (click)="setSeventhOpen(true)" src="https://images.unsplash.com/photo-1544376798-89aa6b82c6cd?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dmVydGljYWx8ZW58MHx8MHx8fDA%3D" alt="Fotografía de Carlos Daniel">
               <p class="image-info ion-text-right">Fotografía de <u>Diaz Raygoza.</u></p>
               <p class="image-date ion-text-right">Tomada el 10 de febrero de 2024, <b class="no-authorized">no autorizada.</b></p>
             </div>
@@ -303,7 +303,7 @@
         <ion-header>
           <ion-toolbar>
             <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setFifthOpen(false)"></ion-icon>
-            <ion-title>Fotografías no autorizadas</ion-title>
+            <ion-title>Fotografías del alumno Carlos Daniel Medina Sahagún</ion-title>
           </ion-toolbar>
           
         </ion-header>
@@ -315,7 +315,7 @@
               <ion-button color="primary">Sí</ion-button>
             </div>
             <div class="image-container">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/A_minusculetypes.svg/200px-A_minusculetypes.svg.png" alt="Fotografía de Carlos Daniel">
+              <img (click)="setSeventhOpen(true)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/A_minusculetypes.svg/200px-A_minusculetypes.svg.png" alt="Fotografía de Carlos Daniel">
               <p class="image-info ion-text-right">Fotografía de <u>Carlos Daniel.</u></p>
               <p class="image-date ion-text-right">Tomada el 10 de febrero de 2024, <b class="no-authorized">no autorizada.</b></p>
             </div>
@@ -327,19 +327,15 @@
               <ion-button color="primary">Sí</ion-button>
             </div>
             <div class="image-container">
-              <img src="https://bigimagesystems.com/wp-content/uploads/2023/10/microsoftteams-image-8.jpg" alt="Fotografía de Carlos Daniel">
+              <img (click)="setSeventhOpen(true)" src="https://bigimagesystems.com/wp-content/uploads/2023/10/microsoftteams-image-8.jpg" alt="Fotografía de Carlos Daniel">
               <p class="image-info ion-text-right">Fotografía de <u>Carlos Daniel.</u></p>
               <p class="image-date ion-text-right">Tomada el 10 de febrero de 2024, <b class="no-authorized">no autorizada.</b></p>
             </div>
           </div>
 
           <div class="image-authorization-container">
-            <div class="text-button-container">
-              <p class="authorize-text">¿Autorizar imagen?</p>
-              <ion-button color="primary">Sí</ion-button>
-            </div>
             <div class="image-container">
-              <img src="https://images.unsplash.com/photo-1544376798-89aa6b82c6cd?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dmVydGljYWx8ZW58MHx8MHx8fDA%3D" alt="Fotografía de Carlos Daniel">
+              <img (click)="setSeventhOpen(true)" src="https://images.unsplash.com/photo-1544376798-89aa6b82c6cd?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dmVydGljYWx8ZW58MHx8MHx8fDA%3D" alt="Fotografía de Carlos Daniel">
               <p class="image-info ion-text-right">Fotografía de <u>Carlos Daniel.</u></p>
               <p class="image-date ion-text-right">Tomada el 10 de febrero de 2024, <b class="authorized">autorizada.</b></p>
             </div>
@@ -354,14 +350,14 @@
         <ion-header>
           <ion-toolbar>
             <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setSixthOpen(false)"></ion-icon>
-            <ion-title>Fotografías no autorizadas</ion-title>
+            <ion-title>Fotografías del profesor</ion-title>
           </ion-toolbar>
         </ion-header>
         
         <ion-content class="ion-padding">
           <div class="image-authorization-container">
             <div class="image-container">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/A_minusculetypes.svg/200px-A_minusculetypes.svg.png" alt="Fotografía de Carlos Daniel">
+              <img (click)="setSeventhOpen(true)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/A_minusculetypes.svg/200px-A_minusculetypes.svg.png" alt="Fotografía de Carlos Daniel">
               <p class="image-info ion-text-right">Fotografía del profesor <u>Zamora Ramos Victor Manuel.</u></p>
               <p class="image-date ion-text-right">Tomada el 10 de febrero de 2024</p>
             </div>
@@ -369,7 +365,7 @@
 
           <div class="image-authorization-container">
             <div class="image-container">
-              <img src="https://bigimagesystems.com/wp-content/uploads/2023/10/microsoftteams-image-8.jpg" alt="Fotografía de Carlos Daniel">
+              <img (click)="setSeventhOpen(true)" src="https://bigimagesystems.com/wp-content/uploads/2023/10/microsoftteams-image-8.jpg" alt="Fotografía de Carlos Daniel">
               <p class="image-info ion-text-right">Fotografía del profesor <u>Zamora Ramos Victor Manuel.</u></p>
               <p class="image-date ion-text-right">Tomada el 10 de febrero de 2024</p>
             </div>
@@ -377,7 +373,7 @@
 
           <div class="image-authorization-container">
             <div class="image-container">
-              <img src="https://images.unsplash.com/photo-1544376798-89aa6b82c6cd?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dmVydGljYWx8ZW58MHx8MHx8fDA%3D" alt="Fotografía de Carlos Daniel">
+              <img (click)="setSeventhOpen(true)" src="https://images.unsplash.com/photo-1544376798-89aa6b82c6cd?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dmVydGljYWx8ZW58MHx8MHx8fDA%3D" alt="Fotografía de Carlos Daniel">
               <p class="image-info ion-text-right">Fotografía del profesor <u>Zamora Ramos Victor Manuel.</u></p>
               <p class="image-date ion-text-right">Tomada el 10 de febrero de 2024</p>
             </div>
@@ -386,5 +382,39 @@
       </ng-template>
     </ion-modal>
 
+    <!-- Modal para visualizar la fotografía en específico -->
+    <ion-modal [isOpen]="isSeventhModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setSeventhOpen(false)"></ion-icon>
+          </ion-toolbar>
+        </ion-header>
+        
+        <ion-content class="ion-padding">
+          <div class="photo-container">
+            <img src="https://www.officedepot.com.mx/medias/41458.jpg-1200ftw?context=bWFzdGVyfHJvb3R8NTMyNTkyfGltYWdlL2pwZWd8aDMzL2hmNC85NjYxMTcyNTgwMzgyLmpwZ3wyNDRjZDBkMTcwZDA2Y2Y4OWM0N2YxN2EzNzA4MGM0ODg5ZGU2MGU3MDEzNzdiNWQ5MWVhM2QyZTAxODAwZDA5" alt="Objeto identificado">
+            <ion-title class="item-title">Objeto identificado:</ion-title>
+            <h3 class="item-name">Reloj de casa</h3>
+            <div class="item-description">
+              <ion-title>Descripción del objeto:</ion-title>
+              <p>Un reloj que comúnmente se encuentra en la casa de las personas, normalmente se encuentra pegado a una pared alta.</p>
+            </div>
+
+            <div class="item-classification">
+              <ion-title>Clasificación del objeto:</ion-title>
+              <ion-text color="success">
+                <p>No letal</p>
+              </ion-text>              
+            </div>
+
+            <div class="photo-credit">
+              <ion-title>Foto tomada por:</ion-title>
+              <p>Carlos Daniel Medina Sahagún</p>
+            </div>
+          </div>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
   </div>
 </ion-content>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-grupo-alumno',
@@ -12,7 +13,34 @@ import { IonicModule } from '@ionic/angular';
 })
 export class GrupoAlumnoPage implements OnInit {
 
-  constructor() { }
+  // AGM 31/01/2024 - Redireccionamiento al cierre de sesión
+  constructor(private router: Router) { }
+
+  redirectToLogin() {
+    this.router.navigateByUrl('/login');
+  }
+
+  // AGM 31/01/2024 - Modals de la visualizacion de alumnos, visualización de fotografías del profesor y autorizadas del alumno y visualizacion de imagen 
+  isFourthModalOpen = false; 
+  isFifthModalOpen = false;
+  isSixthModalOpen = false;
+  isSeventhModalOpen = false;
+
+  setFourthOpen(isOpen: boolean) {
+    this.isFourthModalOpen = isOpen;
+  }
+
+  setFifthOpen(isOpen: boolean) {
+    this.isFifthModalOpen = isOpen;
+  }
+
+  setSixthOpen(isOpen: boolean) {
+    this.isSixthModalOpen = isOpen;
+  }
+
+  setSeventhOpen(isOpen: boolean) {
+    this.isSeventhModalOpen = isOpen;
+  }
 
   ngOnInit() {
   }
