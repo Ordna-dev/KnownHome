@@ -22,6 +22,7 @@ export class GrupoMaestroPage implements OnInit {
   isThirdModalOpen = false;
   isFourthModalOpen = false;
   isFifthModalOpen = false;
+  isSixthModalOpen = false;
 
   // AGM 31/01/2024 - Abrir o cerrar el primer modal
   setOpen(isOpen: boolean) {
@@ -43,6 +44,10 @@ export class GrupoMaestroPage implements OnInit {
 
   setFifthOpen(isOpen: boolean) {
     this.isFifthModalOpen = isOpen;
+  }
+
+  setSixthOpen(isOpen: boolean) {
+    this.isSixthModalOpen = isOpen;
   }
   
   // AGM 31/01/2024 - Botones de las alertas de modificaciones
