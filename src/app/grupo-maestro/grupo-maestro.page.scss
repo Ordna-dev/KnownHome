@@ -1,0 +1,165 @@
+// AGM 31/01/2024
+
+// Header del grupo
+.header-group {
+    display: flex; // Habilita Flexbox
+    justify-content: space-between; // Espacia los elementos uniformemente
+    align-items: center; // Alinea los elementos verticalmente
+    margin: 10px; // Margen opcional para dar espacio alrededor del grupo
+    margin-top: 20px; // Reduce el margen superior para una separación ligera hacia arri
+}
+
+// Mensaje de bienvenida - Centrado en el grupo de cabecera
+.welcome-message {
+    margin: 0; // Elimina márgenes para centrar correctamente
+    text-align: center; 
+}
+
+// Ícono a la izquierda - Alineado a la izquierda en el grupo de cabecera
+.icon-left-back {
+    font-size: 40px;
+}
+
+// Ícono a la derecha - Alineado a la derecha en el grupo de cabecera
+.icon-right-camera {
+    font-size: 40px;
+}
+
+// Usado en el menú deslizante
+// Estilos para títulos secundarios - Aplicados a los títulos dentro de ion-content
+ion-content h1:not(:first-child) {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+// Avatar alineado a la derecha - Usado en el menú deslizante
+.avatar-right {
+    width: 70px; 
+    height: 70px; 
+    margin: 5%;
+}
+
+// Cabecera con alineación específica - Utilizado en el menú deslizante y modales
+ion-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center; 
+}
+
+// Sección de fotografías del profesor y alumno
+// Margen fijo para tarjetas - Usado en las tarjetas de la sección de fotografías del profesor
+.fixed-margin-card-teacher {
+    display: flex;
+    align-items: center; 
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+// Contenedor de íconos con margen izquierdo - Usado en las tarjetas de alumnos y el profesor
+.icon-container {
+    margin-left: 10px;
+    flex-grow: 0;
+    flex-shrink: 0; 
+}
+
+// Variante del contenedor de íconos con margen derecho - Usado en las tarjetas de grupos y alumnos
+.icon-container-v2 {
+    margin-right: 10px; 
+    flex-grow: 0; 
+    flex-shrink: 0; 
+}
+
+// Contenedor de texto flexible - Usado en las tarjetas de grupos y alumnos
+.text-container {
+    flex-grow: 1; 
+}
+
+
+// Tamaño de ícono variante 2 - Usado en las tarjetas de la sección de grupos
+.icon-size {
+    font-size: 40px; 
+}
+
+// Tamaño de ícono variante 2 - Usado en las tarjetas de la sección de grupos
+.icon-size-v2 {
+    font-size: 30px; 
+}
+
+// Sección de los modals
+// Ícono a la izquierda en modales - Usado para botones de retroceso en los modales
+.icon-modal-left {
+    font-size: 40px; 
+    float: left; 
+    margin-left: 10px; 
+}
+
+// Estilización de los ítems de Ionic - Usado en los inputs de los modals
+ion-item {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+// TextArea verticalmente ajustado en los modals
+.large-textarea {
+    --min-height: 150px; 
+}
+
+// Botón de cancelar con margen derecho - Usado en los modals
+.btn-cancelar {
+    margin-right: 10px; 
+}
+
+// Botón de registrar con margen izquierdo - Usado en los modals
+.btn-registrar {
+    margin-left: 10px; 
+}
+
+// Titulo dentro del modal
+ion-title {
+    margin-top: 10px;
+}
+
+// Margen para tarjetas dentro de modales - Usado en las tarjetas de los modales de alumnos registrados
+.fixed-margin-card-modal {
+    display: flex;
+    align-items: center; 
+}
+
+// Sección de autorizacion de imagenes
+.image-authorization-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #ccc; // Línea de separación
+    padding-top: 20px; // Espacio después de la línea de separación
+  
+    .text-button-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-left: 20px;
+  
+      .authorize-text {
+        margin-top: -40px;
+        margin-bottom: 10px; // Espacio entre el texto y el botón
+      }
+    }
+  
+    .image-container {
+      text-align: right; // Alinea el texto a la derecha para los elementos dentro
+  
+      img {
+        width: 200px; // Tamaño fijo para la imagen
+        height: auto;
+        object-fit: contain; // Asegura que la imagen se ajuste al contenedor sin perder las proporciones
+      }
+      
+      .authorized {
+        color: green;
+      }
+      .no-authorized {
+        color: #ff0000;
+      }
+    }
+  }

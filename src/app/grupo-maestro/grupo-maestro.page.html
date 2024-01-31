@@ -1,13 +1,352 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>grupo-maestro</ion-title>
-  </ion-toolbar>
-</ion-header>
+<!-- Menú deslizante del maestro dentro de la vista del grupo --> 
+<ion-menu side="end" contentId="main-content4">
+  <ion-header>
+    <ion-avatar class="avatar-right">
+      <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+    </ion-avatar>
+  </ion-header>
+  <ion-content class="ion-padding ion-text-right"> 
+    <h1>Grupo</h1>
+    <h5 (click)="setOpen(true)">Código de acceso del grupo</h5>
+    <h5 (click)="setSecondOpen(true)">Modificar propiedades del grupo</h5>
+    <h5 id="alerta-eliminar-grupo">Eliminar grupo</h5>
+    <ion-alert 
+      trigger="alerta-eliminar-grupo"  
+      header="¿Está seguro de eliminar el grupo?" 
+      [buttons]="alertButtonsDelete">
+    </ion-alert>
+
+    <h1>Fotografías</h1>
+    <h5 (click)="setThirdOpen(true)">Autorizar fotografías</h5>
+
+    <h1>Alumnos</h1>
+    <h5 (click)="setFourthOpen(true)">Alumnos registrados en el grupo</h5>
+
+    <h1>Sesión</h1>
+    <h5 (click)="redirectToProfile()">Ver o gestionar mi perfil</h5>
+    <h5 (click)="redirectToLogin()">Cerrar sesión</h5>
+  </ion-content>
+</ion-menu>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">grupo-maestro</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div id="main-content4">
+    <div class="header-group">
+      <!-- Volver a la pagina anterior --> 
+      <ion-icon name="arrow-back-outline" class="icon-left-back"></ion-icon>
+      <!-- Mensaje de bienvenida al maestro --> 
+      <b><h3 class="welcome-message">Grupo 4A</h3></b>
+      <!-- Tomar una fotografía --> 
+      <ion-icon name="camera" class="icon-right-camera"></ion-icon>
+    </div>
+
+    <!-- Sección del profesor -->
+    <b><h3 class="ion-text-center">Profesor:</h3></b>
+
+    <ion-card color="light" class="fixed-margin-card-teacher">
+      <div class="icon-container">
+        <ion-icon name="images" color="success" class="icon-size"></ion-icon>
+      </div>
+      
+      <div class="text-container">
+        <ion-card-header class="ion-text-center">
+          <ion-card-title>Alejandro Guerrero Moya</ion-card-title>
+        </ion-card-header>
+      </div>
+
+      <div class="icon-container-v2">
+        <ion-icon name="chevron-forward-outline" class="icon-size"></ion-icon>
+      </div>
+    </ion-card>
+
+    <!-- Sección de los alumnos -->
+    <b><h3 class="ion-text-center">Alumnos:</h3></b>
+    
+    <ion-card color="light" class="fixed-margin-card-teacher">
+      <div class="icon-container">
+        <ion-icon name="images" color="success" class="icon-size"></ion-icon>
+      </div>
+      
+      <div class="text-container">
+        <ion-card-header class="ion-text-center">
+          <ion-card-title>AGM</ion-card-title>
+        </ion-card-header>
+      </div>
+
+      <div class="icon-container-v2">
+        <ion-icon (click)="setFifthOpen(true)" name="chevron-forward-outline" class="icon-size"></ion-icon>
+      </div>
+    </ion-card>
+
+    <ion-card color="light" class="fixed-margin-card-teacher">
+      <div class="icon-container">
+        <ion-icon name="images" color="success" class="icon-size"></ion-icon>
+      </div>
+      
+      <div class="text-container">
+        <ion-card-header class="ion-text-center">
+          <ion-card-title>Nombre del alumno</ion-card-title>
+        </ion-card-header>
+      </div>
+
+      <div class="icon-container-v2">
+        <ion-icon (click)="setFifthOpen(true)" name="chevron-forward-outline" class="icon-size"></ion-icon>
+      </div>
+    </ion-card>
+
+    <ion-card color="light" class="fixed-margin-card-teacher">
+      <div class="icon-container">
+        <ion-icon name="images" color="success" class="icon-size"></ion-icon>
+      </div>
+      
+      <div class="text-container">
+        <ion-card-header class="ion-text-center">
+          <ion-card-title>Nombre del alumno</ion-card-title>
+        </ion-card-header>
+      </div>
+
+      <div class="icon-container-v2">
+        <ion-icon (click)="setFifthOpen(true)" name="chevron-forward-outline" class="icon-size"></ion-icon>
+      </div>
+    </ion-card>
+
+    <ion-card color="light" class="fixed-margin-card-teacher">
+      <div class="icon-container">
+        <ion-icon name="images" color="success" class="icon-size"></ion-icon>
+      </div>
+      
+      <div class="text-container">
+        <ion-card-header class="ion-text-center">
+          <ion-card-title>Nombre del alumno</ion-card-title>
+        </ion-card-header>
+      </div>
+
+      <div class="icon-container-v2">
+        <ion-icon (click)="setFifthOpen(true)" name="chevron-forward-outline" class="icon-size"></ion-icon>
+      </div>
+    </ion-card>
+
+    <!-- Modal para mostrar el código de acceso al grupo-->
+    <ion-modal [isOpen]="isModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setOpen(false)"></ion-icon>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding ion-text-center">
+          <h1>Código de acceso al grupo</h1>
+
+          <ion-item class="separator">
+            <ion-input class="ion-text-center" value="3E59B3" disabled></ion-input>
+          </ion-item>
+
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <!-- Modal para modificar las propiedades del grupo -->
+    <ion-modal [isOpen]="isSecondModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setSecondOpen(false)"></ion-icon>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding ion-text-center">
+          <h1>Registro de un alumno en el sistema</h1>
+
+          <ion-item class="separator">
+            <ion-input placeholder="  Nombre del grupo" value="Grupo 4A"></ion-input>
+          </ion-item>
+
+          <ion-item class="large-textarea">
+            <ion-textarea
+              placeholder="  Descripcion del grupo"
+              [autoGrow]="true"
+              value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tellus sem, auctor accumsan egestas sed, venenatis at ex. Nam consequat ex odio, suscipit rhoncus orci dictum eget. Aenean sit amet ligula varius felis facilisis lacinia nec volutpat nulla. Duis ullamcorper sit amet turpis sed blandit. Integer pretium massa eu faucibus interdum."
+            >
+            </ion-textarea>
+          </ion-item>
+
+          <ion-button class="btn-cancelar" (click)="setSecondOpen(false)" color="danger">Cancelar</ion-button>
+          <ion-button id="alerta-modificar-grupo" class="btn-registrar" color="warning">Modificar</ion-button>
+          <ion-alert 
+            trigger="alerta-modificar-grupo"  
+            header="¿Está seguro de realizar las modificaciones?" 
+            [buttons]="alertButtonsEdit">
+          </ion-alert>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <!-- Modal para visualizar las fotografías a autorizar -->
+    <ion-modal [isOpen]="isThirdModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setThirdOpen(false)"></ion-icon>
+            <ion-title>Fotografías no autorizadas</ion-title>
+          </ion-toolbar>
+          
+        </ion-header>
+        
+        <ion-content class="ion-padding">
+          <div class="image-authorization-container">
+            <div class="text-button-container">
+              <p class="authorize-text">¿Autorizar imagen?</p>
+              <ion-button color="primary">Sí</ion-button>
+            </div>
+            <div class="image-container">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/A_minusculetypes.svg/200px-A_minusculetypes.svg.png" alt="Fotografía de Carlos Daniel">
+              <p class="image-info ion-text-right">Fotografía de <u>Carlos Daniel.</u></p>
+              <p class="image-date ion-text-right">Tomada el 10 de febrero de 2024, <b class="no-authorized">no autorizada.</b></p>
+            </div>
+          </div>
+
+          <div class="image-authorization-container">
+            <div class="text-button-container">
+              <p class="authorize-text">¿Autorizar imagen?</p>
+              <ion-button color="primary">Sí</ion-button>
+            </div>
+            <div class="image-container">
+              <img src="https://bigimagesystems.com/wp-content/uploads/2023/10/microsoftteams-image-8.jpg" alt="Fotografía de Carlos Daniel">
+              <p class="image-info ion-text-right">Fotografía de <u>Alejandro Guerrero.</u></p>
+              <p class="image-date ion-text-right">Tomada el 10 de febrero de 2024, <b class="no-authorized">no autorizada.</b></p>
+            </div>
+          </div>
+
+          <div class="image-authorization-container">
+            <div class="text-button-container">
+              <p class="authorize-text">¿Autorizar imagen?</p>
+              <ion-button color="primary">Sí</ion-button>
+            </div>
+            <div class="image-container">
+              <img src="https://images.unsplash.com/photo-1544376798-89aa6b82c6cd?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dmVydGljYWx8ZW58MHx8MHx8fDA%3D" alt="Fotografía de Carlos Daniel">
+              <p class="image-info ion-text-right">Fotografía de <u>Diaz Raygoza.</u></p>
+              <p class="image-date ion-text-right">Tomada el 10 de febrero de 2024, <b class="no-authorized">no autorizada.</b></p>
+            </div>
+          </div>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <!-- Modal para mostrar los alumnos registrados en el grupo -->
+    <ion-modal [isOpen]="isFourthModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setFourthOpen(false)"></ion-icon>
+            <ion-title class="ion-text-center">Alumnos del grupo</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        
+        <ion-content class="ion-padding ion-text-center">
+          <ion-card color="light" class="fixed-margin-card-modal">
+            <div class="icon-container">
+              <ion-icon name="accessibility" class="icon-size"></ion-icon>
+            </div>
+            
+            <div class="text-container">
+              <ion-card-header class="ion-text-center">
+                <ion-card-subtitle>Alejandro Guerrero Moya</ion-card-subtitle>
+              </ion-card-header>
+            </div>
+
+            <div class="icon-container-v2">
+              <ion-icon id="alerta-eliminar-alumno-grupo" color="danger" name="trash" class="icon-size"></ion-icon>
+            </div>
+          </ion-card>
+
+          <ion-card color="light" class="fixed-margin-card-modal">
+            <div class="icon-container">
+              <ion-icon name="accessibility" class="icon-size"></ion-icon>
+            </div>
+            
+            <div class="text-container">
+              <ion-card-header class="ion-text-center">
+                <ion-card-subtitle>Alejandro Díaz Raygoza</ion-card-subtitle>
+              </ion-card-header>
+            </div>
+
+            <div class="icon-container-v2">
+              <ion-icon id="alerta-eliminar-alumno-grupo" color="danger" name="trash" class="icon-size"></ion-icon>
+            </div>
+          </ion-card>
+
+          <ion-card color="light" class="fixed-margin-card-modal">
+            <div class="icon-container">
+              <ion-icon name="accessibility" class="icon-size"></ion-icon>
+            </div>
+            
+            <div class="text-container">
+              <ion-card-header class="ion-text-center">
+                <ion-card-subtitle>Carlos Daniel Medina Sahagún</ion-card-subtitle>
+              </ion-card-header>
+            </div>
+
+            <div class="icon-container-v2">
+              <ion-icon id="alerta-eliminar-alumno-grupo" color="danger" name="trash" class="icon-size"></ion-icon>
+            </div>
+          </ion-card>
+          <ion-alert 
+            trigger="alerta-eliminar-alumno-grupo"  
+            header="¿Está seguro de eliminar al alumno del grupo?" 
+            [buttons]="alertButtonsDeleteStudent">
+          </ion-alert>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <!-- Modal para visualizar las fotografías no autorizadas y autorizadas de x alumno -->
+    <ion-modal [isOpen]="isFifthModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setFifthOpen(false)"></ion-icon>
+            <ion-title>Fotografías no autorizadas</ion-title>
+          </ion-toolbar>
+          
+        </ion-header>
+        
+        <ion-content class="ion-padding">
+          <div class="image-authorization-container">
+            <div class="text-button-container">
+              <p class="authorize-text">¿Autorizar imagen?</p>
+              <ion-button color="primary">Sí</ion-button>
+            </div>
+            <div class="image-container">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/A_minusculetypes.svg/200px-A_minusculetypes.svg.png" alt="Fotografía de Carlos Daniel">
+              <p class="image-info ion-text-right">Fotografía de <u>Carlos Daniel.</u></p>
+              <p class="image-date ion-text-right">Tomada el 10 de febrero de 2024, <b class="no-authorized">no autorizada.</b></p>
+            </div>
+          </div>
+
+          <div class="image-authorization-container">
+            <div class="text-button-container">
+              <p class="authorize-text">¿Autorizar imagen?</p>
+              <ion-button color="primary">Sí</ion-button>
+            </div>
+            <div class="image-container">
+              <img src="https://bigimagesystems.com/wp-content/uploads/2023/10/microsoftteams-image-8.jpg" alt="Fotografía de Carlos Daniel">
+              <p class="image-info ion-text-right">Fotografía de <u>Carlos Daniel.</u></p>
+              <p class="image-date ion-text-right">Tomada el 10 de febrero de 2024, <b class="no-authorized">no autorizada.</b></p>
+            </div>
+          </div>
+
+          <div class="image-authorization-container">
+            <div class="text-button-container">
+              <p class="authorize-text">¿Autorizar imagen?</p>
+              <ion-button color="primary">Sí</ion-button>
+            </div>
+            <div class="image-container">
+              <img src="https://images.unsplash.com/photo-1544376798-89aa6b82c6cd?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dmVydGljYWx8ZW58MHx8MHx8fDA%3D" alt="Fotografía de Carlos Daniel">
+              <p class="image-info ion-text-right">Fotografía de <u>Carlos Daniel.</u></p>
+              <p class="image-date ion-text-right">Tomada el 10 de febrero de 2024, <b class="authorized">autorizada.</b></p>
+            </div>
+          </div>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+  </div>
 </ion-content>

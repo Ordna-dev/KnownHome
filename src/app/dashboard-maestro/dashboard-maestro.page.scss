@@ -1,78 +1,88 @@
 // AGM 28-01-24
+// Estilos Generales de la Aplicación
+
+// Mensaje de bienvenida - Utilizado en el encabezado principal de bienvenida
 .welcome-message {
     text-align: center; 
     margin-top: 10%; 
     margin-bottom: 20px;
 }
 
+// Margen fijo - Aplicado a las tarjetas de registro de grupo y alumnos
 .fixed-margin {
     margin-left: 5%;
     margin-right: 5%;
 }
 
+// Botón con margen superior fijo - Usado en el botón de registro en las tarjetas
 .fixed-button {
     margin-top: 5%;
 }
 
+// Mensaje para secciones de grupos - Usado en el encabezado de la sección de grupos
 .groups-message {
     text-align: center; 
     margin-top: 5%; 
     margin-bottom: 20px;
 }
 
+// Estilización de los ítems de Ionic - Usado en los inputs de los modales
 ion-item {
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
+// Cabecera con alineación específica - Utilizado en el menú deslizante y modales
 ion-header {
     display: flex;
     justify-content: flex-end;
     align-items: center; 
 }
   
+// Avatar alineado a la derecha - Usado en el menú deslizante
 .avatar-right {
     width: 70px; 
     height: 70px; 
     margin: 5%;
 }
 
+// Estilos para títulos secundarios - Aplicados a los títulos dentro de ion-content
 ion-content h1:not(:first-child) {
     border-top: 1px solid #ccc;
     padding-top: 10px;
     margin-top: 10px;
 }
 
+// Botón de cancelar con margen derecho - Usado en los modales de registro
 .btn-cancelar {
     margin-right: 10px; 
-  }
-  
+}
 
+// Botón de registrar con margen izquierdo - Usado en los modales de registro
 .btn-registrar {
     margin-left: 10px; 
 }
 
+// Tamaño general de íconos - Aplicado a varios íconos en la aplicación
 .icon-size {
     font-size: 40px; 
 }
 
+// Ícono a la derecha en modales - Usado en los modales para cerrar o acciones adicionales
 .icon-modal-right {
     font-size: 40px; 
     float: right; 
     margin-right: 10px; 
 }
 
+// Ícono a la izquierda en modales - Usado para botones de retroceso en los modales
 .icon-modal-left {
     font-size: 40px; 
     float: left; 
     margin-left: 10px; 
 }
 
-.danger-alert-button {
-    background-color: var(--ion-color-success);
-    color: var(--ion-color-success-contrast);
-}
-
+// Margen fijo para tarjetas - Usado en las tarjetas de la sección de grupos
 .fixed-margin-card {
     display: flex;
     align-items: center; 
@@ -80,31 +90,37 @@ ion-content h1:not(:first-child) {
     margin-right: 5%;
 }
 
+// Margen para tarjetas dentro de modales - Usado en las tarjetas de los modales de alumnos registrados
 .fixed-margin-card-modal {
     display: flex;
     align-items: center; 
 }
 
+// Título fijo para modales - Usado en el título del modal de alumnos registrados
 .fixed-title-modal {
     margin-bottom: 5%;
 }
 
+// Contenedor de íconos con margen izquierdo - Usado en las tarjetas de grupos y alumnos
 .icon-container {
-    margin-left: 10px; // Separación hacia la izquierda
-    flex-grow: 0; // Evita que el contenedor se estire
-    flex-shrink: 0; // Evita que el contenedor se encoja
+    margin-left: 10px;
+    flex-grow: 0;
+    flex-shrink: 0; 
 }
 
+// Variante del contenedor de íconos con margen derecho - Usado en las tarjetas de grupos y alumnos
 .icon-container-v2 {
-    margin-right: 10px; // Separación hacia la izquierda
-    flex-grow: 0; // Evita que el contenedor se estire
-    flex-shrink: 0; // Evita que el contenedor se encoja
+    margin-right: 10px; 
+    flex-grow: 0; 
+    flex-shrink: 0; 
+}
+
+// Tamaño de ícono variante 2 - Usado en las tarjetas de la sección de grupos
+.icon-size-v2 {
+    font-size: 30px; 
 }
   
-.icon-size {
-    font-size: 40px; 
-}
-  
+// Contenedor de texto flexible - Usado en las tarjetas de grupos y alumnos
 .text-container {
-    flex-grow: 1; // Permite que el contenedor del texto ocupe el espacio restante
+    flex-grow: 1; 
 }

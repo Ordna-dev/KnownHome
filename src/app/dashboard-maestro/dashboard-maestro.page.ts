@@ -28,6 +28,11 @@ export class DashboardMaestroPage implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  irGrupo() {
+    // Acciones como limpiar datos de sesión
+    this.router.navigate(['/grupo-maestro']);
+  }
+
   //AGM 30/01/2024 - Declaración de variables bandera para cerrar o abrir los modal
   isModalOpen = false;
   isSecondModalOpen = false;
