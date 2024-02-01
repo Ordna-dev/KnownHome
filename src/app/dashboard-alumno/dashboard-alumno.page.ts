@@ -16,8 +16,13 @@ export class DashboardAlumnoPage implements OnInit {
   constructor(private router: Router) { }
 
   irGrupo() {
-    // Acciones como limpiar datos de sesión
+    // Futuras acciones
     this.router.navigate(['/grupo-alumno']);
+  }
+
+  cerrarSesion() {
+    // Acciones como limpiar datos de sesión
+    this.router.navigate(['/login']);
   }
 
   isFifthModalOpen = false;

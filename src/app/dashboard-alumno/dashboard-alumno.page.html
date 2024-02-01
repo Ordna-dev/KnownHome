@@ -1,16 +1,16 @@
-<ion-menu side="end" contentId="main-content2">
+<ion-menu side="end" contentId="main-content4">
   <ion-content class="ion-padding ion-text-right"> 
     <h1>Grupos</h1>
     <h5 (click)="setOpen(true)">Registrarse a un grupo</h5>
     <h5 (click)="setFifthOpen(true)">Mis grupos</h5>
 
     <h1>Sesión</h1>
-    <h5>Cerrar sesión</h5>
+    <h5 (click)="cerrarSesion()">Cerrar sesión</h5>
   </ion-content>
 </ion-menu>
 
 <ion-content [fullscreen]="true">
-  <div id="main-content2">
+  <div id="main-content4">
     <b><h1 class="welcome-message">Bienvenido Carlos Daniel Medina Sahagún</h1></b>
 
     <ion-card class="fixed-margin">
@@ -34,7 +34,9 @@
       
       <div class="text-container">
         <ion-card-header class="ion-text-center">
-          <ion-card-title>Grupo 4A</ion-card-title>
+          <ion-text color="tertiary">
+            <ion-card-title>Grupo 4A</ion-card-title>
+          </ion-text>
         </ion-card-header>
       
         <ion-card-content class="ion-text-center">
@@ -54,7 +56,9 @@
       
       <div class="text-container">
         <ion-card-header class="ion-text-center">
-          <ion-card-title>Grupo 4A</ion-card-title>
+          <ion-text color="tertiary">
+            <ion-card-title>Grupo 4A</ion-card-title>
+          </ion-text>
         </ion-card-header>
       
         <ion-card-content class="ion-text-center">
@@ -74,7 +78,9 @@
       
       <div class="text-container">
         <ion-card-header class="ion-text-center">
-          <ion-card-title>Grupo 4A</ion-card-title>
+          <ion-text color="tertiary">
+            <ion-card-title>Grupo 4A</ion-card-title>
+          </ion-text>
         </ion-card-header>
       
         <ion-card-content class="ion-text-center">
@@ -92,12 +98,7 @@
       <ng-template>
         <ion-header>
           <ion-toolbar>
-            <ion-buttons slot="start">
-              <ion-button (click)="setOpen(false)" color="danger">Cancelar</ion-button>
-            </ion-buttons>
-            <ion-buttons slot="end">
-              <ion-button (click)="setOpen(false)" color="primary">Ingresar al grupo</ion-button>
-            </ion-buttons>
+            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setOpen(false)"></ion-icon>
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding ion-text-center">
@@ -106,6 +107,9 @@
           <ion-item class="separator">
             <ion-input placeholder="  Código del grupo"></ion-input>
           </ion-item>
+
+          <ion-button class="btn-cancelar" (click)="setOpen(false)" color="danger">Cancelar</ion-button>
+          <ion-button class="btn-registrar" (click)="setOpen(false)" color="primary">Registrarse</ion-button>
 
         </ion-content>
       </ng-template>
@@ -116,7 +120,7 @@
       <ng-template>
         <ion-header>
           <ion-toolbar>
-            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setFifthOpen(false)"></ion-icon>
+            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setFifthOpen(false); irGrupo()"></ion-icon>
           </ion-toolbar>
         </ion-header>
         
@@ -130,8 +134,15 @@
             
             <div class="text-container">
               <ion-card-header class="ion-text-center">
-                <ion-card-subtitle>Grupo de la aplicacion 1 a xd ed</ion-card-subtitle>
+                <ion-text color="tertiary">
+                  <ion-card-title>Grupo 4A</ion-card-title>
+                </ion-text>
+                <ion-card-subtitle>Profesor: Diaz Raygoza</ion-card-subtitle>
               </ion-card-header>
+            </div>
+
+            <div class="icon-container-v2">
+              <ion-icon name="chevron-forward-outline" class="icon-size" (click)="setFifthOpen(false); irGrupo()"></ion-icon>
             </div>
           </ion-card>
 
@@ -142,8 +153,15 @@
             
             <div class="text-container">
               <ion-card-header class="ion-text-center">
-                <ion-card-subtitle>Grupo</ion-card-subtitle>
+                <ion-text color="tertiary">
+                  <ion-card-title>Grupo 4A</ion-card-title>
+                </ion-text>
+                <ion-card-subtitle>Profesor: Diaz Raygoza</ion-card-subtitle>
               </ion-card-header>
+            </div>
+
+            <div class="icon-container-v2">
+              <ion-icon name="chevron-forward-outline" class="icon-size" (click)="setFifthOpen(false); irGrupo()"></ion-icon>
             </div>
           </ion-card>
 
@@ -154,13 +172,19 @@
             
             <div class="text-container">
               <ion-card-header class="ion-text-center">
-                <ion-card-subtitle>Grupo</ion-card-subtitle>
+                <ion-text color="tertiary">
+                  <ion-card-title>Grupo 4A</ion-card-title>
+                </ion-text>
+                <ion-card-subtitle>Profesor: Diaz Raygoza</ion-card-subtitle>
               </ion-card-header>
+            </div>
+
+            <div class="icon-container-v2">
+              <ion-icon name="chevron-forward-outline" class="icon-size" (click)="irGrupo()"></ion-icon>
             </div>
           </ion-card>
         </ion-content>
       </ng-template>
     </ion-modal>
-
   </div>
 </ion-content>

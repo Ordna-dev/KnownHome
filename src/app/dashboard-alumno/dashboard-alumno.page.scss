@@ -76,3 +76,17 @@ ion-content h1:not(:first-child) {
     float: left; 
     margin-left: 10px; 
 }
+
+// Botón de cancelar con margen derecho - Usado en los modales de registro
+.btn-cancelar {
+    margin-right: 10px; 
+}
+
+// Botón de registrar con margen izquierdo - Usado en los modales de registro
+.btn-registrar {
+    margin-left: 10px; 
+}
+
+.separator {
+    margin-bottom: 20px;
+}

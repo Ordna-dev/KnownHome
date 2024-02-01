@@ -1,5 +1,5 @@
 <!-- Menú deslizante del alumno dentro de la vista del grupo --> 
-<ion-menu side="end" contentId="main-content2">
+<ion-menu side="end" contentId="main-content5">
   <ion-content class="ion-padding ion-text-right"> 
     <h1>Grupo</h1>
     <h5 (click)="setFourthOpen(true)">Listado de alumnos inscritos</h5>
@@ -13,10 +13,10 @@
 </ion-menu>
 
 <ion-content [fullscreen]="true">
-  <div id="main-content2">
+  <div id="main-content5">
     <div class="header-group">
       <!-- Volver a la pagina anterior --> 
-      <ion-icon name="arrow-back-outline" class="icon-left-back"></ion-icon>
+      <ion-icon name="arrow-back-outline" class="icon-left-back" (click)="goBack()"></ion-icon>
       <!-- Mensaje de bienvenida al maestro --> 
       <b><h3 class="welcome-message">Grupo 4A</h3></b>
       <!-- Tomar una fotografía --> 

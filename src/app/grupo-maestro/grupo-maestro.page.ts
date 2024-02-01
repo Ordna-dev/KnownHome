@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class GrupoMaestroPage implements OnInit {
 
-  constructor(private alertController: AlertController, private router: Router) { }
+  constructor(private alertController: AlertController, private router: Router, private navCtrl: NavController) { }
 
   // AGM 31/01/2024 - Declaración de variables bandera para cerrar o abrir los modal
   isModalOpen = false;
@@ -148,6 +148,9 @@ export class GrupoMaestroPage implements OnInit {
     this.router.navigateByUrl('/login');
   }
 
+  goBack() {
+    this.navCtrl.back();
+  }
 
   ngOnInit() {
   }

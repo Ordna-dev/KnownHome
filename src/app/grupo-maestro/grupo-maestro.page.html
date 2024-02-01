@@ -1,5 +1,5 @@
 <!-- Menú deslizante del maestro dentro de la vista del grupo --> 
-<ion-menu side="end" contentId="main-content2">
+<ion-menu side="end" contentId="main-content3">
   <ion-header>
     <ion-avatar class="avatar-right">
       <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
@@ -29,10 +29,10 @@
 </ion-menu>
 
 <ion-content [fullscreen]="true">
-  <div id="main-content2">
+  <div id="main-content3">
     <div class="header-group">
       <!-- Volver a la pagina anterior --> 
-      <ion-icon name="arrow-back-outline" class="icon-left-back"></ion-icon>
+      <ion-icon name="arrow-back-outline" class="icon-left-back" (click)="goBack()"></ion-icon>
       <!-- Mensaje de bienvenida al maestro --> 
       <b><h3 class="welcome-message">Grupo 4A</h3></b>
       <!-- Tomar una fotografía --> 

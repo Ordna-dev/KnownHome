@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,7 +14,11 @@ import { Router } from '@angular/router';
 export class GrupoAlumnoPage implements OnInit {
 
   // AGM 31/01/2024 - Redireccionamiento al cierre de sesión
-  constructor(private router: Router) { }
+  constructor(private router: Router, private navCtrl: NavController) { }
+
+  goBack() {
+    this.navCtrl.back();
+  }
 
   redirectToLogin() {
     this.router.navigateByUrl('/login');
