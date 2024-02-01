@@ -16,6 +16,19 @@ export class GrupoMaestroPage implements OnInit {
 
   constructor(private alertController: AlertController, private router: Router, private navCtrl: NavController) { }
 
+  // AGM 31/01/2024 - Redireccionamiento a perfil, cierre de sesion o dashboard
+  redirectToProfile() {
+    this.router.navigateByUrl('/perfil');
+  }
+  
+  redirectToLogin() {
+    this.router.navigateByUrl('/login');
+  }
+
+  goBack() {
+    this.navCtrl.back();
+  }
+
   // AGM 31/01/2024 - Declaración de variables bandera para cerrar o abrir los modal
   isModalOpen = false;
   isSecondModalOpen = false;
@@ -25,12 +38,11 @@ export class GrupoMaestroPage implements OnInit {
   isSixthModalOpen = false;
   isSeventhModalOpen = false;
 
-  // AGM 31/01/2024 - Abrir o cerrar el primer modal
+  // AGM 31/01/2024 - Abrir o cerrar los modals
   setOpen(isOpen: boolean) {
     this.isModalOpen = isOpen;
   }
 
-  // AGM 31/01/2024 - Abrir o cerrar el segundo modal
   setSecondOpen(isOpen: boolean) {
     this.isSecondModalOpen = isOpen;
   }
@@ -66,8 +78,8 @@ export class GrupoMaestroPage implements OnInit {
     {
       text: 'Sí',
       handler: () => {
-        this.setSecondOpen(false); // Cierra el segundo modal
-        this.presentChangesMadeAlert(); // Muestra la segunda alerta
+        this.setSecondOpen(false);
+        this.presentChangesMadeAlert(); 
       }
     },
   ];
@@ -79,7 +91,7 @@ export class GrupoMaestroPage implements OnInit {
         {
           text: 'Aceptar',
           handler: () => {
-            window.location.reload(); // Recarga la página
+            window.location.reload();
           }
         }
       ]
@@ -99,7 +111,7 @@ export class GrupoMaestroPage implements OnInit {
     {
       text: 'Sí',
       handler: () => {
-        this.presentGroupDeletedAlert(); // Muestra la alerta de grupo eliminado
+        this.presentGroupDeletedAlert(); 
       }
     },
   ];
@@ -137,20 +149,6 @@ export class GrupoMaestroPage implements OnInit {
       }
     },
   ];
-
-  // AGM 31/01/2024 - Redireccionamiento a perfil y cierre de sesion
-
-  redirectToProfile() {
-    this.router.navigateByUrl('/perfil');
-  }
-  
-  redirectToLogin() {
-    this.router.navigateByUrl('/login');
-  }
-
-  goBack() {
-    this.navCtrl.back();
-  }
 
   ngOnInit() {
   }

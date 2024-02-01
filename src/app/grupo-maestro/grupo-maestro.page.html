@@ -1,4 +1,4 @@
-<!-- Menú deslizante del maestro dentro de la vista del grupo --> 
+<!-- AGM 31/01/2024 - Menú deslizante del maestro dentro de la vista del grupo --> 
 <ion-menu side="end" contentId="main-content3">
   <ion-header>
     <ion-avatar class="avatar-right">
@@ -28,18 +28,20 @@
   </ion-content>
 </ion-menu>
 
+<!-- AGM 31/01/2024 - Contenido principal de la pagina --> 
 <ion-content [fullscreen]="true">
   <div id="main-content3">
+
+    <!-- AGM 31/01/2024 - Header de la pagina --> 
     <div class="header-group">
-      <!-- Volver a la pagina anterior --> 
       <ion-icon name="arrow-back-outline" class="icon-left-back" (click)="goBack()"></ion-icon>
-      <!-- Mensaje de bienvenida al maestro --> 
+
       <b><h3 class="welcome-message">Grupo 4A</h3></b>
-      <!-- Tomar una fotografía --> 
+
       <ion-icon name="camera" class="icon-right-camera"></ion-icon>
     </div>
 
-    <!-- Sección del profesor -->
+    <!-- AGM 31/01/2024 - Sección del profesor -->
     <b><h3 class="ion-text-center">Profesor:</h3></b>
 
     <ion-card color="light" class="fixed-margin-card-teacher">
@@ -58,7 +60,7 @@
       </div>
     </ion-card>
 
-    <!-- Sección de los alumnos -->
+    <!-- AGM 31/01/2024 - Sección de los alumnos -->
     <b><h3 class="ion-text-center">Alumnos:</h3></b>
     
     <ion-card color="light" class="fixed-margin-card-teacher">
@@ -125,7 +127,7 @@
       </div>
     </ion-card>
 
-    <!-- Modal para mostrar el código de acceso al grupo-->
+    <!-- AGM 31/01/2024 - Modal para mostrar el código de acceso al grupo-->
     <ion-modal [isOpen]="isModalOpen">
       <ng-template>
         <ion-header>
@@ -144,7 +146,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Modal para modificar las propiedades del grupo -->
+    <!-- AGM 31/01/2024 - Modal para modificar las propiedades del grupo -->
     <ion-modal [isOpen]="isSecondModalOpen">
       <ng-template>
         <ion-header>
@@ -179,7 +181,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Modal para visualizar las fotografías a autorizar -->
+    <!-- AGM 31/01/2024 - Modal para visualizar las fotografías a autorizar -->
     <ion-modal [isOpen]="isThirdModalOpen">
       <ng-template>
         <ion-header>
@@ -230,7 +232,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Modal para mostrar los alumnos registrados en el grupo -->
+    <!-- AGM 31/01/2024 - Modal para mostrar los alumnos registrados en el grupo -->
     <ion-modal [isOpen]="isFourthModalOpen">
       <ng-template>
         <ion-header>
@@ -297,7 +299,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Modal para visualizar las fotografías no autorizadas y autorizadas de x alumno -->
+    <!-- AGM 31/01/2024 - Modal para visualizar las fotografías no autorizadas y autorizadas de x alumno -->
     <ion-modal [isOpen]="isFifthModalOpen">
       <ng-template>
         <ion-header>
@@ -344,7 +346,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Modal para visualizar las fotografías del profesor -->
+    <!-- AGM 31/01/2024 - Modal para visualizar las fotografías del profesor -->
     <ion-modal [isOpen]="isSixthModalOpen">
       <ng-template>
         <ion-header>
@@ -382,7 +384,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Modal para visualizar la fotografía en específico -->
+    <!-- AGM 31/01/2024 - Modal para visualizar la fotografía en específico -->
     <ion-modal [isOpen]="isSeventhModalOpen">
       <ng-template>
         <ion-header>
