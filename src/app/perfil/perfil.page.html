@@ -1,12 +1,18 @@
+<!-- AGM 25/01/2024 - Contenido principal de la página del perfil del maestro -->
 <ion-content [fullscreen]="true">
-  <div class="screen-height">
 
+  <!-- AGM 01/02/2024 - Separación de la página -->
+  <div class="header-group">
+    <!-- Volver a la pagina anterior --> 
+    <ion-icon name="arrow-back-outline" class="icon-left-back" (click)="goBack()"></ion-icon>
   </div>
 
+  <!-- AGM 25/01/2024 - Imagen de perfil del maestro -->
   <ion-avatar class="image-container">
     <img alt="Silhouette of a person's head" src="https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"/>
   </ion-avatar>
 
+  <!-- AGM 25/01/2024 - Datos modificables del maestro -->
   <div class="custom-div">
     <b><h1>Carlos Daniel Medina Sahagún aaaaaa <ion-icon name="pencil-sharp"></ion-icon></h1></b> 
     <h5>Contraseña: ******** <ion-icon name="pencil-sharp"></ion-icon></h5> 

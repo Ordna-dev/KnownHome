@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-perfil',
@@ -11,8 +11,13 @@ import { IonicModule } from '@ionic/angular';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class PerfilPage implements OnInit {
+  
+  constructor(private navCtrl: NavController) { }
 
-  constructor() { }
+  // AGM 01/02/2024 - Redireccionar a la pagina anterior
+  goBack() {
+    this.navCtrl.back();
+  }
 
   ngOnInit() {
   }

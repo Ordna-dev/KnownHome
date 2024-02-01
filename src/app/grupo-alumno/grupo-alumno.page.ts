@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class GrupoAlumnoPage implements OnInit {
 
-  // AGM 31/01/2024 - Redireccionamiento al cierre de sesión
+  // AGM 31/01/2024
   constructor(private router: Router, private navCtrl: NavController) { }
 
   goBack() {

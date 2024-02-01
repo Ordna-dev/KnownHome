@@ -1,4 +1,5 @@
-// AGM 28/01/2024
+// AGM 25/01/2024
+// Estilos del div con información modificable del maestro
 .custom-div {
     margin-left: 15%;
     margin-right: 15%;
@@ -6,23 +7,35 @@
     color: lightgray;
 }
 
+// Estilos generales del contenedor de imagen
 .image-container {
     display: block;
     margin: 0 auto;
 }
 
+// Estilos específicos del avatar del maestro en la página de perfil
 ion-avatar.image-container {
     width: 150px; 
     height: 150px; 
 }
 
+// Ajustes de imagen dentro del avatar en la página de perfil
 ion-avatar.image-container img {
     width: 100%;
     height: 100%;
     object-fit: cover; 
 }
   
-.screen-height {
-    margin-top: 30%;
+// Header de la pagina
+.header-group {
+    display: flex; // Habilita Flexbox
+    justify-content: space-between; // Espacia los elementos uniformemente
+    align-items: center; // Alinea los elementos verticalmente
+    margin: 10px; // Margen opcional para dar espacio alrededor del grupo
+    margin-top: 20px; // Reduce el margen superior para una separación ligera hacia arri
 }
 
+// Ícono a la izquierda - Alineado a la izquierda superior
+.icon-left-back {
+    font-size: 40px;
+}
