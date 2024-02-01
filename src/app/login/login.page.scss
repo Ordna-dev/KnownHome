@@ -1,4 +1,5 @@
-// AGM 04-01-24
+// AGM 04-01-24 
+// Estilos del contenedor de la imagen del login
 .image-container {
   text-align: center; 
   margin-top: 25%; 
@@ -12,7 +13,7 @@
   }
 }
 
-// AGM 04-01-24
+// Estilos de la lista de inputs para el inicio de sesión
 .custom-list {
   width: 75%;
   margin: 0 auto; 
@@ -24,54 +25,9 @@
   }
 }
 
-// AGM 04-01-24
+// Estilos del botón de iniciar sesión
 .button-container {
   display: flex;
   justify-content: center; 
   margin-top: 10px; 
-}
-
-// AGM 04-01-24
-.separator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 20px 0;
-
-  .line {
-    background-color: currentColor; 
-    height: 1px;
-    flex: 1;
-    margin: 0 8px;
-  }
-
-  .separator-icon {
-    font-size: 14px; 
-  }
-}
-
-// AGM 04-01-24
-.google-button {
-  display: flex;
-  justify-content: center; 
-  margin-top: 30px;
-  margin-bottom: 30px;
-  margin-right: 5%;
-  margin-left: 5%;
-  color: white; 
-  font-size: 11px;
-
-  ion-icon {
-    margin-right: 8px;
-  }
-}
-
-// AGM 04-01-24
-.register-link {
-  text-align: center;
-  margin-top: 15px;
-  a {
-    color: var(--ion-color-primary); 
-    text-decoration: none;
-  }
 }

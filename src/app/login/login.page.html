@@ -1,18 +1,19 @@
-<!-- AGM 04-01-24 -->
+<!-- AGM 04-01-24 - Contenido principal del login -->
 <ion-content [fullscreen]="true">
 
-  <!-- MOD: El logo de la imagen cambiarlo a uno propio -->
+  <!-- AGM 04-01-24 - MOD: El logo de la imagen cambiarlo a uno propio -->
   <div class="image-container">
     <img src="assets/app/home logo.png" alt="Fondo de Login">
   </div>
   
+  <!-- AGM 04-01-24 - Inputs del inicio de sesion del alumno -->
   <ion-list class="custom-list">
-    <ion-input label="Nombre de usuario" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
+    <ion-input label="Nombre de usuario" label-placement="floating" fill="outline" placeholder="Tu nombre de usuario"></ion-input>
 
-    <ion-input label="Contraseña" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
+    <ion-input label="Contraseña" label-placement="floating" fill="outline" placeholder="Tu contraseña"></ion-input>
   </ion-list>
 
-  <!-- Botón de iniciar sesión -->
+  <!-- AGM 04-01-24 - Botón de iniciar sesión -->
   <div class="button-container">
     <ion-button expand="block" shape="round" (click)="onLogin()">Iniciar sesión</ion-button>
   </div>
