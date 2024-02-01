@@ -1,3 +1,4 @@
+<!-- AGM 30/01/2024 - Menú deslizante del alumno en el dashboard -->
 <ion-menu side="end" contentId="main-content4">
   <ion-content class="ion-padding ion-text-right"> 
     <h1>Grupos</h1>
@@ -5,14 +6,18 @@
     <h5 (click)="setFifthOpen(true)">Mis grupos</h5>
 
     <h1>Sesión</h1>
-    <h5 (click)="cerrarSesion()">Cerrar sesión</h5>
+    <h5 (click)="logOut()">Cerrar sesión</h5>
   </ion-content>
 </ion-menu>
 
+<!-- AGM 30/01/2024 - Contenido principal en el dashboard del alumno -->
 <ion-content [fullscreen]="true">
   <div id="main-content4">
+
+    <!-- AGM 30/01/2024 - Mensaje de bienvenida -->
     <b><h1 class="welcome-message">Bienvenido Carlos Daniel Medina Sahagún</h1></b>
 
+    <!-- AGM 30/01/2024 - Tarjeta de registro en grupo -->
     <ion-card class="fixed-margin">
       <ion-card-header>
         <ion-card-title>¡Registrate un grupo!</ion-card-title>
@@ -25,8 +30,10 @@
       </ion-card-content>
     </ion-card>
 
+    <!-- AGM 30/01/2024 - Mensaje de 'Mis grupos' -->
     <b><h3 class="groups-message">Mis grupos:</h3></b>
 
+    <!-- AGM 30/01/2024 - Tarjetas de los grupos del alumno -->
     <ion-card color="light" class="fixed-margin-card">
       <div class="icon-container">
         <ion-icon name="people-outline" class="icon-size"></ion-icon>
@@ -93,14 +100,18 @@
       </div>
     </ion-card>
 
-    <!-- Modal de registro en un grupo -->
+    <!-- AGM 30/01/2024 - Modal de registro en un grupo -->
     <ion-modal [isOpen]="isModalOpen">
       <ng-template>
+
+        <!-- AGM 30/01/2024 - Header del modal -->
         <ion-header>
           <ion-toolbar>
             <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setOpen(false)"></ion-icon>
           </ion-toolbar>
         </ion-header>
+
+        <!-- AGM 30/01/2024 - Contenido principal del modal -->
         <ion-content class="ion-padding ion-text-center">
           <h1>Ingresa el código del grupo</h1>
 
@@ -108,25 +119,28 @@
             <ion-input placeholder="  Código del grupo"></ion-input>
           </ion-item>
 
-          <ion-button class="btn-cancelar" (click)="setOpen(false)" color="danger">Cancelar</ion-button>
-          <ion-button class="btn-registrar" (click)="setOpen(false)" color="primary">Registrarse</ion-button>
-
+          <ion-button class="btn-cancel" (click)="setOpen(false)" color="danger">Cancelar</ion-button>
+          <ion-button class="btn-register" (click)="setOpen(false)" color="primary">Registrarse</ion-button>
         </ion-content>
       </ng-template>
     </ion-modal>
 
-    <!-- Modal de vistas de grupos -->
+    <!-- AGM 30/01/2024 - Modal de vistas de los grupos del alumno -->
     <ion-modal [isOpen]="isFifthModalOpen">
       <ng-template>
+
+        <!-- AGM 30/01/2024 - Header del modal -->
         <ion-header>
           <ion-toolbar>
             <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setFifthOpen(false); irGrupo()"></ion-icon>
           </ion-toolbar>
         </ion-header>
         
+        <!-- AGM 30/01/2024 - Contenido principal del modal -->
         <ion-content class="ion-padding ion-text-center">
           <h1 class="fixed-title-modal">Mis grupos:</h1>
           
+          <!-- AGM 30/01/2024 - Cartas en el modal -->
           <ion-card color="light" class="fixed-margin-card-modal">
             <div class="icon-container">
               <ion-icon name="people-outline" class="icon-size"></ion-icon>

@@ -1,35 +1,42 @@
-// AGM 27-01-24
+// AGM 30-01-24 
+// Estilos del mensaje de bienvenida
 .welcome-message {
     text-align: center; 
     margin-top: 10%; 
     margin-bottom: 20px;
 }
 
+// Estilos para el margen fijo de las tarjetas
 .fixed-margin {
     margin-left: 5%;
     margin-right: 5%;
 }
 
+// Estilos para el botón fijo en la tarjeta de registro
 .fixed-button {
     margin-top: 5%;
 }
 
+// Estilos para el mensaje 'Mis grupos'
 .groups-message {
     text-align: center; 
     margin-top: 5%; 
     margin-bottom: 20px;
 }
 
+// Estilos para los items de ion (usado en modal de registro)
 ion-item {
     margin-top: 30px;
 }
 
+// Estilos para los encabezados H1, excepto el primero
 ion-content h1:not(:first-child) {
     border-top: 1px solid #ccc;
     padding-top: 10px;
     margin-top: 10px;
 }
 
+// Estilos para las tarjetas de grupo con margen fijo
 .fixed-margin-card {
     display: flex;
     align-items: center; 
@@ -37,22 +44,25 @@ ion-content h1:not(:first-child) {
     margin-right: 5%;
 }
 
+// Contenedor de los iconos - Usado en toda la pagina en general
 .icon-container {
-    margin-left: 10px; // Separación hacia la izquierda
-    flex-grow: 0; // Evita que el contenedor se estire
-    flex-shrink: 0; // Evita que el contenedor se encoja
+    margin-left: 10px; 
+    flex-grow: 0; 
+    flex-shrink: 0;
 }
-  
+
+// Tamaño de los iconos - Usado en toda la pagina en general
 .icon-size {
     font-size: 40px; 
 }
   
+// Contenedor de texto - Usado en las tarjetas en general
 .text-container {
-    flex-grow: 1; // Permite que el contenedor del texto ocupe el espacio restante
-    padding-left: 2px; // Espacio entre el ícono y el texto
+    flex-grow: 1; 
+    padding-left: 2px; 
 }
 
-// Variante del contenedor de íconos con margen derecho - Usado en las tarjetas de grupos y alumnos
+// Variante del contenedor de íconos con margen derecho - Usado en las tarjetas en general
 .icon-container-v2 {
     margin-right: 10px; 
     flex-grow: 0; 
@@ -64,29 +74,30 @@ ion-content h1:not(:first-child) {
     font-size: 30px; 
 }
 
-// Margen para tarjetas dentro de modales - Usado en las tarjetas de los modales de alumnos registrados
+// Margen para tarjetas dentro de modales - Usado en las tarjetas de los modals
 .fixed-margin-card-modal {
     display: flex;
     align-items: center; 
 }
 
-// Ícono a la izquierda en modales - Usado para botones de retroceso en los modales
+// Ícono a la izquierda en modales - Usado para botones de retroceso en los modals
 .icon-modal-left {
     font-size: 40px; 
     float: left; 
     margin-left: 10px; 
 }
 
-// Botón de cancelar con margen derecho - Usado en los modales de registro
-.btn-cancelar {
+// Botón de cancelar con margen derecho - Usado en el modal de registro a grupo
+.btn-cancel {
     margin-right: 10px; 
 }
 
-// Botón de registrar con margen izquierdo - Usado en los modales de registro
-.btn-registrar {
+// Botón de registrar con margen izquierdo - Usado en el modal de registro a grupo
+.btn-register {
     margin-left: 10px; 
 }
 
+// Separador entre input y botones - Usado en el modal de registro a grupo
 .separator {
     margin-bottom: 20px;
 }
