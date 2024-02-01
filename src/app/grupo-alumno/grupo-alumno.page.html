@@ -1,4 +1,4 @@
-<!-- Menú deslizante del alumno dentro de la vista del grupo --> 
+<!-- AGM 31/01/2024 - Menú deslizante del alumno dentro de la vista del grupo --> 
 <ion-menu side="end" contentId="main-content5">
   <ion-content class="ion-padding ion-text-right"> 
     <h1>Grupo</h1>
@@ -12,20 +12,20 @@
   </ion-content>
 </ion-menu>
 
+<!-- AGM 31/01/2024 - Contenido principal del alumno dentro del grupo --> 
 <ion-content [fullscreen]="true">
   <div id="main-content5">
+
+    <!-- AGM 31/01/2024 - Header de opciones --> 
     <div class="header-group">
-      <!-- Volver a la pagina anterior --> 
       <ion-icon name="arrow-back-outline" class="icon-left-back" (click)="goBack()"></ion-icon>
-      <!-- Mensaje de bienvenida al maestro --> 
       <b><h3 class="welcome-message">Grupo 4A</h3></b>
-      <!-- Tomar una fotografía --> 
       <ion-icon name="camera" class="icon-right-camera"></ion-icon>
     </div>
 
-    <!-- Sección del profesor -->
     <b><h3 class="ion-text-center">Profesor:</h3></b>
 
+    <!-- AGM 31/01/2024 - Tarjeta del profesor -->
     <ion-card color="light" class="fixed-margin-card-teacher">
       <div class="icon-container">
         <ion-icon name="images" color="success" class="icon-size"></ion-icon>
@@ -42,7 +42,7 @@
       </div>
     </ion-card>
 
-    <!-- Sección de los alumnos -->
+    <!-- AGM 31/01/2024 - Tarjetas de los alumnos -->
     <b><h3 class="ion-text-center">Alumnos:</h3></b>
     
     <ion-card color="light" class="fixed-margin-card-teacher">
@@ -109,7 +109,7 @@
       </div>
     </ion-card>
 
-    <!-- Modal para mostrar los alumnos registrados en el grupo -->
+    <!-- AGM 31/01/2024 - Modal para mostrar los alumnos registrados en el grupo -->
     <ion-modal [isOpen]="isFourthModalOpen">
       <ng-template>
         <ion-header>
@@ -159,7 +159,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Modal para visualizar las fotografías no autorizadas y autorizadas de x alumno -->
+    <!-- AGM 31/01/2024 - Modal para visualizar las fotografías autorizadas de x alumno -->
     <ion-modal [isOpen]="isFifthModalOpen">
       <ng-template>
         <ion-header>
@@ -198,7 +198,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Modal para visualizar las fotografías del profesor -->
+    <!-- AGM 31/01/2024 - Modal para visualizar las fotografías del profesor -->
     <ion-modal [isOpen]="isSixthModalOpen">
       <ng-template>
         <ion-header>
@@ -236,7 +236,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Modal para visualizar la fotografía en específico -->
+    <!-- AGM 31/01/2024 - Modal para visualizar la fotografía en específico -->
     <ion-modal [isOpen]="isSeventhModalOpen">
       <ng-template>
         <ion-header>

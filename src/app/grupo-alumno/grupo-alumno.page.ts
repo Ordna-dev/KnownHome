@@ -16,10 +16,12 @@ export class GrupoAlumnoPage implements OnInit {
   // AGM 31/01/2024
   constructor(private router: Router, private navCtrl: NavController) { }
 
+  // AGM 31/01/2024 - Volver a la pagina anterior
   goBack() {
     this.navCtrl.back();
   }
 
+  // AGM 31/01/2024 - Cerrar sesion
   redirectToLogin() {
     this.router.navigateByUrl('/login');
   }

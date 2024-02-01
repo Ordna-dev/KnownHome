@@ -28,11 +28,11 @@ ion-avatar.image-container img {
   
 // Header de la pagina
 .header-group {
-    display: flex; // Habilita Flexbox
-    justify-content: space-between; // Espacia los elementos uniformemente
-    align-items: center; // Alinea los elementos verticalmente
-    margin: 10px; // Margen opcional para dar espacio alrededor del grupo
-    margin-top: 20px; // Reduce el margen superior para una separación ligera hacia arri
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin: 10px; 
+    margin-top: 20px; 
 }
 
 // Ícono a la izquierda - Alineado a la izquierda superior
