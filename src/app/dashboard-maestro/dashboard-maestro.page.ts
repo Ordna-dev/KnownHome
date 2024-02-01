@@ -38,6 +38,8 @@ export class DashboardMaestroPage implements OnInit {
   isSecondModalOpen = false;
   isThirdModalOpen = false; 
   isFourthModalOpen = false; 
+  isFifthModalOpen = false;
+  isSixthModalOpen = false;
 
   //AGM 30/01/2024 - Declarar la variable del archivo txt
   fileName: string | null = null;
@@ -86,6 +88,16 @@ export class DashboardMaestroPage implements OnInit {
     this.isFourthModalOpen = isOpen; 
   }
 
+  //AGM 31/01/2024 - Abrir o cerrar el quinto modal
+  setFifthOpen(isOpen: boolean) {
+    this.isFifthModalOpen = isOpen; 
+  }
+
+  //AGM 31/01/2024 - Abrir o cerrar el quinto modal
+  setSixthOpen(isOpen: boolean) {
+    this.isSixthModalOpen = isOpen; 
+  }
+
   //AGM 30/01/2024 - Cerrar el segundo modal cuando se abre el tercer modal
   handleDocumentIconClick() {
     this.setSecondOpen(false); 
@@ -103,6 +115,54 @@ export class DashboardMaestroPage implements OnInit {
     } else {
       this.fileName = null; // Restablece el nombre si no hay archivo
     }
+  }
+
+  // AGM 31/01/2024 - Botones de la alerta de eliminación del grupo
+  public alertButtonsDelete = [
+    {
+      text: 'No',
+      handler: () => {
+        // Acción a realizar cuando se presione "No".
+      }
+    },
+    {
+      text: 'Sí',
+      handler: () => {
+         // Muestra la alerta de grupo eliminado
+      }
+    },
+  ];
+
+  // AGM 31/01/2024 - Botones de la alerta de modificación del grupo
+  public alertButtonsEdit = [
+    {
+      text: 'No',
+      handler: () => {
+        // Acción a realizar cuando se presione "No".
+      }
+    },
+    {
+      text: 'Sí',
+      handler: () => {
+        this.presentChangesMadeAlert();
+      }
+    },
+  ];
+
+  async presentChangesMadeAlert() {
+    const alert = await this.alertController.create({
+      header: 'Los cambios se han hecho en el grupo',
+      buttons: [
+        {
+          text: 'Aceptar',
+          handler: () => {
+            window.location.reload(); // Recarga la página
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
   }
 
   ngOnInit() {

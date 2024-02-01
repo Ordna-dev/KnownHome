@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-alumno',
@@ -12,7 +13,19 @@ import { IonicModule } from '@ionic/angular';
 })
 export class DashboardAlumnoPage implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
+
+  irGrupo() {
+    // Acciones como limpiar datos de sesión
+    this.router.navigate(['/grupo-alumno']);
+  }
+
+  isFifthModalOpen = false;
+
+  //AGM 31/01/2024 - Abrir o cerrar el quinto modal
+  setFifthOpen(isOpen: boolean) {
+    this.isFifthModalOpen = isOpen; 
+  }
 
   //AGM 30/01/2024 - Pintar de colores aleatorios las cards
   /*colores = ['primary', 'secondary', 'tertiary', 'success', 'warning', 'danger', 'light', 'medium', 'dark'];

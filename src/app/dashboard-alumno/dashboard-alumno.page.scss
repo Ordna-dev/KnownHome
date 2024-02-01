@@ -51,3 +51,28 @@ ion-content h1:not(:first-child) {
     flex-grow: 1; // Permite que el contenedor del texto ocupe el espacio restante
     padding-left: 2px; // Espacio entre el ícono y el texto
 }
+
+// Variante del contenedor de íconos con margen derecho - Usado en las tarjetas de grupos y alumnos
+.icon-container-v2 {
+    margin-right: 10px; 
+    flex-grow: 0; 
+    flex-shrink: 0; 
+}
+
+// Tamaño de ícono variante 2 - Usado en las tarjetas de la sección de grupos
+.icon-size-v2 {
+    font-size: 30px; 
+}
+
+// Margen para tarjetas dentro de modales - Usado en las tarjetas de los modales de alumnos registrados
+.fixed-margin-card-modal {
+    display: flex;
+    align-items: center; 
+}
+
+// Ícono a la izquierda en modales - Usado para botones de retroceso en los modales
+.icon-modal-left {
+    font-size: 40px; 
+    float: left; 
+    margin-left: 10px; 
+}
