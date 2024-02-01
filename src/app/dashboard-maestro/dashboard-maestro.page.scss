@@ -1,6 +1,6 @@
 // AGM 28-01-24
-// Estilos Generales de la Aplicación
 
+// Estilos Generales de la Aplicación
 // Mensaje de bienvenida - Utilizado en el encabezado principal de bienvenida
 .welcome-message {
     text-align: center; 
@@ -32,6 +32,7 @@ ion-item {
     margin-bottom: 20px;
 }
 
+// Menú deslizante y modals
 // Cabecera con alineación específica - Utilizado en el menú deslizante y modales
 ion-header {
     display: flex;
@@ -134,12 +135,12 @@ ion-content h1:not(:first-child) {
   
     // Selecciona el primer ícono (editar) y le añade un margen inferior
     ion-icon:first-child {
-      margin-bottom: 12px; // Ajusta este valor según sea necesario
+      margin-bottom: 12px; 
     }
   
     // Selecciona el segundo ícono (borrar) y le añade un margen superior
     ion-icon:last-child {
-      margin-top: 12px; // Ajusta este valor según sea necesario
+      margin-top: 12px; 
     }
 }
   

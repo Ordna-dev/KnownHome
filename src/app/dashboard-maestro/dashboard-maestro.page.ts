@@ -14,10 +14,10 @@ import { AlertController } from '@ionic/angular/standalone';
 })
 export class DashboardMaestroPage implements OnInit {
 
-  //AGM 30/01/2024 - Constructor de alertas y routers
+  // AGM 30/01/2024 - Constructor de alertas y routers
   constructor(private alertController: AlertController, private router: Router) {}
 
-  //AGM 30/01/2024 - Redireccionamiento a perfil, grupo y login (Logout)
+  // AGM 30/01/2024 - Redireccionamiento a perfil, grupo y login (Logout)
   irAPerfil() {
     // Lógica adicional antes de la navegación
     this.router.navigate(['/perfil']);
@@ -33,7 +33,7 @@ export class DashboardMaestroPage implements OnInit {
     this.router.navigate(['/grupo-maestro']);
   }
 
-  //AGM 30/01/2024 - Declaración de variables bandera para cerrar o abrir los modal
+  // AGM 30/01/2024 - Declaración de variables bandera para cerrar o abrir los modal
   isModalOpen = false;
   isSecondModalOpen = false;
   isThirdModalOpen = false; 
@@ -41,10 +41,10 @@ export class DashboardMaestroPage implements OnInit {
   isFifthModalOpen = false;
   isSixthModalOpen = false;
 
-  //AGM 30/01/2024 - Declarar la variable del archivo txt
+  // AGM 30/01/2024 - Declarar la variable del archivo txt
   fileName: string | null = null;
 
-  //AGM 30/01/2024 - Declarar la variable de alerta de ayuda
+  // AGM 30/01/2024 - Declarar la variable de alerta de ayuda
   helpMessage: string = `Nombre usuario, Contraseña,
   Alejandro Guerrero, 12345,
   Carlos Daniel Medina, 125,`;
@@ -58,42 +58,33 @@ export class DashboardMaestroPage implements OnInit {
     });
     await alert.present();
   }
-
-  //AGM 30/01/2024 - Pintar de colores aleatorios las cards
-  /*colores = ['primary', 'secondary', 'tertiary', 'success', 'warning', 'danger', 'light', 'medium', 'dark'];
-
-  getColorAleatorio(): string {
-    const indiceAleatorio = Math.floor(Math.random() * this.colores.length);
-    return this.colores[indiceAleatorio];
-  }*/
-
   
-  //AGM 30/01/2024 - Abrir o cerrar el primer modal
+  // AGM 30/01/2024 - Abrir o cerrar el primer modal
   setOpen(isOpen: boolean) {
     this.isModalOpen = isOpen;
   }
 
-  //AGM 30/01/2024 - Abrir o cerrar el segundo modal
+  // AGM 30/01/2024 - Abrir o cerrar el segundo modal
   setSecondOpen(isOpen: boolean) {
     this.isSecondModalOpen = isOpen;
   }
 
-  //AGM 30/01/2024 - Abrir o cerrar el tercer modal
+  // AGM 30/01/2024 - Abrir o cerrar el tercer modal
   setThirdOpen(isOpen: boolean) {
     this.isThirdModalOpen = isOpen; 
   }
 
-  //AGM 30/01/2024 - Abrir o cerrar el cuarto modal
+  // AGM 30/01/2024 - Abrir o cerrar el cuarto modal
   setFourthOpen(isOpen: boolean) {
     this.isFourthModalOpen = isOpen; 
   }
 
-  //AGM 31/01/2024 - Abrir o cerrar el quinto modal
+  // AGM 31/01/2024 - Abrir o cerrar el quinto modal
   setFifthOpen(isOpen: boolean) {
     this.isFifthModalOpen = isOpen; 
   }
 
-  //AGM 31/01/2024 - Abrir o cerrar el quinto modal
+  // AGM 31/01/2024 - Abrir o cerrar el sexto modal
   setSixthOpen(isOpen: boolean) {
     this.isSixthModalOpen = isOpen; 
   }
@@ -110,10 +101,10 @@ export class DashboardMaestroPage implements OnInit {
     const files = element.files;
     if (files && files.length > 0) {
       const file = files[0];
-      this.fileName = file.name; // Establece el nombre del archivo
-      // Procesa el archivo .txt aquí
+      this.fileName = file.name; 
+      // Procesar el archivo .txt aquí
     } else {
-      this.fileName = null; // Restablece el nombre si no hay archivo
+      this.fileName = null; 
     }
   }
 
@@ -156,7 +147,7 @@ export class DashboardMaestroPage implements OnInit {
         {
           text: 'Aceptar',
           handler: () => {
-            window.location.reload(); // Recarga la página
+            window.location.reload(); 
           }
         }
       ]

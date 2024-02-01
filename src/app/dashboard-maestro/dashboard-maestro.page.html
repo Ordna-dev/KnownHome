@@ -1,4 +1,4 @@
-<!-- Menú deslizante del maestro --> 
+<!-- AGM 30/01/2024 - Menú deslizante del maestro --> 
 <ion-menu side="end" contentId="main-content2">
   <ion-header>
     <ion-avatar class="avatar-right">
@@ -25,13 +25,13 @@
   </ion-content>
 </ion-menu>
 
-<!-- Contenido principal --> 
+<!-- AGM 30/01/2024 - Contenido principal --> 
 <ion-content [fullscreen]="true">
   <div id="main-content2">
-    <!-- Mensaje de bienvenida al maestro --> 
+    <!-- AGM 30/01/2024 - Mensaje de bienvenida al maestro --> 
     <b><h1 class="welcome-message">Bienvenido Carlos Daniel Medina Sahagún</h1></b>
 
-    <!-- Recuadro de inscripcion al grupo --> 
+    <!-- AGM 30/01/2024 - Recuadro de inscripcion al grupo --> 
     <ion-card class="fixed-margin">
       <ion-card-header>
         <ion-card-title>¡Registra un grupo!</ion-card-title>
@@ -43,9 +43,10 @@
         <ion-button class="fixed-button" (click)="setOpen(true)">Registrar a un grupo</ion-button>
       </ion-card-content>
     </ion-card>
-
+    
     <b><h3 class="groups-message">Tus grupos:</h3></b>
 
+    <!-- AGM 30/01/2024 - Cartas de los grupos creados por el maestro --> 
     <ion-card color="light" class="fixed-margin-card">
       <div class="icon-container">
         <ion-icon name="people-outline" class="icon-size"></ion-icon>
@@ -134,7 +135,7 @@
       </div>
     </ion-card>
 
-    <!-- Modal para registrar un grupo -->
+    <!-- AGM 30/01/2024 - Modal para registrar un grupo -->
     <ion-modal [isOpen]="isModalOpen">
       <ng-template>
         <ion-header>
@@ -160,7 +161,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Modal para registrar un alumno al sistema -->
+    <!-- AGM 30/01/2024 - Modal para registrar un alumno al sistema -->
     <ion-modal [isOpen]="isSecondModalOpen">
       <ng-template>
         <ion-header>
@@ -186,13 +187,13 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Modal para registrar alumnos en el sistema con txt -->
+    <!-- AGM 30/01/2024 - Modal para registrar alumnos en el sistema con txt -->
     <ion-modal [isOpen]="isThirdModalOpen">
       <ng-template>
         <ion-header>
           <ion-toolbar>
             <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setThirdOpen(false)"></ion-icon>
-            <!-- Falta desarrollar y definir qué es lo que vendrá en el recuadro de ayuda -->
+            <!-- AGM 30/01/2024 - Falta desarrollar y definir qué es lo que vendrá en el recuadro de ayuda -->
             <ion-icon name="help-circle-outline" class="icon-modal-right" (click)="helpAlert()"></ion-icon>
           </ion-toolbar>
         </ion-header>
@@ -200,7 +201,7 @@
         <ion-content class="ion-padding ion-text-center">
           <h1>Registro de alumnos mediante un archivo de texto (.txt)</h1>
           
-          <!-- Falta ver cómo se manejaran los delimitadores entre cada registro del alumno -->
+          <!-- AGM 30/01/2024 - Falta ver cómo se manejaran los delimitadores entre cada registro del alumno -->
           <ion-item class="separator">
             <input type="file" #fileInput accept=".txt" style="display: none;" (change)="handleFileInput($event)">
             <ion-button color="medium" (click)="fileInput.click()">{{ fileName || 'Seleccionar archivo .txt' }}</ion-button>
@@ -212,7 +213,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Modal para mostrar los alumnos registrados en el sistema -->
+    <!-- AGM 30/01/2024 - Modal para mostrar los alumnos registrados en el sistema -->
     <ion-modal [isOpen]="isFourthModalOpen">
       <ng-template>
         <ion-header>
@@ -275,7 +276,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Modal para mostrar los grupos registrados por el maestro en el sistema -->
+    <!-- AGM 30/01/2024 - Modal para mostrar los grupos registrados por el maestro en el sistema -->
     <ion-modal [isOpen]="isFifthModalOpen">
       <ng-template>
         <ion-header>
@@ -369,7 +370,7 @@
       </ng-template>
     </ion-modal>
 
-    <!-- Modal para registrar un alumno al sistema -->
+    <!-- AGM 30/01/2024 - Modal para registrar un alumno al sistema -->
     <ion-modal [isOpen]="isSixthModalOpen">
       <ng-template>
         <ion-header>
