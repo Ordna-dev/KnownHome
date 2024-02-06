@@ -8,13 +8,24 @@
   
   <!-- AGM 04-01-24 - Inputs del inicio de sesion del alumno -->
   <ion-list class="custom-list">
-    <ion-input label="Nombre de usuario" label-placement="floating" fill="outline" placeholder="Tu nombre de usuario"></ion-input>
+    <ion-input [(ngModel)]="username" label="Nombre de usuario" label-placement="floating" fill="outline" placeholder="Tu nombre de usuario"></ion-input>
 
-    <ion-input label="Contraseña" label-placement="floating" fill="outline" placeholder="Tu contraseña"></ion-input>
+    <ion-input [(ngModel)]="password" label="Contraseña" label-placement="floating" fill="outline" placeholder="Tu contraseña"></ion-input>
   </ion-list>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="errorMessage" class="error-message ion-text-center">
+    <ion-text color="danger">
+      {{ errorMessage }}
+    </ion-text>
+  </div>
 
   <!-- AGM 04-01-24 - Botón de iniciar sesión -->
   <div class="button-container">
     <ion-button expand="block" shape="round" (click)="onLogin()">Iniciar sesión</ion-button>
+  </div>
+
+  <div class="button-container">
+    <ion-button expand="block" shape="round" (click)="testLogout()">Probar Logout</ion-button>
   </div>
 </ion-content>
