@@ -30,7 +30,9 @@ export class LoginPage implements OnInit {
   }
 
   testLogout() {
-    fetch('http://localhost:5000/auth/logout')
+    fetch('http://localhost:5000/auth/logout', {
+      credentials: 'include'
+    })
       .then(response => response.text()) // Obtener respuesta como texto
       .then(html => {
         console.log(html); // Mostrar la respuesta HTML en consola

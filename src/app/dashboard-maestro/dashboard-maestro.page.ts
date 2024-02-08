@@ -24,7 +24,16 @@ export class DashboardMaestroPage implements OnInit {
   }
   
   cerrarSesion() {
-    // Acciones como limpiar datos de sesión
+    fetch('http://localhost:5000/auth/logout', {
+      credentials: 'include'
+    })
+      .then(response => response.text()) // Obtener respuesta como texto
+      .then(html => {
+        console.log(html); // Mostrar la respuesta HTML en consola
+      })
+      .catch(error => {
+        console.error('Error:', error);
+    });
     this.router.navigate(['/login']);
   }
 
@@ -156,7 +165,11 @@ export class DashboardMaestroPage implements OnInit {
     await alert.present();
   }
 
-  getPosts() {
+  // AGM 08/02/2024 - Obtener grupos del maestro
+  grupos: any[] = []; 
+  username: string = '';
+
+  getGrupos() {
     fetch('http://localhost:5000/maestro', {
       credentials: 'include'  
     })
@@ -166,13 +179,57 @@ export class DashboardMaestroPage implements OnInit {
       }
       return response.json();
     })
-    .then((json) => console.log(json))
-    .catch((error) => console.error('Error al obtener los posts:', error));
+    .then((json) => {
+      console.log(json);
+      this.grupos = json.grupos;
+      this.username = json.username;
+    })
+    .catch((error) => console.error('Error al obtener los grupos:', error));
   }
+
+  // AGM 08/02/2024 - Crear un grupo (maestro)
+  nombreGrupo: string = '';
+  descripcionGrupo: string = '';
+  message: string = '';
+
+  crearGrupo() {
+    const formData = new FormData();
+    formData.append('nombre', this.nombreGrupo);
+    formData.append('descripcion', this.descripcionGrupo);
   
-
-  ngOnInit() {
-    this.getPosts();
+    fetch('http://localhost:5000/maestro/create-group', {
+      method: 'POST',
+      body: formData,
+      credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(async data => {
+      if (!data.error) {
+        this.message = '';
+        const alert = await this.alertController.create({
+          header: 'Grupo Creado',
+          message: `El código de acceso del grupo es: ${data.codigo_acceso}`,
+          buttons: [{
+            text: 'OK',
+            handler: () => {
+              this.setOpen(false); 
+              window.location.reload();
+            }
+          }]
+        });
+        
+        await alert.present();
+      } else {
+        this.message = data.message;
+      }
+    })
+    .catch(error => {
+      this.message = 'Error al conectar con el servidor';
+    });
   }
 
+  // AGM 08/02/2024 - Al iniciar la página, automáticamente obtiene los grupos del maestro
+  ngOnInit() {
+    this.getGrupos();
+  }
 }
