@@ -44,32 +44,46 @@ export class LoginPage implements OnInit {
   onLogin() {
     if (!this.username || !this.password) {
       this.errorMessage = 'Se requieren ambos campos';
+      console.log('Los campos están vacíos'); // Añadir console.log aquí
       return;
     }
-
-    // Realizar la solicitud PUT para el inicio de sesión
+  
+    // Codificar los datos en formato x-www-form-urlencoded
+    const formData = new URLSearchParams();
+    formData.append('username', this.username);
+    formData.append('password', this.password);
+  
+    console.log('Enviando solicitud de inicio de sesión', this.username); // Añadir console.log para los datos enviados
+  
     fetch('http://localhost:5000/auth/maestro/login', {
-      method: 'PUT',
-      body: JSON.stringify({
-        username: this.username,
-        password: this.password,
-      }),
+      method: 'POST',
+      body: formData,
+      credentials: 'include', // Importante para enviar/recibir cookies
       headers: {
-        'Content-type': 'application/json; charset=UTF-8',
+        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
       },
     })
-    .then(response => response.json())
+    .then(response => {
+      console.log('Respuesta recibida', response); // Añadir console.log para la respuesta HTTP
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then(data => {
-      if (data.error) {
-        this.errorMessage = data.message;
+      console.log('Datos de respuesta', data); // Añadir console.log para la respuesta JSON
+      if (data.error !== false) {
+        this.errorMessage = data.message; // Mostrar mensaje de error
       } else {
-        this.router.navigate(['/dashboard-maestro']); // Redirige al dashboard del maestro
+        // Si no hay clave "error", asumir que el inicio de sesión fue exitoso
+        console.log('Inicio de sesión exitoso, redirigiendo...'); // Añadir console.log para un inicio de sesión exitoso
+        console.log(data);
+        this.router.navigate(['/dashboard-maestro'], { state: { userInfo: data } });
       }
     })
     .catch(error => {
-      console.error('Error:', error);
+      console.error('Error en el proceso de inicio de sesión:', error); // Añadir console.log para cualquier error capturado
       this.errorMessage = 'Error al conectar con el servidor';
     });
-  }
-  
+  }  
 }

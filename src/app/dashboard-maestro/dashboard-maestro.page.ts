@@ -156,7 +156,23 @@ export class DashboardMaestroPage implements OnInit {
     await alert.present();
   }
 
+  getPosts() {
+    fetch('http://localhost:5000/maestro', {
+      credentials: 'include'  
+    })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((json) => console.log(json))
+    .catch((error) => console.error('Error al obtener los posts:', error));
+  }
+  
+
   ngOnInit() {
+    this.getPosts();
   }
 
 }
