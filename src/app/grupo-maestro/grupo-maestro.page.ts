@@ -69,30 +69,95 @@ export class GrupoMaestroPage implements OnInit {
   }
   
   // AGM 31/01/2024 - Botones de las alertas de modificaciones
-  public alertButtonsEdit = [
-    {
-      text: 'No',
-      handler: () => {
-        // Acción a realizar cuando se presione "No".
-      }
-    },
-    {
-      text: 'Sí',
-      handler: () => {
-        this.setSecondOpen(false);
-        this.presentChangesMadeAlert(); 
-      }
-    },
-  ];
-
-  async presentChangesMadeAlert() {
+  async showConfirmAlert() {
     const alert = await this.alertController.create({
-      header: 'Los cambios se han hecho en el grupo',
+      header: '¿Está seguro de realizar las modificaciones?',
       buttons: [
         {
-          text: 'Aceptar',
+          text: 'No',
+          role: 'cancel',
           handler: () => {
-            window.location.reload();
+            console.log('Modificación cancelada.');
+          }
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            console.log('Procediendo con la modificación del grupo.');
+            this.updateGroup();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  updateGroup() {
+    let formData = new FormData();
+    formData.append('nombre', this.grupo.nombre);
+    formData.append('descripcion', this.grupo.descripcion);
+  
+    fetch(`http://localhost:5000/maestro/update-group/${this.grupo.id}`, {
+        method: 'PUT',
+        body: formData,
+        credentials: 'include',
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => Promise.reject(data));
+        }
+        return response.json();
+    })
+    .then(async data => {
+        console.log('Group updated successfully:', data);
+        this.setSecondOpen(false); 
+        
+        const alert = await this.alertController.create({
+            header: 'Cambios realizados',
+            message: 'Los cambios se han efectuado en el grupo. Se le va a redirigir al dashboard',
+            buttons: [{
+                text: 'Aceptar',
+                handler: () => {
+                    this.router.navigateByUrl('/dashboard-maestro', {skipLocationChange: true}).then(()=>
+                    this.router.navigate(['/dashboard-maestro', { timestamp: Date.now() }]));
+                }
+            }]
+        });
+  
+        await alert.present();
+    })
+    .catch(async error => {
+        console.error('Error updating group:', error);
+        // Aquí cambiamos para mostrar el mensaje de error como una alerta
+        const alert = await this.alertController.create({
+            header: 'Error',
+            message: error.mensaje || 'Error al actualizar el grupo.',
+            buttons: ['OK']
+        });
+  
+        await alert.present();
+    }); 
+  }
+  
+
+  // AGM 31/01/2024 - Botones de la alerta de eliminación del grupo
+  async confirmGroupDeletion(groupId: string) {
+    const alert = await this.alertController.create({
+      header: '¿Está seguro de eliminar el grupo?',
+      message: 'Una vez eliminado, no se puede volver a recuperar.',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            console.log('Eliminación cancelada');
+          }
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            this.deleteGroup(groupId);
           }
         }
       ]
@@ -101,41 +166,46 @@ export class GrupoMaestroPage implements OnInit {
     await alert.present();
   }
 
-  // AGM 31/01/2024 - Botones de la alerta de eliminación del grupo
-  public alertButtonsDelete = [
-    {
-      text: 'No',
-      handler: () => {
-        // Acción a realizar cuando se presione "No".
+  // AGM 12/02/2024 - Petición DELETE del grupo
+  async deleteGroup(groupId: string) {
+    fetch(`http://localhost:5000/maestro/delete-group/${groupId}`, {
+      method: 'DELETE',
+      credentials: 'include'
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    },
-    {
-      text: 'Sí',
-      handler: () => {
-        this.presentGroupDeletedAlert(); 
-      }
-    },
-  ];
-  
-  // AGM 31/01/2024 - Bug a solucionar - Hay un bug con los menus cuando se redirecciona (no estoy seguro del porque)
+      return response.json();
+    })
+    .then(async data => {
+      console.log(data);
+      await this.presentGroupDeletedAlert();
+    })
+    .catch(error => {
+      console.error('Error al eliminar el grupo:', error);
+    });
+  }
+
+  // AGM 31/01/2024 - BUG a solucionar - Hay un bug con los menus cuando se redirecciona (no estoy seguro del porque)
   async presentGroupDeletedAlert() {
     const alert = await this.alertController.create({
       header: 'Se ha eliminado el grupo',
-      message: 'Usted será redireccionado al dashboard',
-      buttons: [
-        {
-          text: 'Aceptar',
-          handler: () => {
-            window.location.reload(); //this.router.navigateByUrl('/dashboard-maestro'); // Redirige al dashboard
-          }
+      message: 'Usted será redireccionado al dashboard.',
+      buttons: [{
+        text: 'Aceptar',
+        handler: () => {
+          this.router.navigateByUrl('/dashboard-maestro', {skipLocationChange: true}).then(()=>
+          this.router.navigate(['/dashboard-maestro', { timestamp: Date.now() }]));
         }
-      ]
+      }]
     });
-  
+
     await alert.present();
   }
+  
 
-  // AGM 31/01/2024 - Alerta de eliminación del alumno de un grupo
+  // AGM 31/01/2024 - Eliminación de alumno - Alerta de eliminación del alumno de un grupo
   public alertButtonsDeleteStudent = [
     {
       text: 'No',
@@ -151,6 +221,7 @@ export class GrupoMaestroPage implements OnInit {
     },
   ];
 
+  // AGM 11/02/2024 Lógica al iniciar la página
   grupo: any = null;
 
   ngOnInit() {
@@ -159,12 +230,9 @@ export class GrupoMaestroPage implements OnInit {
 
     if (this.grupo) {
         console.log('Datos del grupo:', this.grupo);
-        this.cdr.detectChanges(); // Forzar la detección de cambios
+        this.cdr.detectChanges(); 
     } else {
         console.error('No se pasaron datos del grupo.');
-        // Manejar el caso en que no hay datos del grupo (opcional)
     }
   }
-
-
 }
