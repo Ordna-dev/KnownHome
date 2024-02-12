@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, NavController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-grupo-maestro',
@@ -14,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class GrupoMaestroPage implements OnInit {
 
-  constructor(private alertController: AlertController, private router: Router, private navCtrl: NavController) { }
+  constructor(private alertController: AlertController, private router: Router, private route: ActivatedRoute, private cdr: ChangeDetectorRef, private navCtrl: NavController) { }
 
   // AGM 31/01/2024 - Redireccionamiento a perfil, cierre de sesion o dashboard
   redirectToProfile() {
@@ -150,7 +151,20 @@ export class GrupoMaestroPage implements OnInit {
     },
   ];
 
+  grupo: any = null;
+
   ngOnInit() {
+    const currentNavigation = this.router.getCurrentNavigation();
+    this.grupo = currentNavigation?.extras.state ? currentNavigation.extras.state['grupo'] : null;
+
+    if (this.grupo) {
+        console.log('Datos del grupo:', this.grupo);
+        this.cdr.detectChanges(); // Forzar la detección de cambios
+    } else {
+        console.error('No se pasaron datos del grupo.');
+        // Manejar el caso en que no hay datos del grupo (opcional)
+    }
   }
+
 
 }

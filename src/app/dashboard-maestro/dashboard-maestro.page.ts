@@ -37,10 +37,36 @@ export class DashboardMaestroPage implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  irGrupo(groupId: number) {
+    fetch(`http://localhost:5000/maestro/group/${groupId}`, {
+        method: 'GET',
+        credentials: 'include' // Si tu API requiere autenticación
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.error) {
+            console.error('Error:', data.mensaje);
+        } else {
+            console.log('Grupo obtenido con éxito:', data.grupo);
+            // Redirige y pasa los datos del grupo a la nueva página
+            this.router.navigate(['/grupo-maestro'], { state: { grupo: data.grupo } });
+        }
+    })
+    .catch(error => {
+        console.error('Error al obtener el grupo:', error.message);
+    });
+  }
+
+  /* 
   irGrupo() {
-    // Acciones como limpiar datos de sesión
     this.router.navigate(['/grupo-maestro']);
   }
+  */
 
   // AGM 30/01/2024 - Declaración de variables bandera para cerrar o abrir los modal
   isModalOpen = false;
@@ -133,22 +159,6 @@ export class DashboardMaestroPage implements OnInit {
     },
   ];
 
-  // AGM 31/01/2024 - Botones de la alerta de modificación del grupo
-  public alertButtonsEdit = [
-    {
-      text: 'No',
-      handler: () => {
-        // Acción a realizar cuando se presione "No".
-      }
-    },
-    {
-      text: 'Sí',
-      handler: () => {
-        this.presentChangesMadeAlert();
-      }
-    },
-  ];
-
   async presentChangesMadeAlert() {
     const alert = await this.alertController.create({
       header: 'Los cambios se han hecho en el grupo',
@@ -213,7 +223,7 @@ export class DashboardMaestroPage implements OnInit {
             text: 'OK',
             handler: () => {
               this.setOpen(false); 
-              window.location.reload();
+              this.getGrupos();
             }
           }]
         });
@@ -226,6 +236,139 @@ export class DashboardMaestroPage implements OnInit {
     .catch(error => {
       this.message = 'Error al conectar con el servidor';
     });
+  }
+
+  // AGM 11/02/2024 - Eliminar x grupo
+  async confirmDeletion(groupId: number) {
+    const alert = await this.alertController.create({
+      header: '¿Estas seguro de eliminar el grupo? Una vez eliminado, no se puede volver a recuperar.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            this.deleteGroup(groupId);
+          },
+        },
+      ],
+    });
+  
+    await alert.present();
+  }
+  
+  async deleteGroup(groupId: number) {
+    fetch(`http://localhost:5000/maestro/delete-group/${groupId}`, {
+      method: 'DELETE',
+      credentials: 'include'
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(async data => {
+      console.log('Group deleted successfully:', data);
+      this.setFifthOpen(false);
+  
+      const alert = await this.alertController.create({
+        header: 'Grupo eliminado',
+        message: 'El grupo ha sido eliminado.',
+        buttons: [{
+          text: 'Aceptar',
+          handler: () => {
+            this.getGrupos();
+          }
+        }]
+      });
+  
+      await alert.present();
+    })
+    .catch(error => {
+      console.error('Error al eliminar el grupo:', error);
+    });
+  }  
+
+  // AGM 11/02/2024 - Editar grupo
+  errorMessage: string = '';
+  grupoSeleccionado: any = { id: null, nombre: '', descripcion: '' };
+
+  // Función para abrir el modal de edición y preparar los datos del grupo seleccionado
+  prepareEditGroup(groupId: number) {
+    const grupo = this.grupos.find(g => g.id === groupId);
+    if(grupo) {
+      this.grupoSeleccionado = {...grupo}; 
+      console.log('Editing group with ID:', this.grupoSeleccionado.id); 
+      this.setSixthOpen(true); 
+    }
+  }
+
+  async showEditConfirmation() {
+    const alert = await this.alertController.create({
+      header: '¿Está seguro de modificar las propiedades del grupo?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            console.log('Modificación cancelada');
+          }
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            this.updateGroup();
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+  
+
+  updateGroup() {
+    let formData = new FormData();
+    formData.append('nombre', this.grupoSeleccionado.nombre);
+    formData.append('descripcion', this.grupoSeleccionado.descripcion);
+
+    fetch(`http://localhost:5000/maestro/update-group/${this.grupoSeleccionado.id}`, {
+        method: 'PUT',
+        body: formData,
+        credentials: 'include',
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => Promise.reject(data));
+        }
+        return response.json();
+    })
+    .then(async data => {
+        console.log('Group updated successfully:', data);
+        
+        const alert = await this.alertController.create({
+            header: 'Cambios realizados',
+            message: 'Los cambios se han efectuado en el grupo.',
+            buttons: [{
+                text: 'Aceptar',
+                handler: () => {
+                    this.setSixthOpen(false); 
+                    this.errorMessage = ''; 
+                    this.getGrupos();
+                }
+            }]
+        });
+
+        await alert.present();
+    })
+    .catch(async error => {
+        console.error('Error updating group:', error);
+        this.errorMessage = error.mensaje || 'Error al actualizar el grupo.';
+    }); 
   }
 
   // AGM 08/02/2024 - Al iniciar la página, automáticamente obtiene los grupos del maestro

@@ -36,7 +36,7 @@
     <div class="header-group">
       <ion-icon name="arrow-back-outline" class="icon-left-back" (click)="goBack()"></ion-icon>
 
-      <b><h3 class="welcome-message">Grupo 4A</h3></b>
+      <b><h3 class="welcome-message">{{ grupo?.nombre || 'Nombre de Grupo no Disponible' }}</h3></b>
 
       <ion-icon name="camera" class="icon-right-camera"></ion-icon>
     </div>

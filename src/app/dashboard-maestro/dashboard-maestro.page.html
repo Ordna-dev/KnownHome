@@ -65,7 +65,7 @@
       </div>
     
       <div class="icon-container-v2">
-        <ion-icon name="chevron-forward-outline" class="icon-size-v2" (click)="irGrupo()"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-size-v2" (click)="irGrupo(grupo.id)"></ion-icon>
       </div>
     </ion-card>
 
@@ -230,8 +230,8 @@
         </ion-header>
         
         <ion-content class="ion-padding ion-text-center">
-          
-          <ion-card color="light" class="fixed-margin-card-modal">
+          <!-- Iterar sobre los grupos con *ngFor -->
+          <ion-card color="light" class="fixed-margin-card-modal" *ngFor="let grupo of grupos">
             <div class="icon-container">
               <ion-icon name="people-outline" class="icon-size"></ion-icon>
             </div>
@@ -239,81 +239,26 @@
             <div class="text-container">
               <ion-card-header class="ion-text-center">
                 <ion-text color="primary">
-                  <ion-card-title>Grupo 4A</ion-card-title>
+                  <ion-card-title>{{ grupo.nombre }}</ion-card-title>
                 </ion-text>
-                <ion-card-subtitle>Grupo de la aplicacion 1 a xd ed</ion-card-subtitle>
+                <ion-card-subtitle>{{ grupo.descripcion }}</ion-card-subtitle>
               </ion-card-header>
             </div>
           
             <div class="icons-right-container">
-              <ion-icon (click)="setSixthOpen(true)" color="warning" name="pencil-sharp" class="icon-size-v3"></ion-icon>
-              <ion-icon id="alerta-eliminar-grupo" color="danger" name="trash" class="icon-size-v3"></ion-icon>
+              <ion-icon (click)="prepareEditGroup(grupo.id)" color="warning" name="pencil-sharp" class="icon-size-v3"></ion-icon>
+              <ion-icon (click)="confirmDeletion(grupo.id)" color="danger" name="trash" class="icon-size-v3"></ion-icon>
             </div>
           
             <div class="icon-container-v2">
               <ion-icon name="chevron-forward-outline" class="icon-size-v3"></ion-icon>
             </div>
           </ion-card>
-
-          <ion-card color="light" class="fixed-margin-card-modal">
-            <div class="icon-container">
-              <ion-icon name="people-outline" class="icon-size"></ion-icon>
-            </div>
-            
-            <div class="text-container">
-              <ion-card-header class="ion-text-center">
-                <ion-text color="primary">
-                  <ion-card-title>Grupo 4A</ion-card-title>
-                </ion-text>
-                <ion-card-subtitle>Grupo de la aplicacion 1 a xd ed</ion-card-subtitle>
-              </ion-card-header>
-            </div>
-          
-            <div class="icons-right-container">
-              <ion-icon (click)="setSixthOpen(true)" color="warning" name="pencil-sharp" class="icon-size-v3"></ion-icon>
-              <ion-icon id="alerta-eliminar-grupo" color="danger" name="trash" class="icon-size-v3"></ion-icon>
-            </div>
-          
-            <div class="icon-container-v2">
-              <ion-icon name="chevron-forward-outline" class="icon-size-v3"></ion-icon>
-            </div>
-          </ion-card>
-
-          <ion-card color="light" class="fixed-margin-card-modal">
-            <div class="icon-container">
-              <ion-icon name="people-outline" class="icon-size"></ion-icon>
-            </div>
-            
-            <div class="text-container">
-              <ion-card-header class="ion-text-center">
-                <ion-text color="primary">
-                  <ion-card-title>Grupo 4A</ion-card-title>
-                </ion-text>
-                <ion-card-subtitle>Grupo de la aplicacion 1 a xd ed</ion-card-subtitle>
-              </ion-card-header>
-            </div>
-          
-            <div class="icons-right-container">
-              <ion-icon (click)="setSixthOpen(true)" color="warning" name="pencil-sharp" class="icon-size-v3"></ion-icon>
-              <ion-icon id="alerta-eliminar-grupo" color="danger" name="trash" class="icon-size-v3"></ion-icon>
-            </div>
-          
-            <div class="icon-container-v2">
-              <ion-icon name="chevron-forward-outline" class="icon-size-v3"></ion-icon>
-            </div>
-          </ion-card>
-
-          <ion-alert 
-            trigger="alerta-eliminar-grupo"  
-            header="¿Está seguro de eliminar el grupo?" 
-            [buttons]="alertButtonsDelete">
-          </ion-alert>
-
         </ion-content>
       </ng-template>
     </ion-modal>
 
-    <!-- AGM 30/01/2024 - Modal para registrar un alumno al sistema -->
+    <!-- AGM 30/01/2024 - Modal para modificar el grupo -->
     <ion-modal [isOpen]="isSixthModalOpen">
       <ng-template>
         <ion-header>
@@ -325,20 +270,20 @@
           <h1>Modificar propiedades del grupo</h1>
 
           <ion-item class="separator">
-            <ion-input placeholder="  Nombre del grupo" value="Grupo X"></ion-input>
+            <ion-input placeholder="Nombre del grupo" [(ngModel)]="grupoSeleccionado.nombre"></ion-input>
+          </ion-item>
+          
+          <ion-item>
+            <ion-input placeholder="Descripción del grupo" [(ngModel)]="grupoSeleccionado.descripcion"></ion-input>
           </ion-item>
 
-          <ion-item>
-            <ion-input placeholder=" Descripcion del grupo" value="El grupo de la mañana a las 9"></ion-input>
-          </ion-item>
+          <!-- Mostrar mensaje de error si existe -->
+          <ion-text class="ion-text-center" color="danger" *ngIf="errorMessage">
+            <p>{{ errorMessage }}</p>
+          </ion-text>
 
           <ion-button class="btn-cancelar" (click)="setSixthOpen(false)" color="danger">Cancelar</ion-button>
-          <ion-button id="alerta-modificar-grupo" class="btn-registrar" (click)="setSixthOpen(false)" color="warning">Modificar</ion-button>
-          <ion-alert 
-            trigger="alerta-modificar-grupo"  
-            header="¿Está seguro de modificar las propiedades del grupo?" 
-            [buttons]="alertButtonsEdit">
-          </ion-alert>
+          <ion-button class="btn-registrar" (click)="showEditConfirmation()" color="warning">Modificar</ion-button>        
         </ion-content>
       </ng-template>
     </ion-modal>
