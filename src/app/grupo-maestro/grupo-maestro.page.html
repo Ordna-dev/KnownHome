@@ -75,46 +75,16 @@
       </div>
     </ion-card>
 
-    <ion-card color="light" class="fixed-margin-card-teacher">
+    <b><h3 class="ion-text-center">Students:</h3></b>
+
+    <ion-card *ngFor="let student of students" color="light" class="fixed-margin-card-teacher">
       <div class="icon-container">
         <ion-icon name="images" color="success" class="icon-size"></ion-icon>
       </div>
       
       <div class="text-container">
         <ion-card-header class="ion-text-center">
-          <ion-card-title>Nombre del alumno</ion-card-title>
-        </ion-card-header>
-      </div>
-
-      <div class="icon-container-v2">
-        <ion-icon (click)="setFifthOpen(true)" name="chevron-forward-outline" class="icon-size"></ion-icon>
-      </div>
-    </ion-card>
-
-    <ion-card color="light" class="fixed-margin-card-teacher">
-      <div class="icon-container">
-        <ion-icon name="images" color="success" class="icon-size"></ion-icon>
-      </div>
-      
-      <div class="text-container">
-        <ion-card-header class="ion-text-center">
-          <ion-card-title>Nombre del alumno</ion-card-title>
-        </ion-card-header>
-      </div>
-
-      <div class="icon-container-v2">
-        <ion-icon (click)="setFifthOpen(true)" name="chevron-forward-outline" class="icon-size"></ion-icon>
-      </div>
-    </ion-card>
-
-    <ion-card color="light" class="fixed-margin-card-teacher">
-      <div class="icon-container">
-        <ion-icon name="images" color="success" class="icon-size"></ion-icon>
-      </div>
-      
-      <div class="text-container">
-        <ion-card-header class="ion-text-center">
-          <ion-card-title>Nombre del alumno</ion-card-title>
+          <ion-card-title>{{ student.name }}</ion-card-title> <!-- Use the correct property to display the student's name -->
         </ion-card-header>
       </div>
 

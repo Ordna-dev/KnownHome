@@ -38,7 +38,7 @@ export class DashboardMaestroPage implements OnInit {
   }
 
   irGrupo(groupId: number) {
-    fetch(`http://localhost:5000/maestro/group/${groupId}`, {
+    fetch(`http://localhost:5000/grupo/${groupId}`, {
         method: 'GET',
         credentials: 'include' // Si tu API requiere autenticación
     })
@@ -207,7 +207,7 @@ export class DashboardMaestroPage implements OnInit {
     formData.append('nombre', this.nombreGrupo);
     formData.append('descripcion', this.descripcionGrupo);
   
-    fetch('http://localhost:5000/maestro/create-group', {
+    fetch('http://localhost:5000/grupo/create', {
       method: 'POST',
       body: formData,
       credentials: 'include'
@@ -261,7 +261,7 @@ export class DashboardMaestroPage implements OnInit {
   }
   
   async deleteGroup(groupId: number) {
-    fetch(`http://localhost:5000/maestro/delete-group/${groupId}`, {
+    fetch(`http://localhost:5000/grupo/delete/${groupId}`, {
       method: 'DELETE',
       credentials: 'include'
     })
@@ -336,7 +336,7 @@ export class DashboardMaestroPage implements OnInit {
     formData.append('nombre', this.grupoSeleccionado.nombre);
     formData.append('descripcion', this.grupoSeleccionado.descripcion);
 
-    fetch(`http://localhost:5000/maestro/update-group/${this.grupoSeleccionado.id}`, {
+    fetch(`http://localhost:5000/grupo/update/${this.grupoSeleccionado.id}`, {
         method: 'PUT',
         body: formData,
         credentials: 'include',

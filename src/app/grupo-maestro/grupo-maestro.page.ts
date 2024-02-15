@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, NavController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-grupo-maestro',
@@ -15,7 +15,7 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class GrupoMaestroPage implements OnInit {
 
-  constructor(private alertController: AlertController, private router: Router, private route: ActivatedRoute, private cdr: ChangeDetectorRef, private navCtrl: NavController) { }
+  constructor(private ngZone: NgZone, private alertController: AlertController, private router: Router, private route: ActivatedRoute, private cdr: ChangeDetectorRef, private navCtrl: NavController) { }
 
   // AGM 31/01/2024 - Redireccionamiento a perfil, cierre de sesion o dashboard
   redirectToProfile() {
@@ -221,16 +221,42 @@ export class GrupoMaestroPage implements OnInit {
     },
   ];
 
+  // AGM 15/02/2024 - Obtener los alumnos inscritos en el grupo
+  students: any[] = [];
+
+  getEnrolledStudents(grupoId: number) {
+    fetch(`http://localhost:5000/grupo-alumno/${grupoId}/enrolled-students`, {
+      method: 'GET',
+      credentials: 'include' // Asumiendo que tu API requiere autenticación
+    })
+    .then(response => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Datos de los estudiantes inscritos:', data);
+      this.ngZone.run(() => { // Execute within Angular's zone
+        this.students = data.students;
+      });
+    })
+    .catch(error => {
+      console.error('Error al obtener los alumnos inscritos:', error);
+    });
+  }
+
   // AGM 11/02/2024 Lógica al iniciar la página
   grupo: any = null;
 
   ngOnInit() {
     const currentNavigation = this.router.getCurrentNavigation();
     this.grupo = currentNavigation?.extras.state ? currentNavigation.extras.state['grupo'] : null;
-
+  
     if (this.grupo) {
         console.log('Datos del grupo:', this.grupo);
-        this.cdr.detectChanges(); 
+        // Una vez confirmado que tenemos los datos del grupo, hacemos el fetch de los alumnos
+        this.getEnrolledStudents(this.grupo.id); // Asumiendo que el ID está en grupo.id
     } else {
         console.error('No se pasaron datos del grupo.');
     }
