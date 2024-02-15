@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular/standalone';
+import { DashboardMaestroService } from '../services/dashboard-maestro.service'; // Asegúrate de que la ruta sea correcta
 
 @Component({
   selector: 'app-dashboard-maestro',
@@ -15,58 +16,46 @@ import { AlertController } from '@ionic/angular/standalone';
 export class DashboardMaestroPage implements OnInit {
 
   // AGM 30/01/2024 - Constructor de alertas y routers
-  constructor(private alertController: AlertController, private router: Router) {}
+  constructor(
+    private alertController: AlertController, 
+    private router: Router,
+    private dashboardMaestroService: DashboardMaestroService
+  ) {}
 
   // AGM 30/01/2024 - Redireccionamiento a perfil, grupo y login (Logout)
   irAPerfil() {
-    // Lógica adicional antes de la navegación
     this.router.navigate(['/perfil']);
   }
   
+   // Reemplazando fetch en cerrarSesion por el método del servicio
   cerrarSesion() {
-    fetch('http://localhost:5000/auth/logout', {
-      credentials: 'include'
-    })
-      .then(response => response.text()) // Obtener respuesta como texto
-      .then(html => {
+    this.dashboardMaestroService.cerrarSesion().subscribe({
+      next: (html) => {
         console.log(html); // Mostrar la respuesta HTML en consola
-      })
-      .catch(error => {
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
         console.error('Error:', error);
+      }
     });
-    this.router.navigate(['/login']);
   }
 
+  // Reemplazando fetch en irGrupo por el método del servicio
   irGrupo(groupId: number) {
-    fetch(`http://localhost:5000/grupo/${groupId}`, {
-        method: 'GET',
-        credentials: 'include' // Si tu API requiere autenticación
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
+    this.dashboardMaestroService.obtenerGrupo(groupId).subscribe({
+      next: (data) => {
         if (data.error) {
             console.error('Error:', data.mensaje);
         } else {
             console.log('Grupo obtenido con éxito:', data.grupo);
-            // Redirige y pasa los datos del grupo a la nueva página
             this.router.navigate(['/grupo-maestro'], { state: { grupo: data.grupo } });
         }
-    })
-    .catch(error => {
+      },
+      error: (error) => {
         console.error('Error al obtener el grupo:', error.message);
+      }
     });
   }
-
-  /* 
-  irGrupo() {
-    this.router.navigate(['/grupo-maestro']);
-  }
-  */
 
   // AGM 30/01/2024 - Declaración de variables bandera para cerrar o abrir los modal
   isModalOpen = false;
@@ -175,66 +164,36 @@ export class DashboardMaestroPage implements OnInit {
     await alert.present();
   }
 
-  // AGM 08/02/2024 - Obtener grupos del maestro
-  grupos: any[] = []; 
-  username: string = '';
-
-  getGrupos() {
-    fetch('http://localhost:5000/maestro', {
-      credentials: 'include'  
-    })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((json) => {
-      console.log(json);
-      this.grupos = json.grupos;
-      this.username = json.username;
-    })
-    .catch((error) => console.error('Error al obtener los grupos:', error));
-  }
-
   // AGM 08/02/2024 - Crear un grupo (maestro)
   nombreGrupo: string = '';
   descripcionGrupo: string = '';
   message: string = '';
 
   crearGrupo() {
-    const formData = new FormData();
-    formData.append('nombre', this.nombreGrupo);
-    formData.append('descripcion', this.descripcionGrupo);
-  
-    fetch('http://localhost:5000/grupo/create', {
-      method: 'POST',
-      body: formData,
-      credentials: 'include'
-    })
-    .then(response => response.json())
-    .then(async data => {
-      if (!data.error) {
-        this.message = '';
-        const alert = await this.alertController.create({
-          header: 'Grupo Creado',
-          message: `El código de acceso del grupo es: ${data.codigo_acceso}`,
-          buttons: [{
-            text: 'OK',
-            handler: () => {
-              this.setOpen(false); 
-              this.getGrupos();
-            }
-          }]
-        });
-        
-        await alert.present();
-      } else {
-        this.message = data.message;
+    this.dashboardMaestroService.crearGrupo(this.nombreGrupo, this.descripcionGrupo).subscribe({
+      next: async (data) => {
+        if (!data.error) {
+          this.message = '';
+          const alert = await this.alertController.create({
+            header: 'Grupo Creado',
+            message: `El código de acceso del grupo es: ${data.codigo_acceso}`,
+            buttons: [{
+              text: 'OK',
+              handler: () => {
+                this.setOpen(false); 
+                this.getGrupos();
+              }
+            }]
+          });
+          
+          await alert.present();
+        } else {
+          this.message = data.message;
+        }
+      },
+      error: async (error) => {
+        this.message = 'Error al conectar con el servidor';
       }
-    })
-    .catch(error => {
-      this.message = 'Error al conectar con el servidor';
     });
   }
 
@@ -260,38 +219,30 @@ export class DashboardMaestroPage implements OnInit {
     await alert.present();
   }
   
-  async deleteGroup(groupId: number) {
-    fetch(`http://localhost:5000/grupo/delete/${groupId}`, {
-      method: 'DELETE',
-      credentials: 'include'
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+  deleteGroup(groupId: number) {
+    this.dashboardMaestroService.eliminarGrupo(groupId).subscribe({
+      next: async (data) => {
+        console.log('Group deleted successfully:', data);
+        this.setFifthOpen(false);
+
+        const alert = await this.alertController.create({
+          header: 'Grupo eliminado',
+          message: 'El grupo ha sido eliminado.',
+          buttons: [{
+            text: 'Aceptar',
+            handler: () => {
+              this.getGrupos();
+            }
+          }]
+        });
+
+        await alert.present();
+      },
+      error: async (error) => {
+        console.error('Error al eliminar el grupo:', error);
       }
-      return response.json();
-    })
-    .then(async data => {
-      console.log('Group deleted successfully:', data);
-      this.setFifthOpen(false);
-  
-      const alert = await this.alertController.create({
-        header: 'Grupo eliminado',
-        message: 'El grupo ha sido eliminado.',
-        buttons: [{
-          text: 'Aceptar',
-          handler: () => {
-            this.getGrupos();
-          }
-        }]
-      });
-  
-      await alert.present();
-    })
-    .catch(error => {
-      console.error('Error al eliminar el grupo:', error);
     });
-  }  
+  }
 
   // AGM 11/02/2024 - Editar grupo
   errorMessage: string = '';
@@ -330,45 +281,46 @@ export class DashboardMaestroPage implements OnInit {
     await alert.present();
   }
   
-
   updateGroup() {
-    let formData = new FormData();
-    formData.append('nombre', this.grupoSeleccionado.nombre);
-    formData.append('descripcion', this.grupoSeleccionado.descripcion);
-
-    fetch(`http://localhost:5000/grupo/update/${this.grupoSeleccionado.id}`, {
-        method: 'PUT',
-        body: formData,
-        credentials: 'include',
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(data => Promise.reject(data));
-        }
-        return response.json();
-    })
-    .then(async data => {
-        console.log('Group updated successfully:', data);
-        
-        const alert = await this.alertController.create({
+    this.dashboardMaestroService.actualizarGrupo(this.grupoSeleccionado.id, this.grupoSeleccionado.nombre, this.grupoSeleccionado.descripcion)
+      .subscribe({
+        next: async (data) => {
+          console.log('Group updated successfully:', data);
+          const alert = await this.alertController.create({
             header: 'Cambios realizados',
             message: 'Los cambios se han efectuado en el grupo.',
             buttons: [{
-                text: 'Aceptar',
-                handler: () => {
-                    this.setSixthOpen(false); 
-                    this.errorMessage = ''; 
-                    this.getGrupos();
-                }
+              text: 'Aceptar',
+              handler: () => {
+                this.setSixthOpen(false); 
+                this.errorMessage = '';
+                this.getGrupos();
+              }
             }]
-        });
+          });
+          await alert.present();
+        },
+        error: async (error) => {
+          console.error('Error updating group:', error);
+          this.errorMessage = error.error.mensaje || 'Error al actualizar el grupo.';
+        }
+      });
+  }  
 
-        await alert.present();
-    })
-    .catch(async error => {
-        console.error('Error updating group:', error);
-        this.errorMessage = error.mensaje || 'Error al actualizar el grupo.';
-    }); 
+  // AGM 08/02/2024 - Obtener grupos del maestro
+  grupos: any[] = []; 
+  username: string = '';
+
+  // Reemplazando fetch en getGrupos por el método del servicio
+  getGrupos() {
+    this.dashboardMaestroService.getGrupos().subscribe({
+      next: (json) => {
+        console.log(json);
+        this.grupos = json.grupos;
+        this.username = json.username;
+      },
+      error: (error) => console.error('Error al obtener los grupos:', error)
+    });
   }
 
   // AGM 08/02/2024 - Al iniciar la página, automáticamente obtiene los grupos del maestro
