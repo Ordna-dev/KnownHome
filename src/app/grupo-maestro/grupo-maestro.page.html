@@ -58,40 +58,38 @@
 
     <!-- AGM 31/01/2024 - Sección de los alumnos -->
     <b><h3 class="ion-text-center">Alumnos:</h3></b>
-    
-    <ion-card color="light" class="fixed-margin-card-teacher">
-      <div class="icon-container">
-        <ion-icon name="images" color="success" class="icon-size"></ion-icon>
-      </div>
-      
-      <div class="text-container">
-        <ion-card-header class="ion-text-center">
-          <ion-card-title>AGM</ion-card-title>
-        </ion-card-header>
-      </div>
 
-      <div class="icon-container-v2">
-        <ion-icon (click)="setFifthOpen(true)" name="chevron-forward-outline" class="icon-size"></ion-icon>
-      </div>
-    </ion-card>
+    <!-- Tarjetas de alumnos inscritos, solo se muestran si hay alumnos -->
+    <ng-container *ngIf="enrolledStudents?.length; else noStudentsTemplate">
+      <div *ngFor="let student of enrolledStudents">
+        <ion-card color="light" class="fixed-margin-card-teacher">
+          <div class="icon-container">
+            <ion-icon name="images" color="success" class="icon-size"></ion-icon>
+          </div>
+          
+          <div class="text-container">
+            <ion-card-header class="ion-text-center">
+              <ion-card-title>{{ student.nombre }}</ion-card-title>
+            </ion-card-header>
+          </div>
 
-    <b><h3 class="ion-text-center">Students:</h3></b>
+          <div class="icon-container-v2">
+            <ion-icon (click)="setFifthOpen(true)" name="chevron-forward-outline" class="icon-size"></ion-icon>
+          </div>
+        </ion-card>
+      </div>
+    </ng-container>
 
-    <ion-card *ngFor="let student of students" color="light" class="fixed-margin-card-teacher">
-      <div class="icon-container">
-        <ion-icon name="images" color="success" class="icon-size"></ion-icon>
-      </div>
-      
-      <div class="text-container">
-        <ion-card-header class="ion-text-center">
-          <ion-card-title>{{ student.name }}</ion-card-title> <!-- Use the correct property to display the student's name -->
-        </ion-card-header>
-      </div>
-
-      <div class="icon-container-v2">
-        <ion-icon (click)="setFifthOpen(true)" name="chevron-forward-outline" class="icon-size"></ion-icon>
-      </div>
-    </ion-card>
+    <!-- Plantilla que se muestra si no hay alumnos -->
+    <ng-template #noStudentsTemplate>
+      <ion-card color="light" class="fixed-margin-card-teacher">
+        <div class="text-container">
+          <ion-card-header class="ion-text-center">
+            <ion-card-title>No hay alumnos inscritos en el grupo</ion-card-title>
+          </ion-card-header>
+        </div>
+      </ion-card>
+    </ng-template>
 
     <!-- AGM 31/01/2024 - Modal para mostrar el código de acceso al grupo-->
     <ion-modal [isOpen]="isModalOpen">

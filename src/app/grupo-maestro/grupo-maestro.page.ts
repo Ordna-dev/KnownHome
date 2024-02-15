@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, NavController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectorRef, NgZone } from '@angular/core';
+import { GrupoMaestroService } from '../services/grupo-maestro.service';
 
 @Component({
   selector: 'app-grupo-maestro',
@@ -15,7 +16,7 @@ import { ChangeDetectorRef, NgZone } from '@angular/core';
 })
 export class GrupoMaestroPage implements OnInit {
 
-  constructor(private ngZone: NgZone, private alertController: AlertController, private router: Router, private route: ActivatedRoute, private cdr: ChangeDetectorRef, private navCtrl: NavController) { }
+  constructor(private grupoMaestroService: GrupoMaestroService, private alertController: AlertController, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef, private navCtrl: NavController) { }
 
   // AGM 31/01/2024 - Redireccionamiento a perfil, cierre de sesion o dashboard
   redirectToProfile() {
@@ -94,50 +95,55 @@ export class GrupoMaestroPage implements OnInit {
   }
 
   updateGroup() {
-    let formData = new FormData();
-    formData.append('nombre', this.grupo.nombre);
-    formData.append('descripcion', this.grupo.descripcion);
-  
-    fetch(`http://localhost:5000/maestro/update-group/${this.grupo.id}`, {
-        method: 'PUT',
-        body: formData,
-        credentials: 'include',
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(data => Promise.reject(data));
-        }
-        return response.json();
-    })
-    .then(async data => {
-        console.log('Group updated successfully:', data);
-        this.setSecondOpen(false); 
-        
-        const alert = await this.alertController.create({
+    this.grupoMaestroService.updateGroup(this.grupo.id, this.grupo.nombre, this.grupo.descripcion)
+      .subscribe({
+        next: async (data) => {
+          console.log('Group updated successfully:', data);
+          this.setSecondOpen(false);
+          const alert = await this.alertController.create({
             header: 'Cambios realizados',
-            message: 'Los cambios se han efectuado en el grupo. Se le va a redirigir al dashboard',
+            message: 'Los cambios se han efectuado en el grupo. Actualizando información...',
             buttons: [{
-                text: 'Aceptar',
-                handler: () => {
-                    this.router.navigateByUrl('/dashboard-maestro', {skipLocationChange: true}).then(()=>
-                    this.router.navigate(['/dashboard-maestro', { timestamp: Date.now() }]));
-                }
+              text: 'Aceptar',
+              handler: () => {
+                this.refreshGroupData(); // Llama a una función para refrescar los datos del grupo
+              }
             }]
-        });
-  
-        await alert.present();
-    })
-    .catch(async error => {
-        console.error('Error updating group:', error);
-        // Aquí cambiamos para mostrar el mensaje de error como una alerta
-        const alert = await this.alertController.create({
+          });
+          await alert.present();
+        },
+        error: async (error) => {
+          console.error('Error updating group:', error);
+          const alert = await this.alertController.create({
             header: 'Error',
-            message: error.mensaje || 'Error al actualizar el grupo.',
+            message: 'Error al actualizar el grupo.',
             buttons: ['OK']
-        });
+          });
+          await alert.present();
+        }
+      });
+  }
   
-        await alert.present();
-    }); 
+  refreshGroupData() {
+    // Aquí puedes llamar a una función para obtener los datos del grupo nuevamente
+    // Por ejemplo, si tienes un método que recupera la información del grupo:
+    console.log(this.grupo.id);
+    this.getGroupInfo(this.grupo.id);
+  }
+  
+  getGroupInfo(groupId: number) {
+    // Tu lógica para recuperar los detalles del grupo
+    // Después de obtener los datos, actualiza el objeto 'grupo' con los nuevos datos
+    this.grupoMaestroService.getGroup(groupId).subscribe({
+      next: (groupData) => {
+        this.grupo = groupData;
+        // Aquí deberías también refrescar los estudiantes si es necesario
+        this.getEnrolledStudents(groupId);
+      },
+      error: (error) => {
+        console.error('Error retrieving group data:', error);
+      }
+    });
   }
   
 
@@ -167,24 +173,23 @@ export class GrupoMaestroPage implements OnInit {
   }
 
   // AGM 12/02/2024 - Petición DELETE del grupo
-  async deleteGroup(groupId: string) {
-    fetch(`http://localhost:5000/maestro/delete-group/${groupId}`, {
-      method: 'DELETE',
-      credentials: 'include'
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(async data => {
-      console.log(data);
-      await this.presentGroupDeletedAlert();
-    })
-    .catch(error => {
-      console.error('Error al eliminar el grupo:', error);
-    });
+  deleteGroup(groupId: string) {
+    this.grupoMaestroService.deleteGroup(groupId)
+      .subscribe({
+        next: async (data) => {
+          console.log('Group deleted successfully:', data);
+          await this.presentGroupDeletedAlert();
+        },
+        error: async (error) => {
+          console.error('Error al eliminar el grupo:', error);
+          const alert = await this.alertController.create({
+            header: 'Error',
+            message: 'Ha ocurrido un error al intentar eliminar el grupo.',
+            buttons: ['OK']
+          });
+          await alert.present();
+        }
+      });
   }
 
   // AGM 31/01/2024 - BUG a solucionar - Hay un bug con los menus cuando se redirecciona (no estoy seguro del porque)
@@ -204,7 +209,6 @@ export class GrupoMaestroPage implements OnInit {
     await alert.present();
   }
   
-
   // AGM 31/01/2024 - Eliminación de alumno - Alerta de eliminación del alumno de un grupo
   public alertButtonsDeleteStudent = [
     {
@@ -222,35 +226,26 @@ export class GrupoMaestroPage implements OnInit {
   ];
 
   // AGM 15/02/2024 - Obtener los alumnos inscritos en el grupo
-  students: any[] = [];
+  enrolledStudents: any[] = [];
 
   getEnrolledStudents(grupoId: number) {
-    fetch(`http://localhost:5000/grupo-alumno/${grupoId}/enrolled-students`, {
-      method: 'GET',
-      credentials: 'include' // Asumiendo que tu API requiere autenticación
-    })
-    .then(response => {
-      if (!response.ok) {
-          throw new Error('Network response was not ok');
+    this.grupoMaestroService.getEnrolledStudents(grupoId).subscribe({
+      next: (response) => {
+        // Asegúrate de asignar el array de estudiantes a la propiedad
+        this.enrolledStudents = response.estudiantes;
+        console.log('Alumnos inscritos:', this.enrolledStudents);
+      },
+      error: (error) => {
+        console.error('Error al obtener los alumnos inscritos:', error);
       }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Datos de los estudiantes inscritos:', data);
-      this.ngZone.run(() => { // Execute within Angular's zone
-        this.students = data.students;
-      });
-    })
-    .catch(error => {
-      console.error('Error al obtener los alumnos inscritos:', error);
     });
   }
-
+  
   // AGM 11/02/2024 Lógica al iniciar la página
-  grupo: any = null;
+  grupo: any;
 
   ngOnInit() {
-    const currentNavigation = this.router.getCurrentNavigation();
+    /*const currentNavigation = this.router.getCurrentNavigation();
     this.grupo = currentNavigation?.extras.state ? currentNavigation.extras.state['grupo'] : null;
   
     if (this.grupo) {
@@ -259,6 +254,22 @@ export class GrupoMaestroPage implements OnInit {
         this.getEnrolledStudents(this.grupo.id); // Asumiendo que el ID está en grupo.id
     } else {
         console.error('No se pasaron datos del grupo.');
+    }*/
+    
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state) {
+      if ('grupo' in navigation.extras.state) {
+        this.grupo = navigation.extras.state['grupo'];
+        console.log('Datos del grupo:', this.grupo);
+        // Una vez que tenemos el grupo, obtenemos los estudiantes inscritos
+        this.getEnrolledStudents(this.grupo.id); // Asegúrate de que 'id' sea la propiedad correcta
+      } else {
+        console.error('La propiedad grupo no está presente en el estado.');
+        // Manejar la falta de datos del grupo como sea necesario
+      }
+    } else {
+      console.error('No se han pasado datos de estado.');
+      // Manejar la falta de datos del estado como sea necesario
     }
   }
 }
