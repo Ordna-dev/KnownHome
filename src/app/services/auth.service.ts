@@ -11,13 +11,20 @@ export class AuthService {
 
     constructor(private http: HttpClient) {}
 
-    login(username: string, password: string): Observable<any> {
+    teacherLogin(username: string, password: string): Observable<any> {
         const formData = new URLSearchParams();
         formData.append('username', username);
         formData.append('password', password);
         const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' });
 
         return this.http.post(`${this.baseUrl}/maestro/login`, formData.toString(), { headers, withCredentials: true });
+    }
+
+    studentLogin(username: string, password: string): Observable<any> {
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('password', password);
+        return this.http.post(`${this.baseUrl}/alumno/login`, formData, { withCredentials: true });
     }
 
     logout(): Observable<any> {

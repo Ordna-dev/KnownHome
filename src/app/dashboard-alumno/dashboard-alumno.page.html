@@ -15,7 +15,7 @@
   <div id="main-content4">
 
     <!-- AGM 30/01/2024 - Mensaje de bienvenida -->
-    <b><h1 class="welcome-message">Bienvenido Carlos Daniel Medina Sahagún</h1></b>
+    <b><h1 class="welcome-message">¡Bienvenido {{ username }}!</h1></b>
 
     <!-- AGM 30/01/2024 - Tarjeta de registro en grupo -->
     <ion-card class="fixed-margin">
@@ -33,72 +33,39 @@
     <!-- AGM 30/01/2024 - Mensaje de 'Mis grupos' -->
     <b><h3 class="groups-message">Mis grupos:</h3></b>
 
-    <!-- AGM 30/01/2024 - Tarjetas de los grupos del alumno -->
-    <ion-card color="light" class="fixed-margin-card">
-      <div class="icon-container">
-        <ion-icon name="people-outline" class="icon-size"></ion-icon>
-      </div>
-      
-      <div class="text-container">
-        <ion-card-header class="ion-text-center">
-          <ion-text color="tertiary">
-            <ion-card-title>Grupo 4A</ion-card-title>
-          </ion-text>
-        </ion-card-header>
-      
+    <!-- Contenedor para las tarjetas de los grupos -->
+    <div *ngIf="grupos && grupos.length; else noGroupsTemplate">
+      <ion-card color="light" class="fixed-margin-card" *ngFor="let grupo of grupos">
+        <div class="icon-container">
+          <ion-icon name="people-outline" class="icon-size"></ion-icon>
+        </div>
+        
+        <div class="text-container">
+          <ion-card-header class="ion-text-center">
+            <ion-text color="tertiary">
+              <ion-card-title>{{ grupo.nombre }}</ion-card-title>
+            </ion-text>
+          </ion-card-header>
+        
+          <ion-card-content class="ion-text-center">
+            Profesor: {{ grupo.nombre_maestro }}
+          </ion-card-content>
+        </div>
+        
+        <div class="icon-container-v2">
+          <ion-icon name="chevron-forward-outline" class="icon-size-v2" (click)="goToGroup(grupo.id)"></ion-icon>
+        </div>
+      </ion-card>
+    </div>
+
+    <!-- Template para mostrar cuando no hay grupos asignados al alumno -->
+    <ng-template #noGroupsTemplate>
+      <ion-card color="light" class="fixed-margin-card">
         <ion-card-content class="ion-text-center">
-          Profesor: Diaz Raygoza
+          No estás inscrito en ningún grupo todavía.
         </ion-card-content>
-      </div>
-
-      <div class="icon-container-v2">
-        <ion-icon name="chevron-forward-outline" class="icon-size-v2" (click)="irGrupo()"></ion-icon>
-      </div>
-    </ion-card>
-
-    <ion-card color="light" class="fixed-margin-card">
-      <div class="icon-container">
-        <ion-icon name="people-outline" class="icon-size"></ion-icon>
-      </div>
-      
-      <div class="text-container">
-        <ion-card-header class="ion-text-center">
-          <ion-text color="tertiary">
-            <ion-card-title>Grupo 4A</ion-card-title>
-          </ion-text>
-        </ion-card-header>
-      
-        <ion-card-content class="ion-text-center">
-          Profesor: Diaz Raygoza
-        </ion-card-content>
-      </div>
-
-      <div class="icon-container-v2">
-        <ion-icon name="chevron-forward-outline" class="icon-size-v2" (click)="irGrupo()"></ion-icon>
-      </div>
-    </ion-card>
-
-    <ion-card color="light" class="fixed-margin-card">
-      <div class="icon-container">
-        <ion-icon name="people-outline" class="icon-size"></ion-icon>
-      </div>
-      
-      <div class="text-container">
-        <ion-card-header class="ion-text-center">
-          <ion-text color="tertiary">
-            <ion-card-title>Grupo 4A</ion-card-title>
-          </ion-text>
-        </ion-card-header>
-      
-        <ion-card-content class="ion-text-center">
-          Profesor: Diaz Raygoza
-        </ion-card-content>
-      </div>
-
-      <div class="icon-container-v2">
-        <ion-icon name="chevron-forward-outline" class="icon-size-v2" (click)="irGrupo()"></ion-icon>
-      </div>
-    </ion-card>
+      </ion-card>
+    </ng-template>
 
     <!-- AGM 30/01/2024 - Modal de registro en un grupo -->
     <ion-modal [isOpen]="isModalOpen">
@@ -114,13 +81,17 @@
         <!-- AGM 30/01/2024 - Contenido principal del modal -->
         <ion-content class="ion-padding ion-text-center">
           <h1>Ingresa el código del grupo</h1>
-
+    
           <ion-item class="separator">
-            <ion-input placeholder="  Código del grupo"></ion-input>
+            <ion-input placeholder="Código del grupo" [(ngModel)]="groupCode"></ion-input>
           </ion-item>
-
+          <!-- Mensaje de error -->
+          <div>
+            <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
+          </div>
+          
           <ion-button class="btn-cancel" (click)="setOpen(false)" color="danger">Cancelar</ion-button>
-          <ion-button class="btn-register" (click)="setOpen(false)" color="primary">Registrarse</ion-button>
+          <ion-button class="btn-register" (click)="enrollStudentInGroup()" color="primary">Registrarse</ion-button>
         </ion-content>
       </ng-template>
     </ion-modal>
@@ -132,7 +103,7 @@
         <!-- AGM 30/01/2024 - Header del modal -->
         <ion-header>
           <ion-toolbar>
-            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setFifthOpen(false); irGrupo()"></ion-icon>
+            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setFifthOpen(false);"></ion-icon>
           </ion-toolbar>
         </ion-header>
         
@@ -141,64 +112,39 @@
           <h1 class="fixed-title-modal">Mis grupos:</h1>
           
           <!-- AGM 30/01/2024 - Cartas en el modal -->
-          <ion-card color="light" class="fixed-margin-card-modal">
-            <div class="icon-container">
-              <ion-icon name="people-outline" class="icon-size"></ion-icon>
-            </div>
-            
-            <div class="text-container">
-              <ion-card-header class="ion-text-center">
-                <ion-text color="tertiary">
-                  <ion-card-title>Grupo 4A</ion-card-title>
-                </ion-text>
-                <ion-card-subtitle>Profesor: Diaz Raygoza</ion-card-subtitle>
-              </ion-card-header>
-            </div>
+          <div *ngIf="grupos && grupos.length; else noGroupsModalTemplate">
+            <ion-card color="light" class="fixed-margin-card-modal" *ngFor="let grupo of grupos">
+              <div class="icon-container">
+                <ion-icon name="people-outline" class="icon-size"></ion-icon>
+              </div>
+              
+              <div class="text-container">
+                <ion-card-header class="ion-text-center">
+                  <ion-text color="tertiary">
+                    <ion-card-title>{{ grupo.nombre }}</ion-card-title>
+                  </ion-text>
+                  <ion-card-subtitle>Profesor: {{ grupo.nombre_maestro }}</ion-card-subtitle>
+                </ion-card-header>
+              </div>
 
-            <div class="icon-container-v2">
-              <ion-icon name="chevron-forward-outline" class="icon-size" (click)="setFifthOpen(false); irGrupo()"></ion-icon>
-            </div>
-          </ion-card>
-
-          <ion-card color="light" class="fixed-margin-card-modal">
-            <div class="icon-container">
-              <ion-icon name="people-outline" class="icon-size"></ion-icon>
-            </div>
-            
-            <div class="text-container">
-              <ion-card-header class="ion-text-center">
-                <ion-text color="tertiary">
-                  <ion-card-title>Grupo 4A</ion-card-title>
-                </ion-text>
-                <ion-card-subtitle>Profesor: Diaz Raygoza</ion-card-subtitle>
-              </ion-card-header>
-            </div>
-
-            <div class="icon-container-v2">
-              <ion-icon name="chevron-forward-outline" class="icon-size" (click)="setFifthOpen(false); irGrupo()"></ion-icon>
-            </div>
-          </ion-card>
-
-          <ion-card color="light" class="fixed-margin-card-modal">
-            <div class="icon-container">
-              <ion-icon name="people-outline" class="icon-size"></ion-icon>
-            </div>
-            
-            <div class="text-container">
-              <ion-card-header class="ion-text-center">
-                <ion-text color="tertiary">
-                  <ion-card-title>Grupo 4A</ion-card-title>
-                </ion-text>
-                <ion-card-subtitle>Profesor: Diaz Raygoza</ion-card-subtitle>
-              </ion-card-header>
-            </div>
-
-            <div class="icon-container-v2">
-              <ion-icon name="chevron-forward-outline" class="icon-size" (click)="irGrupo()"></ion-icon>
-            </div>
-          </ion-card>
+              <div class="icon-container-v2">
+                <ion-icon name="chevron-forward-outline" class="icon-size" (click)="setFifthOpen(false); goToGroup(grupo.id)"></ion-icon>
+              </div>
+            </ion-card>
+          </div>
         </ion-content>
+
+        <!-- Template para mostrar cuando no hay grupos asignados al alumno -->
+        <ng-template #noGroupsModalTemplate>
+          <ion-card color="light" class="fixed-margin-card-modal">
+            <ion-card-content class="ion-text-center">
+              No estás inscrito en ningún grupo todavía.
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+
       </ng-template>
     </ion-modal>
+
   </div>
 </ion-content>

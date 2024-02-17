@@ -3,6 +3,9 @@
   <ion-content class="ion-padding ion-text-right"> 
     <h1>Grupo</h1>
     <h5 (click)="setFourthOpen(true)">Listado de alumnos inscritos</h5>
+    <ion-text color="danger">
+      <h5 (click)="leaveGroup()">Salir del grupo</h5>
+    </ion-text>
 
     <h1>Acciones dentro del grupo</h1>
     <h5>Tomar fotografía</h5>
@@ -19,21 +22,22 @@
     <!-- AGM 31/01/2024 - Header de opciones --> 
     <div class="header-group">
       <ion-icon name="arrow-back-outline" class="icon-left-back" (click)="goBack()"></ion-icon>
-      <b><h3 class="welcome-message">Grupo 4A</h3></b>
+      <b><h3 class="welcome-message">{{ grupo?.nombre_grupo || 'Nombre del grupo no encontrado' }}</h3></b>
       <ion-icon name="camera" class="icon-right-camera"></ion-icon>
     </div>
 
     <b><h3 class="ion-text-center">Profesor:</h3></b>
 
     <!-- AGM 31/01/2024 - Tarjeta del profesor -->
-    <ion-card color="light" class="fixed-margin-card-teacher">
+    <ion-card color="light" class="fixed-margin-card-teacher" *ngIf="grupo">
       <div class="icon-container">
         <ion-icon name="images" color="success" class="icon-size"></ion-icon>
       </div>
       
       <div class="text-container">
         <ion-card-header class="ion-text-center">
-          <ion-card-title>Alejandro Guerrero Moya</ion-card-title>
+          <!-- Usa la variable grupo para mostrar el nombre del maestro -->
+          <ion-card-title>{{ grupo?.nombre_maestro || 'Nombre del mastro no encontrado' }}</ion-card-title>
         </ion-card-header>
       </div>
 
@@ -44,63 +48,17 @@
 
     <!-- AGM 31/01/2024 - Tarjetas de los alumnos -->
     <b><h3 class="ion-text-center">Alumnos:</h3></b>
-    
-    <ion-card color="light" class="fixed-margin-card-teacher">
+
+    <!-- Itera sobre la lista de estudiantes para mostrar cada uno -->
+    <ion-card color="light" class="fixed-margin-card-teacher" *ngFor="let student of students">
       <div class="icon-container">
         <ion-icon name="images" color="success" class="icon-size"></ion-icon>
       </div>
       
       <div class="text-container">
         <ion-card-header class="ion-text-center">
-          <ion-card-title>AGM</ion-card-title>
-        </ion-card-header>
-      </div>
-
-      <div class="icon-container-v2">
-        <ion-icon (click)="setFifthOpen(true)" name="chevron-forward-outline" class="icon-size"></ion-icon>
-      </div>
-    </ion-card>
-
-    <ion-card color="light" class="fixed-margin-card-teacher">
-      <div class="icon-container">
-        <ion-icon name="images" color="success" class="icon-size"></ion-icon>
-      </div>
-      
-      <div class="text-container">
-        <ion-card-header class="ion-text-center">
-          <ion-card-title>Nombre del alumno</ion-card-title>
-        </ion-card-header>
-      </div>
-
-      <div class="icon-container-v2">
-        <ion-icon (click)="setFifthOpen(true)" name="chevron-forward-outline" class="icon-size"></ion-icon>
-      </div>
-    </ion-card>
-
-    <ion-card color="light" class="fixed-margin-card-teacher">
-      <div class="icon-container">
-        <ion-icon name="images" color="success" class="icon-size"></ion-icon>
-      </div>
-      
-      <div class="text-container">
-        <ion-card-header class="ion-text-center">
-          <ion-card-title>Nombre del alumno</ion-card-title>
-        </ion-card-header>
-      </div>
-
-      <div class="icon-container-v2">
-        <ion-icon (click)="setFifthOpen(true)" name="chevron-forward-outline" class="icon-size"></ion-icon>
-      </div>
-    </ion-card>
-
-    <ion-card color="light" class="fixed-margin-card-teacher">
-      <div class="icon-container">
-        <ion-icon name="images" color="success" class="icon-size"></ion-icon>
-      </div>
-      
-      <div class="text-container">
-        <ion-card-header class="ion-text-center">
-          <ion-card-title>Nombre del alumno</ion-card-title>
+          <!-- Muestra el nombre del estudiante -->
+          <ion-card-title>{{ student.nombre  }}</ion-card-title>
         </ion-card-header>
       </div>
 

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular/standalone';
-import { DashboardMaestroService } from '../services/dashboard-maestro.service'; // Asegúrate de que la ruta sea correcta
+import { DashboardMaestroService } from '../services/dashboard-maestro.service'; 
 
 @Component({
   selector: 'app-dashboard-maestro',
@@ -64,37 +64,7 @@ export class DashboardMaestroPage implements OnInit {
     });
   }
 
-  // AGM 17/02/2024 - Método para registrar un alumno
-  registrarAlumno() {
-    // Validar que los campos no estén vacíos
-    if (!this.username.trim() || !this.password) {
-      // Establecer el mensaje de error
-      this.errorMessage = 'Por favor, rellene todos los campos.';
-      return; // Salir de la función para no realizar la llamada al servicio
-    }
-
-    // Continuar con el registro si los campos están llenos
-    this.dashboardMaestroService.registrarAlumno(this.username, this.password).subscribe({
-      next: async (response) => {
-        this.username = '';
-        this.password = '';
-        const successAlert = await this.alertController.create({
-          header: 'Operación exitosa',
-          message: 'El alumno ha sido registrado en el sistema.',
-          buttons: ['OK']
-        });
-        await successAlert.present();
-        this.setSecondOpen(false); 
-        this.errorMessage = ''; 
-      },
-      error: async (error) => {
-        this.errorMessage = ''; 
-        this.errorMessage = error.error?.message || 'Error al registrar al alumno.';
-      }
-    });
-  }
-
-  // Reemplazando fetch en irGrupo por el método del servicio
+  // AGM 17/02/2024 - Ir a un grupo especifico segun su id
   irGrupo(groupId: number) {
     this.dashboardMaestroService.obtenerGrupo(groupId).subscribe({
       next: (data) => {
@@ -200,6 +170,33 @@ export class DashboardMaestroPage implements OnInit {
     });
   
     await alert.present();
+  }
+
+  // AGM 17/02/2024 - Método para registrar un alumno
+  registrarAlumno() {
+    if (!this.username.trim() || !this.password) {
+      this.errorMessage = 'Por favor, rellene todos los campos.';
+      return; 
+    }
+
+    this.dashboardMaestroService.registrarAlumno(this.username, this.password).subscribe({
+      next: async (response) => {
+        this.username = '';
+        this.password = '';
+        const successAlert = await this.alertController.create({
+          header: 'Operación exitosa',
+          message: 'El alumno ha sido registrado en el sistema.',
+          buttons: ['OK']
+        });
+        await successAlert.present();
+        this.setSecondOpen(false); 
+        this.errorMessage = ''; 
+      },
+      error: async (error) => {
+        this.errorMessage = ''; 
+        this.errorMessage = error.error?.message || 'Error al registrar al alumno.';
+      }
+    });
   }
 
   // AGM 08/02/2024 - Crear un grupo (maestro)
@@ -337,7 +334,7 @@ export class DashboardMaestroPage implements OnInit {
       });
   }  
 
-  // Reemplazando fetch en getGrupos por el método del servicio
+  // AGM 13/02/2024 - Reemplazando fetch en getGrupos por el método del servicio
   getGrupos() {
     this.dashboardMaestroService.getGrupos().subscribe({
       next: (json) => {

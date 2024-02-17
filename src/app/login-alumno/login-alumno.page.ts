@@ -6,15 +6,13 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service'; 
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+  selector: 'app-login-alumno',
+  templateUrl: './login-alumno.page.html',
+  styleUrls: ['./login-alumno.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-
-export class LoginPage implements OnInit {
-  // AGM 15/02/2024 - Código del login refactorizado
+export class LoginAlumnoPage implements OnInit {
   username: string = '';
   password: string = '';
   errorMessage: string = '';
@@ -24,7 +22,7 @@ export class LoginPage implements OnInit {
   ngOnInit() {}
 
   goToStudentLogin() {
-    this.router.navigate(['/login-alumno']);
+    this.router.navigate(['/login']);
   }
 
   onLogin() {
@@ -36,14 +34,14 @@ export class LoginPage implements OnInit {
   
     console.log('Enviando solicitud de inicio de sesión', this.username);
   
-    this.authService.teacherLogin(this.username, this.password).subscribe({
+    this.authService.studentLogin(this.username, this.password).subscribe({
       next: (data) => {
         console.log('Datos de respuesta', data);
         if (data.error !== false) {
           this.errorMessage = data.message;
         } else {
           console.log('Inicio de sesión exitoso, redirigiendo...');
-          this.router.navigate(['/dashboard-maestro'], { state: { userInfo: data } });
+          this.router.navigate(['/dashboard-alumno'], { state: { userInfo: data } });
         }
       },
       error: (error) => {
