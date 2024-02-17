@@ -16,6 +16,10 @@ import { GrupoMaestroService } from '../services/grupo-maestro.service';
 })
 export class GrupoMaestroPage implements OnInit {
 
+  grupo: any;
+  grupoId!: number;
+  enrolledStudents: any[] = [];
+  
   constructor(private grupoMaestroService: GrupoMaestroService, private alertController: AlertController, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef, private navCtrl: NavController) { }
 
   // AGM 31/01/2024 - Redireccionamiento a perfil, cierre de sesion o dashboard
@@ -125,28 +129,10 @@ export class GrupoMaestroPage implements OnInit {
   }
   
   refreshGroupData() {
-    // Aquí puedes llamar a una función para obtener los datos del grupo nuevamente
-    // Por ejemplo, si tienes un método que recupera la información del grupo:
     console.log(this.grupo.id);
-    this.getGroupInfo(this.grupo.id);
+    this.loadGroupData(this.grupo.id);
   }
-  
-  getGroupInfo(groupId: number) {
-    // Tu lógica para recuperar los detalles del grupo
-    // Después de obtener los datos, actualiza el objeto 'grupo' con los nuevos datos
-    this.grupoMaestroService.getGroup(groupId).subscribe({
-      next: (groupData) => {
-        this.grupo = groupData;
-        // Aquí deberías también refrescar los estudiantes si es necesario
-        this.getEnrolledStudents(groupId);
-      },
-      error: (error) => {
-        console.error('Error retrieving group data:', error);
-      }
-    });
-  }
-  
-
+    
   // AGM 31/01/2024 - Botones de la alerta de eliminación del grupo
   async confirmGroupDeletion(groupId: string) {
     const alert = await this.alertController.create({
@@ -208,26 +194,64 @@ export class GrupoMaestroPage implements OnInit {
 
     await alert.present();
   }
-  
-  // AGM 31/01/2024 - Eliminación de alumno - Alerta de eliminación del alumno de un grupo
-  public alertButtonsDeleteStudent = [
-    {
-      text: 'No',
-      handler: () => {
-        // Acción a realizar cuando se presione "No".
-      }
-    },
-    {
-      text: 'Sí',
-      handler: () => {
-        // Acción a realizar cuando se presione "Sí".
-      }
-    },
-  ];
+
+  // AGM 16/02/2024 - Confirmar la eliminacion de un estudiante
+  async confirmStudentDeletion(studentId: number) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar',
+      message: '¿Está seguro de que desea eliminar al alumno del grupo? Esta acción no se puede deshacer',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancelación de eliminación');
+          }
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            this.deleteStudentFromGroup(studentId);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  // AGM 17/02/2024 - Método que realiza la llamada al servicio para eliminar al alumno
+  deleteStudentFromGroup(studentId: number) {
+    if (this.grupo && this.grupo.id) {
+      this.grupoMaestroService.removeStudentFromGroup(studentId, this.grupo.id).subscribe({
+        next: async (response) => {
+          console.log('El alumno ha sido eliminado:', response);
+          const successAlert = await this.alertController.create({
+            header: 'Operación exitosa',
+            message: 'El alumno ha sido eliminado del grupo.',
+            buttons: ['OK']
+          });
+          await successAlert.present();
+          this.getEnrolledStudents(this.grupo.id);
+          this.setFourthOpen(false);
+        },
+        error: async (error) => {
+          const errorMsg = error.error?.message || 'Se produjo un error al eliminar al alumno.';
+          console.error('Error:', errorMsg);
+          const errorAlert = await this.alertController.create({
+            header: 'ERROR',
+            message: errorMsg,
+            buttons: ['OK']
+          });
+          await errorAlert.present();
+        }
+      });
+    } else {
+      console.error('No se ha proporcionado el ID del grupo.');
+    }
+  }
 
   // AGM 15/02/2024 - Obtener los alumnos inscritos en el grupo
-  enrolledStudents: any[] = [];
-
   getEnrolledStudents(grupoId: number) {
     this.grupoMaestroService.getEnrolledStudents(grupoId).subscribe({
       next: (response) => {
@@ -240,36 +264,39 @@ export class GrupoMaestroPage implements OnInit {
       }
     });
   }
+
+  // AGM 16/02/2024 - Cargar los datos del grupo (Parte del inicio de página)
+  loadGroupData(groupId: number) {
+    this.grupoMaestroService.getGroup(groupId).subscribe({
+      next: (data) => {
+        if (!data.error && data.grupo) {
+          this.grupo = data.grupo;
+          console.log('Datos del grupo:', this.grupo);
+        } else {
+          console.error('Error al obtener los detalles del grupo o grupo no encontrado');
+        }
+      },
+      error: (error) => {
+        console.error('Error al obtener los detalles del grupo:', error);
+      }
+    });
+  }  
   
   // AGM 11/02/2024 Lógica al iniciar la página
-  grupo: any;
-
   ngOnInit() {
-    /*const currentNavigation = this.router.getCurrentNavigation();
-    this.grupo = currentNavigation?.extras.state ? currentNavigation.extras.state['grupo'] : null;
-  
-    if (this.grupo) {
-        console.log('Datos del grupo:', this.grupo);
-        // Una vez confirmado que tenemos los datos del grupo, hacemos el fetch de los alumnos
-        this.getEnrolledStudents(this.grupo.id); // Asumiendo que el ID está en grupo.id
-    } else {
-        console.error('No se pasaron datos del grupo.');
-    }*/
-    
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state) {
-      if ('grupo' in navigation.extras.state) {
-        this.grupo = navigation.extras.state['grupo'];
-        console.log('Datos del grupo:', this.grupo);
-        // Una vez que tenemos el grupo, obtenemos los estudiantes inscritos
-        this.getEnrolledStudents(this.grupo.id); // Asegúrate de que 'id' sea la propiedad correcta
+      const state = navigation.extras.state as { [key: string]: any }; 
+      if ('grupoId' in state) {
+        this.grupoId = state['grupoId']; 
+        console.log('Grupo-maestro: grupoId:', this.grupoId);
+        this.loadGroupData(this.grupoId);
+        this.getEnrolledStudents(this.grupoId);
       } else {
-        console.error('La propiedad grupo no está presente en el estado.');
-        // Manejar la falta de datos del grupo como sea necesario
+        console.error('grupoId no está presente en el estado de navegación.');
       }
     } else {
-      console.error('No se han pasado datos de estado.');
-      // Manejar la falta de datos del estado como sea necesario
+      console.error('No se han pasado datos de estado de navegación.');
     }
-  }
+  }  
 }

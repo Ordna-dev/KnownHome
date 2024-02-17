@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,6 +10,13 @@ export class DashboardMaestroService {
     private baseUrl: string = 'http://localhost:5000'; 
 
     constructor(private http: HttpClient) {}
+
+    registrarAlumno(username: string, password: string): Observable<any> {
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('password', password);
+        return this.http.post(`${this.baseUrl}/alumno/register`, formData, { withCredentials: true });
+    }
 
     getGrupos(): Observable<any> {
         return this.http.get(`${this.baseUrl}/maestro`, { withCredentials: true });

@@ -14,6 +14,30 @@ import { DashboardMaestroService } from '../services/dashboard-maestro.service';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class DashboardMaestroPage implements OnInit {
+  nombreGrupo: string = '';
+  descripcionGrupo: string = '';
+  message: string = '';
+  password: string = '';
+  grupos: any[] = []; 
+  username: string = '';
+  errorMessage: string = '';
+  grupoSeleccionado: any = { id: null, nombre: '', descripcion: '' };
+
+  // AGM 30/01/2024 - Declaración de variables bandera para cerrar o abrir los modal
+  isModalOpen = false;
+  isSecondModalOpen = false;
+  isThirdModalOpen = false; 
+  isFourthModalOpen = false; 
+  isFifthModalOpen = false;
+  isSixthModalOpen = false;
+
+  // AGM 30/01/2024 - Declarar la variable del archivo txt
+  fileName: string | null = null;
+
+  // AGM 30/01/2024 - Declarar la variable de alerta de ayuda
+  helpMessage: string = `Nombre usuario, Contraseña,
+  Alejandro Guerrero, 12345,
+  Carlos Daniel Medina, 125,`;
 
   // AGM 30/01/2024 - Constructor de alertas y routers
   constructor(
@@ -40,6 +64,36 @@ export class DashboardMaestroPage implements OnInit {
     });
   }
 
+  // AGM 17/02/2024 - Método para registrar un alumno
+  registrarAlumno() {
+    // Validar que los campos no estén vacíos
+    if (!this.username.trim() || !this.password) {
+      // Establecer el mensaje de error
+      this.errorMessage = 'Por favor, rellene todos los campos.';
+      return; // Salir de la función para no realizar la llamada al servicio
+    }
+
+    // Continuar con el registro si los campos están llenos
+    this.dashboardMaestroService.registrarAlumno(this.username, this.password).subscribe({
+      next: async (response) => {
+        this.username = '';
+        this.password = '';
+        const successAlert = await this.alertController.create({
+          header: 'Operación exitosa',
+          message: 'El alumno ha sido registrado en el sistema.',
+          buttons: ['OK']
+        });
+        await successAlert.present();
+        this.setSecondOpen(false); 
+        this.errorMessage = ''; 
+      },
+      error: async (error) => {
+        this.errorMessage = ''; 
+        this.errorMessage = error.error?.message || 'Error al registrar al alumno.';
+      }
+    });
+  }
+
   // Reemplazando fetch en irGrupo por el método del servicio
   irGrupo(groupId: number) {
     this.dashboardMaestroService.obtenerGrupo(groupId).subscribe({
@@ -48,7 +102,7 @@ export class DashboardMaestroPage implements OnInit {
             console.error('Error:', data.mensaje);
         } else {
             console.log('Grupo obtenido con éxito:', data.grupo);
-            this.router.navigate(['/grupo-maestro'], { state: { grupo: data.grupo } });
+            this.router.navigate(['/grupo-maestro'], { state: { grupoId: groupId } });
         }
       },
       error: (error) => {
@@ -56,22 +110,6 @@ export class DashboardMaestroPage implements OnInit {
       }
     });
   }
-
-  // AGM 30/01/2024 - Declaración de variables bandera para cerrar o abrir los modal
-  isModalOpen = false;
-  isSecondModalOpen = false;
-  isThirdModalOpen = false; 
-  isFourthModalOpen = false; 
-  isFifthModalOpen = false;
-  isSixthModalOpen = false;
-
-  // AGM 30/01/2024 - Declarar la variable del archivo txt
-  fileName: string | null = null;
-
-  // AGM 30/01/2024 - Declarar la variable de alerta de ayuda
-  helpMessage: string = `Nombre usuario, Contraseña,
-  Alejandro Guerrero, 12345,
-  Carlos Daniel Medina, 125,`;
 
   async helpAlert() {
     const alert = await this.alertController.create({
@@ -165,10 +203,6 @@ export class DashboardMaestroPage implements OnInit {
   }
 
   // AGM 08/02/2024 - Crear un grupo (maestro)
-  nombreGrupo: string = '';
-  descripcionGrupo: string = '';
-  message: string = '';
-
   crearGrupo() {
     this.dashboardMaestroService.crearGrupo(this.nombreGrupo, this.descripcionGrupo).subscribe({
       next: async (data) => {
@@ -244,11 +278,7 @@ export class DashboardMaestroPage implements OnInit {
     });
   }
 
-  // AGM 11/02/2024 - Editar grupo
-  errorMessage: string = '';
-  grupoSeleccionado: any = { id: null, nombre: '', descripcion: '' };
-
-  // Función para abrir el modal de edición y preparar los datos del grupo seleccionado
+  // AGM 11/02/2024 - Función para abrir el modal de edición y preparar los datos del grupo seleccionado
   prepareEditGroup(groupId: number) {
     const grupo = this.grupos.find(g => g.id === groupId);
     if(grupo) {
@@ -306,10 +336,6 @@ export class DashboardMaestroPage implements OnInit {
         }
       });
   }  
-
-  // AGM 08/02/2024 - Obtener grupos del maestro
-  grupos: any[] = []; 
-  username: string = '';
 
   // Reemplazando fetch en getGrupos por el método del servicio
   getGrupos() {

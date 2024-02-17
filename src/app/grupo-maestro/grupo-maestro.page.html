@@ -201,58 +201,33 @@
         </ion-header>
         
         <ion-content class="ion-padding ion-text-center">
-          <ion-card color="light" class="fixed-margin-card-modal">
-            <div class="icon-container">
-              <ion-icon name="accessibility" class="icon-size"></ion-icon>
-            </div>
-            
-            <div class="text-container">
-              <ion-card-header class="ion-text-center">
-                <ion-card-subtitle>Alejandro Guerrero Moya</ion-card-subtitle>
-              </ion-card-header>
-            </div>
+          <ng-container *ngIf="enrolledStudents?.length; else noStudentsTemplate">
+            <ion-card color="light" class="fixed-margin-card-modal" *ngFor="let student of enrolledStudents">
+              <div class="icon-container">
+                <ion-icon name="accessibility" class="icon-size"></ion-icon>
+              </div>
+              
+              <div class="text-container">
+                <ion-card-header class="ion-text-center">
+                  <ion-card-subtitle>{{ student.nombre }}</ion-card-subtitle>
+                </ion-card-header>
+              </div>
 
-            <div class="icon-container-v2">
-              <ion-icon id="alerta-eliminar-alumno-grupo" color="danger" name="trash" class="icon-size"></ion-icon>
-            </div>
-          </ion-card>
+              <div class="icon-container-v2">
+                <ion-icon color="danger" name="trash" class="icon-size" (click)="confirmStudentDeletion(student.id_alumno)"></ion-icon>
+              </div>
+            </ion-card>
+          </ng-container>
 
-          <ion-card color="light" class="fixed-margin-card-modal">
-            <div class="icon-container">
-              <ion-icon name="accessibility" class="icon-size"></ion-icon>
-            </div>
-            
-            <div class="text-container">
-              <ion-card-header class="ion-text-center">
-                <ion-card-subtitle>Alejandro Díaz Raygoza</ion-card-subtitle>
-              </ion-card-header>
-            </div>
-
-            <div class="icon-container-v2">
-              <ion-icon id="alerta-eliminar-alumno-grupo" color="danger" name="trash" class="icon-size"></ion-icon>
-            </div>
-          </ion-card>
-
-          <ion-card color="light" class="fixed-margin-card-modal">
-            <div class="icon-container">
-              <ion-icon name="accessibility" class="icon-size"></ion-icon>
-            </div>
-            
-            <div class="text-container">
-              <ion-card-header class="ion-text-center">
-                <ion-card-subtitle>Carlos Daniel Medina Sahagún</ion-card-subtitle>
-              </ion-card-header>
-            </div>
-
-            <div class="icon-container-v2">
-              <ion-icon id="alerta-eliminar-alumno-grupo" color="danger" name="trash" class="icon-size"></ion-icon>
-            </div>
-          </ion-card>
-          <ion-alert 
-            trigger="alerta-eliminar-alumno-grupo"  
-            header="¿Está seguro de eliminar al alumno del grupo?" 
-            [buttons]="alertButtonsDeleteStudent">
-          </ion-alert>
+          <ng-template #noStudentsTemplate>
+            <ion-card color="light" class="fixed-margin-card-teacher">
+              <div class="text-container">
+                <ion-card-header class="ion-text-center">
+                  <ion-card-title>No hay alumnos inscritos en el grupo</ion-card-title>
+                </ion-card-header>
+              </div>
+            </ion-card>
+          </ng-template>
         </ion-content>
       </ng-template>
     </ion-modal>
