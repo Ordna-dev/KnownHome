@@ -11,40 +11,40 @@ export class DashboardMaestroService {
 
     constructor(private http: HttpClient) {}
 
-    registrarAlumno(username: string, password: string): Observable<any> {
+    registerStudentService(username: string, password: string): Observable<any> {
         const formData = new FormData();
         formData.append('username', username);
         formData.append('password', password);
         return this.http.post(`${this.baseUrl}/alumno/register`, formData, { withCredentials: true });
     }
 
-    getGrupos(): Observable<any> {
+    getGroupsService(): Observable<any> {
         return this.http.get(`${this.baseUrl}/maestro`, { withCredentials: true });
     }
 
-    crearGrupo(nombre: string, descripcion: string): Observable<any> {
+    createGroupService(nombre: string, descripcion: string): Observable<any> {
         const formData = new FormData();
         formData.append('nombre', nombre);
         formData.append('descripcion', descripcion);
         return this.http.post(`${this.baseUrl}/grupo/create`, formData, { withCredentials: true });
     }
 
-    eliminarGrupo(groupId: number): Observable<any> {
+    deleteGroupService(groupId: number): Observable<any> {
         return this.http.delete(`${this.baseUrl}/grupo/delete/${groupId}`, { withCredentials: true });
     }
 
-    obtenerGrupo(groupId: number): Observable<any> {
+    getGroupService(groupId: number): Observable<any> {
         return this.http.get(`${this.baseUrl}/grupo/${groupId}`, { withCredentials: true });
     }
 
-    actualizarGrupo(groupId: number, nombre: string, descripcion: string): Observable<any> {
+    updateGroupService(groupId: number, nombre: string, descripcion: string): Observable<any> {
         const formData = new FormData();
         formData.append('nombre', nombre);
         formData.append('descripcion', descripcion);
         return this.http.put(`${this.baseUrl}/grupo/update/${groupId}`, formData, { withCredentials: true });
     }
 
-    cerrarSesion(): Observable<any> {
+    logOutService(): Observable<any> {
         return this.http.get(`${this.baseUrl}/auth/logout`, { withCredentials: true, responseType: 'text' });
     }
 }

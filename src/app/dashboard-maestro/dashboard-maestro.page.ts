@@ -14,14 +14,16 @@ import { DashboardMaestroService } from '../services/dashboard-maestro.service';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class DashboardMaestroPage implements OnInit {
-  nombreGrupo: string = '';
-  descripcionGrupo: string = '';
+  groupName: string = '';
+  groupDescription: string = '';
   message: string = '';
   password: string = '';
   grupos: any[] = []; 
   username: string = '';
+  studentUsername: string = '';
+  studentPassword: string = '';
   errorMessage: string = '';
-  grupoSeleccionado: any = { id: null, nombre: '', descripcion: '' };
+  selectedGroup: any = { id: null, nombre: '', descripcion: '' };
 
   // AGM 30/01/2024 - Declaración de variables bandera para cerrar o abrir los modal
   isModalOpen = false;
@@ -39,7 +41,7 @@ export class DashboardMaestroPage implements OnInit {
   Alejandro Guerrero, 12345,
   Carlos Daniel Medina, 125,`;
 
-  // AGM 30/01/2024 - Constructor de alertas y routers
+  // AGM 30/01/2024 - Constructor de los módulos a utilizar
   constructor(
     private alertController: AlertController, 
     private router: Router,
@@ -47,13 +49,13 @@ export class DashboardMaestroPage implements OnInit {
   ) {}
 
   // AGM 30/01/2024 - Redireccionamiento a perfil, grupo y login (Logout)
-  irAPerfil() {
+  goToProfile() {
     this.router.navigate(['/perfil']);
   }
   
    // Reemplazando fetch en cerrarSesion por el método del servicio
-  cerrarSesion() {
-    this.dashboardMaestroService.cerrarSesion().subscribe({
+  logOut() {
+    this.dashboardMaestroService.logOutService().subscribe({
       next: (html) => {
         console.log(html); // Mostrar la respuesta HTML en consola
         this.router.navigate(['/login']);
@@ -65,8 +67,8 @@ export class DashboardMaestroPage implements OnInit {
   }
 
   // AGM 17/02/2024 - Ir a un grupo especifico segun su id
-  irGrupo(groupId: number) {
-    this.dashboardMaestroService.obtenerGrupo(groupId).subscribe({
+  goToGroup(groupId: number) {
+    this.dashboardMaestroService.getGroupService(groupId).subscribe({
       next: (data) => {
         if (data.error) {
             console.error('Error:', data.mensaje);
@@ -140,83 +142,83 @@ export class DashboardMaestroPage implements OnInit {
     }
   }
 
-  // AGM 31/01/2024 - Botones de la alerta de eliminación del grupo
-  public alertButtonsDelete = [
-    {
-      text: 'No',
-      handler: () => {
-        // Acción a realizar cuando se presione "No".
-      }
-    },
-    {
-      text: 'Sí',
-      handler: () => {
-         // Muestra la alerta de grupo eliminado
-      }
-    },
-  ];
-
-  async presentChangesMadeAlert() {
-    const alert = await this.alertController.create({
-      header: 'Los cambios se han hecho en el grupo',
-      buttons: [
-        {
-          text: 'Aceptar',
-          handler: () => {
-            window.location.reload(); 
-          }
-        }
-      ]
-    });
-  
-    await alert.present();
-  }
-
   // AGM 17/02/2024 - Método para registrar un alumno
-  registrarAlumno() {
-    if (!this.username.trim() || !this.password) {
+  registerStudent() {
+    if (!this.studentUsername.trim() || !this.studentPassword) {
       this.errorMessage = 'Por favor, rellene todos los campos.';
-      return; 
+      return;
     }
 
-    this.dashboardMaestroService.registrarAlumno(this.username, this.password).subscribe({
+    this.dashboardMaestroService.registerStudentService(this.studentUsername, this.studentPassword).subscribe({
       next: async (response) => {
-        this.username = '';
-        this.password = '';
-        const successAlert = await this.alertController.create({
-          header: 'Operación exitosa',
-          message: 'El alumno ha sido registrado en el sistema.',
-          buttons: ['OK']
-        });
-        await successAlert.present();
-        this.setSecondOpen(false); 
-        this.errorMessage = ''; 
+        if (response.error) {
+          this.errorMessage = response.message;
+        } else {
+          this.studentUsername = '';
+          this.studentPassword = '';
+
+          const finalizeRegistration = () => {
+            this.setSecondOpen(false);
+            this.errorMessage = '';
+          };
+
+          const successAlert = await this.alertController.create({
+            header: 'Operación exitosa',
+            message: 'El alumno ha sido registrado en el sistema.',
+            buttons: [{
+              text: 'OK',
+              role: 'confirm',
+              handler: () => finalizeRegistration()
+            }],
+            backdropDismiss: true 
+          });
+
+          successAlert.onDidDismiss().then((detail) => {
+            if (detail.role === 'backdrop' || detail.role === 'cancel' || detail.role === 'confirm') {
+              finalizeRegistration();
+            }
+          });
+
+          await successAlert.present();
+        }
       },
       error: async (error) => {
-        this.errorMessage = ''; 
+        console.error('Error from server:', error);
         this.errorMessage = error.error?.message || 'Error al registrar al alumno.';
       }
     });
   }
 
   // AGM 08/02/2024 - Crear un grupo (maestro)
-  crearGrupo() {
-    this.dashboardMaestroService.crearGrupo(this.nombreGrupo, this.descripcionGrupo).subscribe({
+  createGroup() {
+    this.dashboardMaestroService.createGroupService(this.groupName, this.groupDescription).subscribe({
       next: async (data) => {
         if (!data.error) {
           this.message = '';
+          this.groupName = '';
+          this.groupDescription = '';
+  
+          const handleClose = () => {
+            this.setOpen(false);
+            this.getGroups();
+          };
+  
           const alert = await this.alertController.create({
             header: 'Grupo Creado',
             message: `El código de acceso del grupo es: ${data.codigo_acceso}`,
             buttons: [{
               text: 'OK',
-              handler: () => {
-                this.setOpen(false); 
-                this.getGrupos();
-              }
-            }]
+              handler: () => handleClose()
+            }],
+            backdropDismiss: true
           });
-          
+  
+          alert.onDidDismiss().then((detail) => {
+            if (detail.role === 'backdrop') {
+              handleClose();
+            }
+          });
+  
           await alert.present();
         } else {
           this.message = data.message;
@@ -226,9 +228,9 @@ export class DashboardMaestroPage implements OnInit {
         this.message = 'Error al conectar con el servidor';
       }
     });
-  }
+  }  
 
-  // AGM 11/02/2024 - Eliminar x grupo
+  // AGM 11/02/2024 - Alerta antes de eliminar x grupo
   async confirmDeletion(groupId: number) {
     const alert = await this.alertController.create({
       header: '¿Estas seguro de eliminar el grupo? Una vez eliminado, no se puede volver a recuperar.',
@@ -250,41 +252,51 @@ export class DashboardMaestroPage implements OnInit {
     await alert.present();
   }
   
+  // AGM 11/02/2024 - Lógica a la hora de eliminar el grupo
   deleteGroup(groupId: number) {
-    this.dashboardMaestroService.eliminarGrupo(groupId).subscribe({
+    this.dashboardMaestroService.deleteGroupService(groupId).subscribe({
       next: async (data) => {
-        console.log('Group deleted successfully:', data);
-        this.setFifthOpen(false);
-
+        console.log('Grupo eliminado con exito:', data);
+  
+        const handleAlertClose = () => {
+          this.getGroups();
+        };
+  
         const alert = await this.alertController.create({
           header: 'Grupo eliminado',
           message: 'El grupo ha sido eliminado.',
           buttons: [{
             text: 'Aceptar',
-            handler: () => {
-              this.getGrupos();
-            }
-          }]
+            handler: () => handleAlertClose()
+          }],
+          backdropDismiss: true
         });
-
+  
+        alert.onDidDismiss().then((detail) => {
+          if (detail.role === 'backdrop' || detail.role === 'cancel') {
+            handleAlertClose();
+          }
+        });
+  
         await alert.present();
       },
       error: async (error) => {
         console.error('Error al eliminar el grupo:', error);
       }
     });
-  }
+  }  
 
   // AGM 11/02/2024 - Función para abrir el modal de edición y preparar los datos del grupo seleccionado
   prepareEditGroup(groupId: number) {
     const grupo = this.grupos.find(g => g.id === groupId);
     if(grupo) {
-      this.grupoSeleccionado = {...grupo}; 
-      console.log('Editing group with ID:', this.grupoSeleccionado.id); 
+      this.selectedGroup = {...grupo}; 
+      console.log('Editando el grupo con el ID:', this.selectedGroup.id); 
       this.setSixthOpen(true); 
     }
   }
 
+  // AGM 11/02/2024 - Función para confirmar si se quiere efectuar la edicion de grupo
   async showEditConfirmation() {
     const alert = await this.alertController.create({
       header: '¿Está seguro de modificar las propiedades del grupo?',
@@ -308,35 +320,47 @@ export class DashboardMaestroPage implements OnInit {
     await alert.present();
   }
   
+  // AGM 11/02/2024 - Lógica de edición de grupo
   updateGroup() {
-    this.dashboardMaestroService.actualizarGrupo(this.grupoSeleccionado.id, this.grupoSeleccionado.nombre, this.grupoSeleccionado.descripcion)
+    this.dashboardMaestroService.updateGroupService(this.selectedGroup.id, this.selectedGroup.nombre, this.selectedGroup.descripcion)
       .subscribe({
         next: async (data) => {
           console.log('Group updated successfully:', data);
+  
+          const handleAlertClose = () => {
+            this.setSixthOpen(false);
+            this.errorMessage = '';
+            this.getGroups();
+          };
+  
           const alert = await this.alertController.create({
             header: 'Cambios realizados',
             message: 'Los cambios se han efectuado en el grupo.',
             buttons: [{
               text: 'Aceptar',
-              handler: () => {
-                this.setSixthOpen(false); 
-                this.errorMessage = '';
-                this.getGrupos();
-              }
-            }]
+              handler: () => handleAlertClose()
+            }],
+            backdropDismiss: true
           });
+  
+          alert.onDidDismiss().then((detail) => {
+            if (detail.role === 'backdrop' || detail.role === 'cancel') {
+              handleAlertClose();
+            }
+          });
+  
           await alert.present();
         },
         error: async (error) => {
           console.error('Error updating group:', error);
-          this.errorMessage = error.error.mensaje || 'Error al actualizar el grupo.';
+          this.errorMessage = error.error.message || 'Error al actualizar el grupo.';
         }
       });
   }  
 
-  // AGM 13/02/2024 - Reemplazando fetch en getGrupos por el método del servicio
-  getGrupos() {
-    this.dashboardMaestroService.getGrupos().subscribe({
+  // AGM 13/02/2024 - Obtener los grupos creados o administrados por el maestro
+  getGroups() {
+    this.dashboardMaestroService.getGroupsService().subscribe({
       next: (json) => {
         console.log(json);
         this.grupos = json.grupos;
@@ -348,6 +372,6 @@ export class DashboardMaestroPage implements OnInit {
 
   // AGM 08/02/2024 - Al iniciar la página, automáticamente obtiene los grupos del maestro
   ngOnInit() {
-    this.getGrupos();
+    this.getGroups();
   }
 }

@@ -7,8 +7,8 @@
   </ion-header>
   <ion-content class="ion-padding ion-text-right"> 
     <h1>Usuario</h1>
-    <h5 (click)="irAPerfil()">Visualizar o ver perfil</h5>
-    <h5 (click)="cerrarSesion()">Cerrar sesión</h5>
+    <h5 (click)="goToProfile()">Visualizar o ver perfil</h5>
+    <h5 (click)="logOut()">Cerrar sesión</h5>
 
     <h1>Grupos</h1>
     <h5 (click)="setFifthOpen(true)">Ver o gestionar mis grupos</h5>
@@ -65,7 +65,7 @@
       </div>
     
       <div class="icon-container-v2">
-        <ion-icon name="chevron-forward-outline" class="icon-size-v2" (click)="irGrupo(grupo.id)"></ion-icon>
+        <ion-icon name="chevron-forward-outline" class="icon-size-v2" (click)="goToGroup(grupo.id)"></ion-icon>
       </div>
     </ion-card>
 
@@ -87,11 +87,11 @@
           <h1>Registro de un grupo</h1>
 
           <ion-item class="separator">
-            <ion-input placeholder="Nombre del grupo" [(ngModel)]="nombreGrupo"></ion-input>
+            <ion-input placeholder="Nombre del grupo" [(ngModel)]="groupName"></ion-input>
           </ion-item>
           
           <ion-item>
-            <ion-textarea placeholder="Descripción del grupo" [(ngModel)]="descripcionGrupo"></ion-textarea>
+            <ion-textarea placeholder="Descripción del grupo" [(ngModel)]="groupDescription"></ion-textarea>
           </ion-item>
 
           <ion-text class="ion-text-center" color="danger" *ngIf="message">
@@ -99,7 +99,7 @@
           </ion-text>
         
           <ion-button class="btn-cancelar" (click)="setOpen(false)" color="danger">Cancelar</ion-button>
-          <ion-button class="btn-registrar" (click)="crearGrupo()" color="primary">Registrar</ion-button>          
+          <ion-button class="btn-registrar" (click)="createGroup()" color="primary">Registrar</ion-button>          
         </ion-content>
       </ng-template>
     </ion-modal>
@@ -117,17 +117,19 @@
           <h1>Registro de un alumno en el sistema</h1>
 
           <ion-item class="separator">
-            <ion-input placeholder="Nombre del alumno" [(ngModel)]="username"></ion-input>
+            <ion-input placeholder="Nombre del alumno" [(ngModel)]="studentUsername"></ion-input>
           </ion-item>
 
           <ion-item>
-            <ion-input type="password" placeholder="Contraseña del alumno" [(ngModel)]="password"></ion-input>
+            <ion-input type="password" placeholder="Contraseña del alumno" [(ngModel)]="studentPassword"></ion-input>
           </ion-item>
 
-          <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
+          <div>
+            <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
+          </div>
           
           <ion-button class="btn-cancelar" (click)="setSecondOpen(false)" color="danger">Cancelar</ion-button>
-          <ion-button class="btn-registrar" (click)="registrarAlumno()" color="primary">Registrar</ion-button>
+          <ion-button class="btn-registrar" (click)="registerStudent()" color="primary">Registrar</ion-button>
         </ion-content>
       </ng-template>
     </ion-modal>
@@ -272,11 +274,11 @@
           <h1>Modificar propiedades del grupo</h1>
 
           <ion-item class="separator">
-            <ion-input placeholder="Nombre del grupo" [(ngModel)]="grupoSeleccionado.nombre"></ion-input>
+            <ion-input placeholder="Nombre del grupo" [(ngModel)]="selectedGroup.nombre"></ion-input>
           </ion-item>
           
           <ion-item>
-            <ion-input placeholder="Descripción del grupo" [(ngModel)]="grupoSeleccionado.descripcion"></ion-input>
+            <ion-input placeholder="Descripción del grupo" [(ngModel)]="selectedGroup.descripcion"></ion-input>
           </ion-item>
 
           <!-- Mostrar mensaje de error si existe -->
