@@ -1,5 +1,5 @@
 <!-- AGM 30/01/2024 - Menú deslizante del maestro --> 
-<ion-menu side="end" contentId="main-content2">
+<ion-menu side="end" contentId="teacher-dashboard-content" menuId="teacher-main">
   <ion-header>
     <ion-avatar class="avatar-right">
       <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
@@ -27,7 +27,11 @@
 
 <!-- AGM 30/01/2024 - Contenido principal --> 
 <ion-content [fullscreen]="true">
-  <div id="main-content2">
+  <div id="teacher-dashboard-content"> 
+
+    <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh()">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <!-- AGM 30/01/2024 - Mensaje de bienvenida al maestro --> 
     <b><h1 class="welcome-message">Bienvenido {{ username }}</h1></b>
 
@@ -255,7 +259,7 @@
             </div>
           
             <div class="icon-container-v2">
-              <ion-icon name="chevron-forward-outline" class="icon-size-v3"></ion-icon>
+              <ion-icon name="chevron-forward-outline" class="icon-size-v3" (click)="goToGroup(grupo.id)"></ion-icon>
             </div>
           </ion-card>
         </ion-content>
@@ -290,6 +294,6 @@
           <ion-button class="btn-registrar" (click)="showEditConfirmation()" color="warning">Modificar</ion-button>        
         </ion-content>
       </ng-template>
-    </ion-modal>
+    </ion-modal> 
   </div>
 </ion-content>

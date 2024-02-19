@@ -47,6 +47,13 @@ export class DashboardMaestroPage implements OnInit {
     private router: Router,
     private dashboardMaestroService: DashboardMaestroService
   ) {}
+  
+  // AGM 19/02/2024 - Refrescar pagina
+  handleRefresh() {
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+  }
 
   // AGM 30/01/2024 - Redireccionamiento a perfil, grupo y login (Logout)
   goToProfile() {
@@ -68,13 +75,15 @@ export class DashboardMaestroPage implements OnInit {
 
   // AGM 17/02/2024 - Ir a un grupo especifico segun su id
   goToGroup(groupId: number) {
+    this.setFifthOpen(false);
     this.dashboardMaestroService.getGroupService(groupId).subscribe({
       next: (data) => {
         if (data.error) {
-            console.error('Error:', data.mensaje);
+          console.error('Error:', data.mensaje);
         } else {
-            console.log('Grupo obtenido con éxito:', data.grupo);
-            this.router.navigate(['/grupo-maestro'], { state: { grupoId: groupId } });
+          console.log('Grupo obtenido con éxito:', data.grupo);
+          
+          this.router.navigate(['/grupo-maestro'], { state: { groupId: groupId } });
         }
       },
       error: (error) => {
