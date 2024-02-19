@@ -19,6 +19,11 @@
 <ion-content [fullscreen]="true">
   <div id="main-content5">
 
+    <!-- AGM 19/02/2024 - Refrescar pagina -->
+    <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh()">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
     <!-- AGM 31/01/2024 - Header de opciones --> 
     <div class="header-group">
       <ion-icon name="arrow-back-outline" class="icon-left-back" (click)="goBack()"></ion-icon>
@@ -78,38 +83,15 @@
         </ion-header>
         
         <ion-content class="ion-padding ion-text-center">
-          <ion-card color="light" class="fixed-margin-card-modal">
+          <ion-card color="light" class="fixed-margin-card-modal" *ngFor="let student of students">
             <div class="icon-container">
               <ion-icon name="accessibility" class="icon-size"></ion-icon>
             </div>
             
             <div class="text-container">
               <ion-card-header class="ion-text-center">
-                <ion-card-subtitle>Alejandro Guerrero Moya</ion-card-subtitle>
-              </ion-card-header>
-            </div>
-          </ion-card>
-
-          <ion-card color="light" class="fixed-margin-card-modal">
-            <div class="icon-container">
-              <ion-icon name="accessibility" class="icon-size"></ion-icon>
-            </div>
-            
-            <div class="text-container">
-              <ion-card-header class="ion-text-center">
-                <ion-card-subtitle>Alejandro Díaz Raygoza</ion-card-subtitle>
-              </ion-card-header>
-            </div>
-          </ion-card>
-
-          <ion-card color="light" class="fixed-margin-card-modal">
-            <div class="icon-container">
-              <ion-icon name="accessibility" class="icon-size"></ion-icon>
-            </div>
-            
-            <div class="text-container">
-              <ion-card-header class="ion-text-center">
-                <ion-card-subtitle>Carlos Daniel Medina Sahagún</ion-card-subtitle>
+                <!-- Muestra el nombre del estudiante -->
+                <ion-card-subtitle>{{ student.nombre }}</ion-card-subtitle>
               </ion-card-header>
             </div>
           </ion-card>

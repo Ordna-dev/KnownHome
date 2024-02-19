@@ -29,9 +29,11 @@
 <ion-content [fullscreen]="true">
   <div id="teacher-dashboard-content"> 
 
+    <!-- AGM 19/02/2024 - Refrescar pagina -->
     <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh()">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
+    
     <!-- AGM 30/01/2024 - Mensaje de bienvenida al maestro --> 
     <b><h1 class="welcome-message">Bienvenido {{ username }}</h1></b>
 

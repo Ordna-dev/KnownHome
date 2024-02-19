@@ -19,7 +19,17 @@ export class DashboardAlumnoPage implements OnInit {
   groupCode: string = '';
   errorMessage: string = ''; 
 
-  constructor(private alertController: AlertController, private dashboardAlumnoService: DashboardAlumnoService, private router: Router) { }
+  constructor(
+    private alertController: AlertController, 
+    private dashboardAlumnoService: DashboardAlumnoService, 
+    private router: Router) { }
+
+  // AGM 19/02/2024 - Refrescar pagina
+  handleRefresh() {
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+  }
 
   // AGM 31/01/2024 - Redireccionamiento al grupo
   goToGroup(groupId: number) {
@@ -45,6 +55,8 @@ export class DashboardAlumnoPage implements OnInit {
 
   setOpen(isOpen: boolean) {
     this.isModalOpen = isOpen;
+    this.groupCode = '';
+    this.errorMessage = ''; 
   }
 
   // AGM 31/01/2024 - Abrir o cerrar el quinto modal

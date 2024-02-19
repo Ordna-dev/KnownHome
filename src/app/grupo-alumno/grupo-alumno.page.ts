@@ -37,6 +37,13 @@ export class GrupoAlumnoPage implements OnInit {
     this.router.navigateByUrl('/login');
   }
 
+  // AGM 19/02/2024 - Refrescar pagina
+  handleRefresh() {
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+  }
+
   // AGM 31/01/2024 - Modals de la visualizacion de alumnos, visualización de fotografías del profesor y autorizadas del alumno y visualizacion de imagen 
   isFourthModalOpen = false; 
   isFifthModalOpen = false;
@@ -126,27 +133,39 @@ export class GrupoAlumnoPage implements OnInit {
     this.grupoAlumnoService.leaveGroup(this.grupoId).subscribe({
       next: async (response) => {
         console.log(response.message);
+        // Define la acción de redireccionamiento
+        const redirectToDashboard = () => {
+          this.router.navigateByUrl('/dashboard-alumno', {skipLocationChange: true}).then(()=>
+          this.router.navigate(['/dashboard-alumno', { timestamp: Date.now() }]));
+        };
+  
         const alert = await this.alertController.create({
           header: 'Salida del grupo',
           message: 'Has salido del grupo. Redirigiendo a la pantalla principal...',
           buttons: [{
             text: 'Aceptar',
-            handler: () => {
-              this.router.navigateByUrl('/dashboard-alumno', {skipLocationChange: true}).then(()=>
-              this.router.navigate(['/dashboard-alumno', { timestamp: Date.now() }]));
-            }
-          }]
+            handler: () => redirectToDashboard()
+          }],
+          backdropDismiss: true // Permite cerrar la alerta tocando fuera
         });
+  
+        // Asegúrate de ejecutar redirectToDashboard si la alerta se cierra de cualquier manera
+        alert.onDidDismiss().then((detail) => {
+          if (detail.role === 'backdrop' || detail.role === 'cancel') {
+            redirectToDashboard();
+          }
+        });
+  
         await alert.present();
       },
       error: async (error) => {
         console.error('Error al salir del grupo:', error);
-        const alert = await this.alertController.create({
+        const errorAlert = await this.alertController.create({
           header: 'Error',
           message: 'No se pudo salir del grupo. Por favor, intenta de nuevo.',
           buttons: ['Aceptar']
         });
-        await alert.present();
+        await errorAlert.present();
       }
     });
   }  
