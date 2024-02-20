@@ -18,6 +18,10 @@ export class DashboardMaestroService {
         return this.http.post(`${this.baseUrl}/alumno/register`, formData, { withCredentials: true });
     }
 
+    registerStudentsBulkService(alumnos: any[]): Observable<any> {
+        return this.http.post(`${this.baseUrl}/alumno/bulk-register`, { alumnos }, { withCredentials: true });
+    }
+
     getGroupsService(): Observable<any> {
         return this.http.get(`${this.baseUrl}/maestro`, { withCredentials: true });
     }

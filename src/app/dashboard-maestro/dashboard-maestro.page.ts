@@ -22,6 +22,9 @@ export class DashboardMaestroPage implements OnInit {
   username: string = '';
   studentUsername: string = '';
   studentPassword: string = '';
+  studentUsernameFile: string = '';
+  studentPasswordFile: string = '';
+  errorMessageArray: string[] = [];
   errorMessage: string = '';
   selectedGroup: any = { id: null, nombre: '', descripcion: '' };
 
@@ -138,17 +141,109 @@ export class DashboardMaestroPage implements OnInit {
     this.setThirdOpen(true);   
   }
 
-  //AGM 30/01/2024 - Manejar la data del archivo txt de los alumnos
+  //AGM 30/01/2024 - Manejar la selección del archivo txt de los alumnos
   handleFileInput(event: Event) {
     const element = event.target as HTMLInputElement;
     const files = element.files;
     if (files && files.length > 0) {
       const file = files[0];
       this.fileName = file.name; 
-      // Procesar el archivo .txt aquí
     } else {
       this.fileName = null; 
     }
+  }
+
+  // AGM 30/01/2024 - Función para leer y mostrar el contenido del archivo txt
+  readAndDisplayFileContent() {
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const file = fileInput.files ? fileInput.files[0] : null;
+  
+    if (file) {
+      const reader = new FileReader();
+  
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        if (e.target?.result) {
+          const content = e.target.result as string;
+          
+          // Separa el contenido por líneas y luego procesa cada línea
+          const lines = content.split('\n');
+          const alumnos = lines.map(line => {
+            const [studentUsernameFile, passwordWithDot] = line.split(',');
+            if (studentUsernameFile && passwordWithDot) {
+              // Quita el punto del final de la contraseña y devuelve un objeto
+              const studentPasswordFile = passwordWithDot.replace('.', '').trim();
+              return { username: studentUsernameFile.trim(), password: studentPasswordFile };
+            }
+            // Si no hay username o passwordWithDot, retorna null para ser filtrado después
+            return null;
+          }).filter(alumno => alumno !== null); // Filtra elementos nulos
+
+          this.dashboardMaestroService.registerStudentsBulkService(alumnos).subscribe({
+            next: (response) => {
+              // Limpiar errores previos
+              this.errorMessageArray = [];
+          
+              // Asumiendo que la respuesta es un array de resultados
+              response.forEach((resultado: any) => {
+                if (resultado.error) {
+                  // Si hay un error, añadir el mensaje de error al array
+                  this.errorMessageArray.push(`${resultado.username}: ${resultado.error}`);
+                }
+              });
+          
+              if (this.errorMessageArray.length > 0) {
+                // Si hay errores, mostrar la alerta de error
+                this.presentAlertError();
+              } else {
+                // Si no hay errores, mostrar la alerta de éxito
+                this.presentAlertSuccess();
+              }
+            },
+            error: (err) => {
+              console.error('Error al registrar alumnos:', err);
+              this.presentAlertError();
+            }
+          });
+          
+  
+          const json = {
+            alumnos: alumnos
+          };
+  
+          console.log(JSON.stringify(json, null, 2));
+        }
+      };
+  
+      reader.onerror = (error) => {
+        console.error('Error al leer el archivo:', error);
+      };
+  
+      reader.readAsText(file);
+    } else {
+      console.error('No se ha seleccionado ningún archivo.');
+    }
+  }  
+
+  async presentAlertSuccess() {
+    const alert = await this.alertController.create({
+      header: 'Registro Exitoso',
+      message: 'Los alumnos han sido registrados exitosamente, no olvides consultar tu archivo de texto para proporcionar credenciales',
+      buttons: ['Aceptar']
+    });
+  
+    await alert.present();
+  }
+  
+  async presentAlertError() {
+    const errorMessage = this.errorMessageArray.join('<br/>'); // Unir los mensajes de error con saltos de línea en HTML
+  
+    const alert = await this.alertController.create({
+      header: 'Errores en el Registro',
+      message: `Se encontraron errores al registrar algunos alumnos:<br/>${errorMessage}`,
+      buttons: ['Aceptar']
+    });
+  
+    await alert.present();
   }
 
   // AGM 17/02/2024 - Método para registrar un alumno
