@@ -14,8 +14,92 @@
 
   <!-- AGM 25/01/2024 - Datos modificables del maestro -->
   <div class="custom-div">
-    <b><h1>Carlos Daniel Medina Sahagún aaaaaa <ion-icon name="pencil-sharp"></ion-icon></h1></b> 
-    <h5>Contraseña: ******** <ion-icon name="pencil-sharp"></ion-icon></h5> 
-    <h5>Fecha de registro: 14 de marzo del 2024</h5> 
+    <h2>Nombre de usuario</h2>
+    <ion-text color="medium">
+      <h5>
+        {{ username }}
+        <ion-icon name="pencil-sharp" (click)="setOpen(true)"></ion-icon>
+      </h5>
+    </ion-text>
+    <h5>Contraseña</h5> 
+    <ion-text color="medium">
+      <h5>
+        ********
+        <ion-icon name="pencil-sharp" (click)="setSecondOpen(true)"></ion-icon>
+      </h5>
+    </ion-text>
+    <h5>Fecha de registro:</h5> 
+    <h5>
+      <ion-text color="medium">
+        <i>
+          {{ creationDate }}
+        </i>
+      </ion-text>
+    </h5>
   </div>
+
+  <!-- AGM 30/01/2024 - Modal de edición de usuario (username) -->
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+
+      <!-- AGM 30/01/2024 - Header del modal -->
+      <ion-header>
+        <ion-toolbar>
+          <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setOpen(false)"></ion-icon>
+        </ion-toolbar>
+      </ion-header>
+
+      <!-- AGM 30/01/2024 - Contenido principal del modal -->
+      <ion-content class="ion-padding ion-text-center">
+  
+        <ion-item>
+          <ion-input labelPlacement="floating" [(ngModel)]="newUsername">
+            <div slot="label">Nombre de usuario <ion-text color="danger">(Requerido)</ion-text></div>
+          </ion-input>
+        </ion-item>
+        
+        <div class="top-separator">
+          <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
+        </div>
+        
+        <ion-button class="btn-cancel" (click)="setOpen(false)" color="danger">Cancelar</ion-button>
+        <ion-button class="btn-register" (click)="presentConfirmEditUsername()" color="primary">Guardar cambios</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- AGM 30/01/2024 - Modal de edición de usuario (password) -->
+  <ion-modal [isOpen]="isSecondModalOpen">
+    <ng-template>
+
+      <!-- AGM 30/01/2024 - Header del modal -->
+      <ion-header>
+        <ion-toolbar>
+          <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setSecondOpen(false)"></ion-icon>
+        </ion-toolbar>
+      </ion-header>
+
+      <!-- AGM 30/01/2024 - Contenido principal del modal -->
+      <ion-content class="ion-padding ion-text-center">
+        <ion-item>
+          <ion-input labelPlacement="floating" [(ngModel)]="password" type="password">
+            <div slot="label">Contraseña <ion-text color="danger">(Requerido)</ion-text></div>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input labelPlacement="floating" [(ngModel)]="confirmPassword" type="password">
+            <div slot="label">Confirmar contraseña <ion-text color="danger">(Requerido)</ion-text></div>
+          </ion-input>
+        </ion-item>
+        
+        <div class="top-separator">
+          <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
+        </div>
+        
+        <ion-button class="btn-cancel" (click)="setSecondOpen(false)" color="danger">Cancelar</ion-button>
+        <ion-button class="btn-register" (click)="presentConfirmEditPassword()" color="primary">Guardar cambios</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

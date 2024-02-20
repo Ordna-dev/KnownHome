@@ -60,7 +60,7 @@ export class DashboardMaestroPage implements OnInit {
     this.router.navigate(['/perfil']);
   }
   
-   // Reemplazando fetch en cerrarSesion por el método del servicio
+  // Reemplazando fetch en cerrarSesion por el método del servicio
   logOut() {
     this.dashboardMaestroService.logOutService().subscribe({
       next: (html) => {

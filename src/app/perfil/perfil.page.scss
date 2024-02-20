@@ -39,3 +39,38 @@ ion-avatar.image-container img {
 .icon-left-back {
     font-size: 40px;
 }
+
+// Estilos para los items de ion (usado en modal de registro)
+ion-item {
+    margin-top: 30px;
+}
+
+ion-button {
+    margin-top: 30px;
+}
+
+// Ícono a la izquierda en modales - Usado para botones de retroceso en los modals
+.icon-modal-left {
+    font-size: 40px; 
+    float: left; 
+    margin-left: 10px; 
+}
+
+// Botón de cancelar con margen derecho - Usado en el modal de registro a grupo
+.btn-cancel {
+    margin-right: 10px; 
+}
+
+// Botón de registrar con margen izquierdo - Usado en el modal de registro a grupo
+.btn-register {
+    margin-left: 10px; 
+}
+
+// Separador entre input y botones - Usado en el modal de registro a grupo
+.separator {
+    margin-bottom: 20px;
+}
+
+.top-separator {
+    margin-top: 20px;
+}
