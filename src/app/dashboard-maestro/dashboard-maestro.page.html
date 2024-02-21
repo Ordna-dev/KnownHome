@@ -158,7 +158,17 @@
           <ion-item class="separator">
             <input type="file" #fileInput accept=".txt" style="display: none;" (change)="handleFileInput($event)">
             <ion-button color="medium" (click)="fileInput.click()">{{ fileName || 'Seleccionar archivo .txt' }}</ion-button>
-          </ion-item>          
+          </ion-item>
+
+          <!-- Muestra los errores en caso de haberlos -->
+          <ion-text color="danger" *ngIf="errorMessageArray.length > 0">
+            <p *ngFor="let error of errorMessageArray">{{ error }}</p>
+          </ion-text>
+
+          <!-- Muestra los éxitos si no hay errores -->
+          <ion-text color="success">
+            <p *ngFor="let success of successMessageArray">{{ success }}</p>
+          </ion-text>
         
           <ion-button class="btn-cancelar" (click)="setThirdOpen(false)" color="danger">Cancelar</ion-button>
           <ion-button class="btn-registrar" (click)="readAndDisplayFileContent()" color="primary">Registrar</ion-button>

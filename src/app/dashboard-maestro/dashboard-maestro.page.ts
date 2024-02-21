@@ -25,6 +25,7 @@ export class DashboardMaestroPage implements OnInit {
   studentUsernameFile: string = '';
   studentPasswordFile: string = '';
   errorMessageArray: string[] = [];
+  successMessageArray: string[] = [];
   errorMessage: string = '';
   selectedGroup: any = { id: null, nombre: '', descripcion: '' };
 
@@ -164,63 +165,66 @@ export class DashboardMaestroPage implements OnInit {
       reader.onload = (e: ProgressEvent<FileReader>) => {
         if (e.target?.result) {
           const content = e.target.result as string;
-          
-          // Separa el contenido por líneas y luego procesa cada línea
           const lines = content.split('\n');
           const alumnos = lines.map(line => {
             const [studentUsernameFile, passwordWithDot] = line.split(',');
             if (studentUsernameFile && passwordWithDot) {
-              // Quita el punto del final de la contraseña y devuelve un objeto
               const studentPasswordFile = passwordWithDot.replace('.', '').trim();
               return { username: studentUsernameFile.trim(), password: studentPasswordFile };
             }
-            // Si no hay username o passwordWithDot, retorna null para ser filtrado después
             return null;
-          }).filter(alumno => alumno !== null); // Filtra elementos nulos
-
+          }).filter(alumno => alumno !== null);
+  
+          // Enviar la lista de alumnos al servicio para registrarlos en masa
           this.dashboardMaestroService.registerStudentsBulkService(alumnos).subscribe({
             next: (response) => {
               // Limpiar errores previos
               this.errorMessageArray = [];
-          
-              // Asumiendo que la respuesta es un array de resultados
-              response.forEach((resultado: any) => {
-                if (resultado.error) {
-                  // Si hay un error, añadir el mensaje de error al array
-                  this.errorMessageArray.push(`${resultado.username}: ${resultado.error}`);
+              this.successMessageArray = [];
+              
+              // Procesar la respuesta para encontrar éxitos y errores
+              response.forEach((item: any) => {
+                if (item.message === "Alumno registrado exitosamente") {
+                  // Si hay un mensaje de éxito, añadir al array de éxitos
+                  this.successMessageArray.push(`${item.username}: ${item.message}`);
+                } else if (item.error) {
+                  // Si hay un error, añadir al array de errores
+                  this.errorMessageArray.push(`${item.username}: ${item.error}`);
                 }
               });
-          
+
+              console.log(this.successMessageArray);
+              console.log(this.errorMessageArray);
+        
+              // Si hay errores, actualiza la propiedad del componente con ellos y muestra en plantilla
+              // Si no hay errores, muestra la alerta de éxito
               if (this.errorMessageArray.length > 0) {
-                // Si hay errores, mostrar la alerta de error
-                this.presentAlertError();
+                
               } else {
-                // Si no hay errores, mostrar la alerta de éxito
                 this.presentAlertSuccess();
               }
             },
             error: (err) => {
               console.error('Error al registrar alumnos:', err);
-              this.presentAlertError();
+              // Actualizar la propiedad del componente con el mensaje de error general
+              this.errorMessageArray = ['Error al registrar los alumnos, revisa tu archivo de texto y consulta ayuda'];
             }
           });
-          
-  
-          const json = {
-            alumnos: alumnos
-          };
-  
-          console.log(JSON.stringify(json, null, 2));
         }
       };
   
       reader.onerror = (error) => {
         console.error('Error al leer el archivo:', error);
+        // Actualizar la propiedad del componente con el mensaje de error de lectura
+        this.errorMessageArray = ['Error al leer el archivo. Asegúrate de que el formato sea correcto.'];
       };
   
+      // Comienza la lectura del archivo
       reader.readAsText(file);
     } else {
       console.error('No se ha seleccionado ningún archivo.');
+      // Actualizar la propiedad del componente para reflejar que no se seleccionó un archivo
+      this.errorMessageArray = ['No se ha seleccionado ningún archivo.'];
     }
   }  
 
@@ -228,18 +232,6 @@ export class DashboardMaestroPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Registro Exitoso',
       message: 'Los alumnos han sido registrados exitosamente, no olvides consultar tu archivo de texto para proporcionar credenciales',
-      buttons: ['Aceptar']
-    });
-  
-    await alert.present();
-  }
-  
-  async presentAlertError() {
-    const errorMessage = this.errorMessageArray.join('<br/>'); // Unir los mensajes de error con saltos de línea en HTML
-  
-    const alert = await this.alertController.create({
-      header: 'Errores en el Registro',
-      message: `Se encontraron errores al registrar algunos alumnos:<br/>${errorMessage}`,
       buttons: ['Aceptar']
     });
   
