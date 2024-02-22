@@ -6,13 +6,57 @@ import { AlertController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectorRef, NgZone } from '@angular/core';
 import { GrupoMaestroService } from '../services/grupo-maestro.service';
+import {
+  IonMenu,
+  IonHeader,
+  IonAvatar,
+  IonContent,
+  IonIcon,
+  IonRefresher,
+  IonRefresherContent,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonModal,
+  IonToolbar,
+  IonItem,
+  IonInput,
+  IonTextarea,
+  IonButton,
+  IonText,
+  IonTitle,
+  IonCardSubtitle
+} from '@ionic/angular/standalone';
+
 
 @Component({
   selector: 'app-grupo-maestro',
   templateUrl: './grupo-maestro.page.html',
   styleUrls: ['./grupo-maestro.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonMenu,
+    IonHeader,
+    IonAvatar,
+    IonContent,
+    IonIcon,
+    IonRefresher,
+    IonRefresherContent,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonModal,
+    IonToolbar,
+    IonItem,
+    IonInput,
+    IonTextarea,
+    IonButton,
+    IonText,
+    IonTitle,
+    IonCardSubtitle
+  ]  
 })
 export class GrupoMaestroPage implements OnInit {
   group: any;

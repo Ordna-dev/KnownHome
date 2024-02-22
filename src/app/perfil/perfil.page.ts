@@ -4,13 +4,38 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, NavController, AlertController } from '@ionic/angular';
 import { PerfilService } from '../services/perfil.service'; 
 import { Router } from '@angular/router';
+import {
+  IonContent,
+  IonIcon,
+  IonAvatar,
+  IonText,
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonItem,
+  IonInput,
+  IonButton
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.page.html',
   styleUrls: ['./perfil.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonContent,
+    IonIcon,
+    IonAvatar,
+    IonText,
+    IonModal,
+    IonHeader,
+    IonToolbar,
+    IonItem,
+    IonInput,
+    IonButton
+  ]  
 })
 export class PerfilPage implements OnInit {
   username: string = '';

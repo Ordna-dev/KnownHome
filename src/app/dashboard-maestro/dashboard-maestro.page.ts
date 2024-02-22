@@ -5,13 +5,58 @@ import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular/standalone';
 import { DashboardMaestroService } from '../services/dashboard-maestro.service'; 
+import {
+  IonMenu,
+  IonHeader,
+  IonAvatar,
+  IonContent,
+  IonText,
+  IonIcon,
+  IonRefresher,
+  IonRefresherContent,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
+  IonButton,
+  IonModal,
+  IonToolbar,
+  IonTitle,
+  IonItem,
+  IonTextarea,
+  IonInput
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-dashboard-maestro',
   templateUrl: './dashboard-maestro.page.html',
   styleUrls: ['./dashboard-maestro.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [
+    CommonModule,
+    FormsModule, // Si estás usando ngModel dentro de tu plantilla
+    IonMenu,
+    IonHeader,
+    IonAvatar,
+    IonContent,
+    IonText,
+    IonIcon,
+    IonRefresher,
+    IonRefresherContent,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent,
+    IonButton,
+    IonModal,
+    IonToolbar,
+    IonTitle,
+    IonItem,
+    IonTextarea,
+    IonInput
+  ]  
 })
 export class DashboardMaestroPage implements OnInit {
   groupName: string = '';

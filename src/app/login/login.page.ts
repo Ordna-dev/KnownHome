@@ -4,13 +4,31 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service'; 
+import {
+  IonContent,
+  IonList,
+  IonInput,
+  IonButton,
+  IonText,
+  IonIcon
+} from '@ionic/angular/standalone';
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonContent,
+    IonList,
+    IonInput,
+    IonButton,
+    IonText,
+    IonIcon
+  ]  
 })
 
 export class LoginPage implements OnInit {

@@ -5,13 +5,49 @@ import { IonicModule, NavController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular/standalone';
 import { GrupoAlumnoService } from '../services/grupo-alumno.service';
+import {
+  IonMenu,
+  IonContent,
+  IonText,
+  IonIcon,
+  IonRefresher,
+  IonRefresherContent,
+  IonCard,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButton
+} from '@ionic/angular/standalone';
+
 
 @Component({
   selector: 'app-grupo-alumno',
   templateUrl: './grupo-alumno.page.html',
   styleUrls: ['./grupo-alumno.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [
+    CommonModule,
+    FormsModule, 
+    IonMenu,
+    IonContent,
+    IonText,
+    IonIcon,
+    IonRefresher,
+    IonRefresherContent,
+    IonCard,
+    IonCardHeader,
+    IonCardSubtitle,
+    IonCardTitle,
+    IonModal,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButton
+  ],  
 })
 export class GrupoAlumnoPage implements OnInit {
   grupoId!: number;

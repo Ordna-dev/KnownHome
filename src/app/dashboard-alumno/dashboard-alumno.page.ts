@@ -5,13 +5,55 @@ import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DashboardAlumnoService } from '../services/dashboard-alumno.service';
 import { AlertController } from '@ionic/angular/standalone';
+import {
+  IonMenu,
+  IonContent,
+  IonHeader,
+  IonItem,
+  IonText,
+  IonIcon,
+  IonRefresher,
+  IonRefresherContent,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
+  IonButton,
+  IonModal,
+  IonToolbar,
+  IonTitle,
+  IonInput
+} from '@ionic/angular/standalone';
+
 
 @Component({
   selector: 'app-dashboard-alumno',
   templateUrl: './dashboard-alumno.page.html',
   styleUrls: ['./dashboard-alumno.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [
+    CommonModule,
+    FormsModule, 
+    IonMenu,
+    IonContent,
+    IonHeader,
+    IonItem,
+    IonText,
+    IonIcon,
+    IonRefresher,
+    IonRefresherContent,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent,
+    IonButton,
+    IonModal,
+    IonToolbar,
+    IonTitle,
+    IonInput
+  ]
 })
 export class DashboardAlumnoPage implements OnInit {
   grupos: any[] = []; 
