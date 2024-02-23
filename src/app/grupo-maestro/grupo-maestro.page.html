@@ -11,9 +11,9 @@
     <h5 (click)="setSecondOpen(true)">Modificar propiedades del grupo</h5>
     <h5 (click)="confirmGroupDeletion(group?.id || 'Id de grupo no disponible')">Eliminar grupo</h5>
 
-
     <h1>Fotografías</h1>
     <h5 (click)="setThirdOpen(true)">Autorizar fotografías</h5>
+    <h5 (click)="takePicture()">Tomar fotografía</h5>
 
     <h1>Alumnos</h1>
     <h5 (click)="setFourthOpen(true)">Alumnos registrados en el grupo</h5>
@@ -39,8 +39,11 @@
 
       <b><h3 class="welcome-message">{{ group?.nombre || 'Nombre de grupo no disponible' }}</h3></b>
 
-      <ion-icon name="camera" class="icon-right-camera"></ion-icon>
+      <ion-icon name="camera" class="icon-right-camera" (click)="takePicture()"></ion-icon>
     </div>
+
+    <!-- AGM 19/02/2024 - Ejemplificacion de la imagen -->
+    <img [src]="getPhoto()" style="width: 500px;"/>
 
     <!-- AGM 31/01/2024 - Sección del profesor -->
     <b><h3 class="ion-text-center">Profesor:</h3></b>

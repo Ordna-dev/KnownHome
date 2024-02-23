@@ -22,6 +22,8 @@ import {
   IonTitle,
   IonButton
 } from '@ionic/angular/standalone';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -53,6 +55,7 @@ export class GrupoAlumnoPage implements OnInit {
   grupoId!: number;
   grupo: any;
   students: any[] = []; 
+  imageSource: any;
 
   // AGM 31/01/2024
   constructor(
@@ -61,6 +64,7 @@ export class GrupoAlumnoPage implements OnInit {
     private router: Router, 
     private navCtrl: NavController,
     private alertController: AlertController,
+    private domSanitizer: DomSanitizer
   ) { }
 
   // AGM 31/01/2024 - Volver a la pagina anterior
@@ -205,6 +209,25 @@ export class GrupoAlumnoPage implements OnInit {
       }
     });
   }  
+
+  // AGM 22/02/2024 - Lógica para tomar una foto en la app 
+  takePicture = async () => {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Uri,
+      source: CameraSource.Prompt,
+      saveToGallery: true
+    });
+
+    this.imageSource= this.domSanitizer.bypassSecurityTrustUrl(image.webPath ? image.webPath : "")
+    //console.log(this.imageSource);
+  };
+
+  // AGM 22/02/2024 - Lógica para tomar una foto en la app 
+  getPhoto() {
+    return this.imageSource;
+  }
 
   // AGM 17/02/2024 - Al iniciar la pagina, obtiene la informacion del grupo y de los alumnos
   ngOnInit() {

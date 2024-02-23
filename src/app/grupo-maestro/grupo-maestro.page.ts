@@ -27,6 +27,8 @@ import {
   IonTitle,
   IonCardSubtitle
 } from '@ionic/angular/standalone';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -63,8 +65,17 @@ export class GrupoMaestroPage implements OnInit {
   groupId!: number;
   errorMessage: string = '';
   enrolledStudents: any[] = [];
+  imageSource: any;
   
-  constructor(private grupoMaestroService: GrupoMaestroService, private alertController: AlertController, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef, private navCtrl: NavController) { }
+  constructor(
+    private grupoMaestroService: GrupoMaestroService, 
+    private alertController: AlertController, 
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private cdr: ChangeDetectorRef, 
+    private navCtrl: NavController,
+    private domSanitizer: DomSanitizer
+    ) { }
 
   // AGM 31/01/2024 - Redireccionamiento a perfil, cierre de sesion o dashboard
   redirectToProfile() {
@@ -368,6 +379,25 @@ export class GrupoMaestroPage implements OnInit {
       }
     });
   }  
+
+  // AGM 22/02/2024 - Lógica para tomar una foto en la app 
+  takePicture = async () => {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Uri,
+      source: CameraSource.Prompt,
+      saveToGallery: true
+    });
+
+    this.imageSource= this.domSanitizer.bypassSecurityTrustUrl(image.webPath ? image.webPath : "")
+    //console.log(this.imageSource);
+  };
+
+  // AGM 22/02/2024 - Lógica para tomar una foto en la app 
+  getPhoto() {
+    return this.imageSource;
+  }
   
   // AGM 11/02/2024 Lógica al iniciar la página
   ngOnInit() {
