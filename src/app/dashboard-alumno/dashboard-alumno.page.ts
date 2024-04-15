@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DashboardAlumnoService } from '../services/dashboard-alumno.service';
 import { AlertController } from '@ionic/angular/standalone';
@@ -127,7 +126,7 @@ export class DashboardAlumnoPage implements OnInit {
           console.log('Respuesta del servidor:', response);
           const alert = await this.alertController.create({
             header: 'Inscripción exitosa',
-            message: 'Te has inscrito al grupo, serás redireccionado a ese grupo.',
+            message: 'Te has inscrito al grupo.',
             buttons: [{
               text: 'OK',
               handler: () => {

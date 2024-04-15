@@ -211,7 +211,7 @@ export class GrupoAlumnoPage implements OnInit {
   }  
 
   // AGM 22/02/2024 - Lógica para tomar una foto en la app 
-  takePicture = async () => {
+  async takePicture(groupId: number) {
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
@@ -219,10 +219,24 @@ export class GrupoAlumnoPage implements OnInit {
       source: CameraSource.Prompt,
       saveToGallery: true
     });
-
-    this.imageSource= this.domSanitizer.bypassSecurityTrustUrl(image.webPath ? image.webPath : "")
-    //console.log(this.imageSource);
-  };
+  
+    if (image.webPath) {
+      // Convertir la URL de Blob a un Blob, luego a un File
+      const response = await fetch(image.webPath);
+      const blob = await response.blob();
+      const file = new File([blob], 'photo.jpg', { type: 'image/jpeg' });
+  
+      // Utilizar el servicio para subir la foto
+      this.grupoAlumnoService.uploadPhoto(groupId, file).subscribe(
+        (result) => {
+          console.log('Foto subida con éxito', result);
+        },
+        (error) => {
+          console.error('Error subiendo la foto', error);
+        }
+      );
+    }
+  }
 
   // AGM 22/02/2024 - Lógica para tomar una foto en la app 
   getPhoto() {

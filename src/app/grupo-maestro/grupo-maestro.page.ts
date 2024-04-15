@@ -200,7 +200,8 @@ export class GrupoMaestroPage implements OnInit {
         }
       });
   }  
-  
+
+  // AGM 15/02/2024 - Refrescar los datos del grupo si ha sido modificado
   refreshGroupData() {
     console.log(this.group.id);
     this.loadGroupData(this.group.id);
@@ -390,11 +391,11 @@ export class GrupoMaestroPage implements OnInit {
       saveToGallery: true
     });
 
-    this.imageSource= this.domSanitizer.bypassSecurityTrustUrl(image.webPath ? image.webPath : "")
+    this.imageSource = this.domSanitizer.bypassSecurityTrustUrl(image.webPath ? image.webPath : "")
     //console.log(this.imageSource);
   };
 
-  // AGM 22/02/2024 - Lógica para tomar una foto en la app 
+  // AGM 22/02/2024 - Lógica para obtener una fotografía
   getPhoto() {
     return this.imageSource;
   }

@@ -29,4 +29,15 @@ export class GrupoAlumnoService {
 
     return this.http.delete(`${this.baseUrl}/grupo-alumno/student-leave-group`, options);
   }
+
+  uploadPhoto(groupId: number, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const options = {
+      withCredentials: true
+    };
+
+    return this.http.post(`${this.baseUrl}/imagenes-alumno/${groupId}/upload`, formData, options);
+  }
 }
