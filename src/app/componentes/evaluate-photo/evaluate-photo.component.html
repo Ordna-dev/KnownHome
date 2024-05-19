@@ -1,0 +1,31 @@
+<ion-header >
+  <ion-toolbar>
+    <ion-title> Revisión de fotografía </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="main-container">
+    <div class="image-container">
+      <img [src]="'http://localhost:5000/'+image.image_path" alt="Objeto identificado">
+    </div>
+    
+    <div class="objects-list-container">
+      <h3>¿Qué objeto es? </h3>
+      <div class="objects-list">
+        <ion-radio-group (ionChange)="updateObjectSelected($event)">
+          <ion-list>
+            <ion-item *ngFor="let object of objects">
+                <ion-radio [value]="object.id">{{object?.objeto}}</ion-radio><br>
+            </ion-item>
+          </ion-list>
+        </ion-radio-group>
+      </div>
+    </div>
+    <div class="buttons-container">
+      <div class="button-item">
+        <ion-button expand="block" (click)="confirmObject()">Confirmar</ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

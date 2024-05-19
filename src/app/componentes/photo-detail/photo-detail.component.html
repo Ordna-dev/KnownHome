@@ -1,0 +1,38 @@
+<ion-header >
+  <ion-toolbar>
+    <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="dismiss()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" [ngClass]="getDangerClass(image.danger_level)">
+  <div class="photo-container">
+    <div class="photo-image">
+      <img [src]="'http://localhost:5000/'+image.image_path" alt="Objeto identificado">
+    </div>
+    
+    <div class="photo-text">
+      <h3>Objeto identificado:</h3>
+      <p>{{image?.object}}</p>
+    </div>
+    
+    <div class="photo-text">
+      <h3>Nivel de riesgo:</h3>
+        <p>{{image?.danger_level}}</p>  
+    </div>
+
+    <div class="photo-text">
+      <h3>Descripción:</h3>
+      <p>{{image?.description}}</p>
+    </div>
+
+    <div class="photo-text">
+      <h3>Sugerencia:</h3>
+      <p>{{image?.suggest}}</p>
+    </div>
+
+    <div class="photo-text">
+      <h3>Foto tomada por:</h3>
+      <p>{{image?.user}}</p>
+    </div>
+  </div>
+</ion-content>

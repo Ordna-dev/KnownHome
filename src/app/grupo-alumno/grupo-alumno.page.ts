@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, NavController } from '@ionic/angular';
+import { LoadingController, ModalController, NavController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular/standalone';
 import { GrupoAlumnoService } from '../services/grupo-alumno.service';
@@ -24,7 +24,7 @@ import {
 } from '@ionic/angular/standalone';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import { GalleryComponent } from '../componentes/gallery/gallery.component';
 
 @Component({
   selector: 'app-grupo-alumno',
@@ -50,12 +50,19 @@ import { DomSanitizer } from '@angular/platform-browser';
     IonTitle,
     IonButton
   ],  
+  providers: [ModalController],
 })
+
 export class GrupoAlumnoPage implements OnInit {
+
   grupoId!: number;
   grupo: any;
   students: any[] = []; 
   imageSource: any;
+  
+  // AGM 31/01/2024 - Estado de los modals de la visualizacion de alumnos, visualización de fotografías del profesor y autorizadas del alumno y visualizacion de imagen 
+  isFourthModalOpen = false; 
+  isSeventhModalOpen = false;
 
   // AGM 31/01/2024
   constructor(
@@ -64,7 +71,9 @@ export class GrupoAlumnoPage implements OnInit {
     private router: Router, 
     private navCtrl: NavController,
     private alertController: AlertController,
-    private domSanitizer: DomSanitizer
+    private loadingController: LoadingController,
+    private domSanitizer: DomSanitizer,
+    private modalCtrl: ModalController
   ) { }
 
   // AGM 31/01/2024 - Volver a la pagina anterior
@@ -84,27 +93,83 @@ export class GrupoAlumnoPage implements OnInit {
     }, 2000);
   }
 
-  // AGM 31/01/2024 - Modals de la visualizacion de alumnos, visualización de fotografías del profesor y autorizadas del alumno y visualizacion de imagen 
-  isFourthModalOpen = false; 
-  isFifthModalOpen = false;
-  isSixthModalOpen = false;
-  isSeventhModalOpen = false;
-
   setFourthOpen(isOpen: boolean) {
     this.isFourthModalOpen = isOpen;
+    
   }
-
-  setFifthOpen(isOpen: boolean) {
-    this.isFifthModalOpen = isOpen;
+  
+  //Función para obtener las fotos del profesor y crear el modal de galeria para mostrar dichas fotos
+  async showTeacherGallery(teacherId:number) {
+    this.grupoAlumnoService.getTeacherPhotos(this.grupoId, teacherId).subscribe({
+      next: async(response) => {
+        if (response.error == false){
+          // crear una instancia del modal galery
+          const modal = await this.modalCtrl.create({
+            component: GalleryComponent,
+            componentProps:{
+              images: response.images,
+              grupoId: this.grupoId,
+              teacherLogged: false,
+              teacherImgs: true
+            }
+          });
+          // Mostrar el modal
+          return await modal.present();
+        }else{
+          const errorAlert = await this.alertController.create({
+            header: 'Error',
+            message: response.message,
+            buttons: ['Aceptar']   
+          });
+          await errorAlert.present();
+        }
+      }, error: async(error) => {
+        const errorAlert = await this.alertController.create({
+          header: 'Error',
+          message: 'No se pudieron mostrar las imagenes del profesor. Por favor intente de nuevo',
+          buttons: ['Aceptar']   
+        });
+        await errorAlert.present();
+      }
+    });
   }
-
-  setSixthOpen(isOpen: boolean) {
-    this.isSixthModalOpen = isOpen;
+  //Función para obtener las fotos de x estudiante y crear el modal de galeria para mostrar dichas fotos
+  async showStudentGallery(studentId: number) {
+    this.grupoAlumnoService.getStudentPhotos(this.grupoId, studentId).subscribe({
+      next: async(response) => {
+        if (response.error == false){
+          // crear una instancia del modal galery
+          const modal = await this.modalCtrl.create({
+            component: GalleryComponent,
+            componentProps:{
+              images: response.images,
+              grupoId: this.grupoId,
+              teacherLogged: false,
+              teacherImgs: false
+            }
+          });
+          //Mostrar el modal
+          return await modal.present();
+        }else{
+          const errorAlert = await this.alertController.create({
+            header: 'Error',
+            message: response.message,
+            buttons: ['Aceptar']   
+          });
+          await errorAlert.present();
+        }
+      },error: async(error) => {
+        const errorAlert = await this.alertController.create({
+          header: 'Error',
+          message: 'No se pudieron mostrar las imagenes del alumno. Por favor intente de nuevo.',
+          buttons: ['Aceptar']
+        });
+        await errorAlert.present();
+      }
+    });
+    
   }
-
-  setSeventhOpen(isOpen: boolean) {
-    this.isSeventhModalOpen = isOpen;
-  }
+  
 
   // AGM 17/02/2024 - Obtener el grupo para el alumno
   getGroup() {
@@ -112,7 +177,6 @@ export class GrupoAlumnoPage implements OnInit {
       this.grupoAlumnoService.getGroup(this.grupoId).subscribe({
         next: (response) => {
           if (!response.error && response.grupo && response.grupo.length > 0) {
-            console.log(response.grupo[0]);
             this.grupo = response.grupo[0];
           } else {
             console.error('La estructura de la respuesta del servidor no es la esperada.');
@@ -219,28 +283,52 @@ export class GrupoAlumnoPage implements OnInit {
       source: CameraSource.Prompt,
       saveToGallery: true
     });
+
+    const loading = await this.loadingController.create({
+      message: 'Subiendo fotografía',
+      duration: 100000,
+    });
+
+    loading.present();
   
     if (image.webPath) {
-      // Convertir la URL de Blob a un Blob, luego a un File
+      // Convertir la imagen a un Blob, luego a un File
       const response = await fetch(image.webPath);
       const blob = await response.blob();
       const file = new File([blob], 'photo.jpg', { type: 'image/jpeg' });
   
       // Utilizar el servicio para subir la foto
       this.grupoAlumnoService.uploadPhoto(groupId, file).subscribe(
-        (result) => {
-          console.log('Foto subida con éxito', result);
+        async (response) => {
+          loading.dismiss();
+          if (response.error ==  false){
+            const alert = await this.alertController.create({
+              header: 'Fotografía subida',
+              message: 'La fotografía ha sido subido exitosamente, espera a que el profesor la valide',
+              buttons: [{
+                text: 'Aceptar',
+              }],
+              backdropDismiss: true // Permite cerrar la alerta tocando fuera
+            });
+            await alert.present();
+          }else{
+            const alert = await this.alertController.create({
+              header: 'Fotografía no subida',
+              message: 'Error al subir la foto, porfavor vuelva a intentar',
+              buttons: [{
+                text: 'Aceptar',
+              }],
+              backdropDismiss: true // Permite cerrar la alerta tocando fuera
+            });
+            await alert.present();
+            console.log(response.message);
+          }
         },
         (error) => {
           console.error('Error subiendo la foto', error);
         }
       );
     }
-  }
-
-  // AGM 22/02/2024 - Lógica para tomar una foto en la app 
-  getPhoto() {
-    return this.imageSource;
   }
 
   // AGM 17/02/2024 - Al iniciar la pagina, obtiene la informacion del grupo y de los alumnos

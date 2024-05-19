@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+import { NavController, AlertController, ModalController, LoadingController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, NavController } from '@ionic/angular';
-import { AlertController } from '@ionic/angular';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ChangeDetectorRef, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 import { GrupoMaestroService } from '../services/grupo-maestro.service';
 import {
   IonMenu,
@@ -29,6 +27,8 @@ import {
 } from '@ionic/angular/standalone';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DomSanitizer } from '@angular/platform-browser';
+import { GalleryComponent } from '../componentes/gallery/gallery.component';
+import { EvaluatePhotoComponent } from '../componentes/evaluate-photo/evaluate-photo.component';
 
 
 @Component({
@@ -58,23 +58,23 @@ import { DomSanitizer } from '@angular/platform-browser';
     IonText,
     IonTitle,
     IonCardSubtitle
-  ]  
+  ],
+  providers: [ModalController],
 })
 export class GrupoMaestroPage implements OnInit {
   group: any;
-  groupId!: number;
+  grupoId!: number;
   errorMessage: string = '';
   enrolledStudents: any[] = [];
   imageSource: any;
   
   constructor(
+    private modalCtrl : ModalController,
     private grupoMaestroService: GrupoMaestroService, 
-    private alertController: AlertController, 
-    private route: ActivatedRoute, 
+    private alertController: AlertController,
+    private loadingController: LoadingController,
     private router: Router, 
-    private cdr: ChangeDetectorRef, 
     private navCtrl: NavController,
-    private domSanitizer: DomSanitizer
     ) { }
 
   // AGM 31/01/2024 - Redireccionamiento a perfil, cierre de sesion o dashboard
@@ -94,10 +94,7 @@ export class GrupoMaestroPage implements OnInit {
   isModalOpen = false;
   isSecondModalOpen = false;
   isThirdModalOpen = false;
-  isFourthModalOpen = false;
-  isFifthModalOpen = false;
-  isSixthModalOpen = false;
-  isSeventhModalOpen = false;
+  isFourthModalOpen = false;;
 
   // AGM 31/01/2024 - Abrir o cerrar los modals
   setOpen(isOpen: boolean) {
@@ -116,16 +113,76 @@ export class GrupoMaestroPage implements OnInit {
     this.isFourthModalOpen = isOpen;
   }
 
-  setFifthOpen(isOpen: boolean) {
-    this.isFifthModalOpen = isOpen;
+  //Función para obtener las fotos del profesor y crear el modal de galeria para mostrar dichas fotos
+  async showTeacherGallery() {
+    this.grupoMaestroService.getTeacherPhotos(this.grupoId).subscribe({
+      next: async(response) => {
+        if(response.error == false){
+          // crear una instancia del modal galery
+          const modal = await this.modalCtrl.create({
+            component: GalleryComponent,
+            componentProps:{
+              images: response.images,
+              grupoId: this.grupoId,
+              teacherLogged: true,
+              teacherImgs: true,
+            }
+          });
+          // Mostrar el modal
+          return await modal.present();
+        }else{
+          const errorAlert = await this.alertController.create({
+            header: 'Error',
+            message: response.message,
+            buttons: ['Aceptar']   
+          });
+          await errorAlert.present();
+        }
+      }, error: async(error) => {
+        const errorAlert = await this.alertController.create({
+          header: 'Error',
+          message: 'No se pudieron mostrar las imagenes del profesor. Por favor intente de nuevo',
+          buttons: ['Aceptar']   
+        });
+        await errorAlert.present();
+      }
+    });
   }
 
-  setSixthOpen(isOpen: boolean) {
-    this.isSixthModalOpen = isOpen;
-  }
-
-  setSeventhOpen(isOpen: boolean) {
-    this.isSeventhModalOpen = isOpen;
+  async showStudentGallery(studentId:number) {
+    this.grupoMaestroService.getStudentPhotos(this.grupoId, studentId).subscribe({
+      next: async(response) => {
+        if(response.error == false){
+          //Crear una instancia del modal galery
+          const modal = await this.modalCtrl.create({
+            component: GalleryComponent,
+            componentProps: {
+              images: response.images,
+              grupoId: this.grupoId,
+              teacherLogged: true, 
+              teacherImgs: false,
+              studentId: studentId
+            }
+          });
+          //Mostrar el modal
+          return await modal.present();
+        }else{
+          const errorAlert = await this.alertController.create({
+            header: 'Error',
+            message: response.message,
+            buttons: ['Aceptar']   
+          });
+          await errorAlert.present();
+        }
+      }, error: async(error) => {
+        const errorAlert = await this.alertController.create({
+          header: 'Error',
+          message: 'No se puedieron mostrar las imagenes del alumno. Porfavor intente de nuevo',
+          buttons: ['Aceptar']
+        });
+        await errorAlert.present();
+      }
+    });
   }
 
   // AGM 19/02/2024 - Refrescar pagina
@@ -382,7 +439,7 @@ export class GrupoMaestroPage implements OnInit {
   }  
 
   // AGM 22/02/2024 - Lógica para tomar una foto en la app 
-  takePicture = async () => {
+  takePicture = async (groupId: number) => {
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
@@ -391,25 +448,75 @@ export class GrupoMaestroPage implements OnInit {
       saveToGallery: true
     });
 
-    this.imageSource = this.domSanitizer.bypassSecurityTrustUrl(image.webPath ? image.webPath : "")
-    //console.log(this.imageSource);
-  };
+    const loading = await this.loadingController.create({
+      message: 'Subiendo fotografía',
+      duration: 100000,
+    });
 
-  // AGM 22/02/2024 - Lógica para obtener una fotografía
-  getPhoto() {
-    return this.imageSource;
+    loading.present();
+
+    if(image.webPath){
+      //Convertir la imagen a un Blob, luego a un File
+      const response = await fetch(image.webPath);
+      const blob = await response.blob();
+      const file = new File([blob], 'photo.jpg', {type:'image/jpeg'});
+
+      //Utilizar el servicio para subir la foto
+      this.grupoMaestroService.uploadPhoto(groupId, file).subscribe(
+        async (response) => {
+          if (response.error == false){
+            loading.dismiss();
+            //Generar una instancia del modal para evaluar la foto tomada
+            const modal = await this.modalCtrl.create({
+              component: EvaluatePhotoComponent,
+              componentProps:{
+                groupId: this.grupoId,
+                image: response.imagen,
+                objects: response.objetos
+              }
+            });
+            //Mostrar el modal
+            return await modal.present()
+          }else{
+            loading.dismiss();
+            const alert = await this.alertController.create({
+              header: 'Fotografía no subida',
+              message: response.message,
+              buttons: [{
+                text: 'Aceptar',
+              }],
+              backdropDismiss: true // Permite cerrar la alerta tocando fuera
+            });
+            await alert.present();
+          }
+        },
+        async (error) => {
+          loading.dismiss();
+          const alert = await this.alertController.create({
+            header: 'Fotografía no subida',
+            message: 'Error al subir la foto, porfavor vuelva a intentar',
+            buttons: [{
+              text: 'Aceptar',
+            }],
+            backdropDismiss: true // Permite cerrar la alerta tocando fuera
+          });
+          await alert.present();
+        }
+      );
+    }
+
   }
-  
+
   // AGM 11/02/2024 Lógica al iniciar la página
   ngOnInit() {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state) {
       const state = navigation.extras.state as { [key: string]: any }; 
       if ('groupId' in state) {
-        this.groupId = state['groupId']; 
-        console.log('Grupo-maestro: groupId:', this.groupId);
-        this.loadGroupData(this.groupId);
-        this.getEnrolledStudents(this.groupId);
+        this.grupoId = state['groupId']; 
+        console.log('Grupo-maestro: groupId:', this.grupoId);
+        this.loadGroupData(this.grupoId);
+        this.getEnrolledStudents(this.grupoId);
       } else {
         console.error('groupId no está presente en el estado de navegación.');
       }

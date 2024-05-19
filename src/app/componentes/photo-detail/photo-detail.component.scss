@@ -1,0 +1,103 @@
+// Estilización de los ítems de Ionic - Usado en los inputs de los modals
+ion-item {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+// Titulo dentro del modal
+ion-title {
+    margin-top: 10px;
+}
+
+// Sección de los modals
+// Ícono a la izquierda en modales - Usado para botones de retroceso en los modales
+.icon-modal-left {
+    font-size: 40px; 
+    float: left; 
+    margin-left: 10px; 
+}
+
+// contenedor para mostrar una imagen en especifico
+.photo-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    text-align: center;
+    animation: show 1s ease-in-out forwards;
+  
+    img {
+        width: 80%;
+        max-width: 300px; 
+        margin-top: 20px;
+        border-radius: 10px;
+    }
+    .photo-image{
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .photo-text {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5px;
+
+        h3{
+            width: 90%;
+            font-weight: bold;
+        }
+        p{
+            width: 90%;
+        }
+    }
+
+    @keyframes show {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+}
+
+.low{
+    --ion-background-color: #E3FFDE;
+    --ion-background-color: linear-gradient(225deg, #E3FFDE, #46C94D);
+    
+    .photo-text{
+        color: rgb(135, 134, 134);
+    }
+}
+
+.low-middle{
+    --ion-background-color: #5DA2FF;
+    --ion-background-color: linear-gradient(45deg, #5DA2FF, #89E0FF);
+    .photo-text{
+        color: #878686;
+        color: linear-gradient(45deg,#878686, #ffffff);
+    }
+}
+
+.middle{
+    --ion-background-color: #FFE25D;
+    --ion-background-color: linear-gradient(45deg, #FFE25D, #FDF7DC);
+    .photo-text{
+        color: #878686;
+        color: linear-gradient(45deg,#878686, #ffffff);
+    }
+}
+
+.middle-danger{
+    --ion-background-color: #FF9C01;
+    --ion-background-color: linear-gradient(45deg, #FF9C01, #FFD098);
+    
+}
+
+.danger{
+    --ion-background-color: #CC4545;
+    --ion-background-color: linear-gradient(45deg, #CC4545, #f68a8a);
+}

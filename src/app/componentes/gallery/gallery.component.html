@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="dismiss()"></ion-icon>
+    <ion-title *ngIf="teacherLogged == 0">Fotografías autorizadas</ion-title>
+    <ion-title *ngIf="teacherLogged == 1">Fotografías subidas</ion-title>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content class="ion-padding" *ngIf="images.length > 0">
+  <div class="image-authorization-container" *ngFor="let image of images; let i=index">
+    <!-- Formato para la vista del estudiante -->
+    <div *ngIf="teacherLogged == 0">
+      <img [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="studentShowImageDetail(image.user_id, image.image_id)" [src]="'http://localhost:5000/'+image.image_path" class="card-image-tooked">
+    </div>
+    <!-- Formato para la vista del maestro consultando sus imagenes -->
+    <div *ngIf="teacherLogged == 1 && teacherImgs == 1">
+      <img [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="teacherShowImageDetail(image.user_id, image.image_id)" [src]="'http://localhost:5000/'+image.image_path" class="card-image-tooked">
+    </div>
+    <!-- Formato para la vista del maestro consultando las imagenes del alumno -->
+    <div *ngIf="teacherLogged == 1 && teacherImgs == 0" [ngClass]="(image.authorized == 1 ? 'image-authorized' : 'image-unauthorized')">
+      <img *ngIf="teacherLogged == 1 && image.authorized == 1" [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="teacherShowImageDetail(image.user_id, image.image_id)" [src]="'http://localhost:5000/'+image.image_path" class="card-image-tooked">
+      <img *ngIf="teacherLogged == 1 && image.authorized == 0" [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="checkStudentImage(image.image_id)" [src]="'http://localhost:5000/'+image.image_path" class="card-image-tooked">
+    </div>
+  </div>
+</ion-content>
+<ion-content class="ion-padding" *ngIf="images.length == 0">
+  <div class="no-images-container">
+    <p>El usuario no ha tomado fotografías</p>
+  </div>
+</ion-content>

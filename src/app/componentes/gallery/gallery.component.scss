@@ -1,0 +1,88 @@
+// Estilización de los ítems de Ionic - Usado en los inputs de los modals
+ion-item {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+// Titulo dentro del modal
+ion-title {
+    margin-top: 10px;
+}
+
+// Sección de los modals
+// Ícono a la izquierda en modales - Usado para botones de retroceso en los modales
+.icon-modal-left {
+    font-size: 40px; 
+    float: left; 
+    margin-left: 10px; 
+}
+
+//Contenedor para mostrar las imagenes de x alumno o profesor
+.image-authorization-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid #ccc; 
+    padding-top: 20px; 
+    padding-bottom: 25px; 
+
+    img{
+        max-width: 200px;
+        height: auto;
+        position: relative;
+    }
+
+    .image-authorized img{
+        box-shadow: 2px 2px 16px lightgreen;
+    }
+    
+    .image-unauthorized img{
+        box-shadow: 2px 2px 16px lightcoral;
+    }
+
+    .slideLeft{
+        animation: slideLeftAnimation 1s ease-in-out forwards;
+        animation-fill-mode: forwards;
+    }
+    
+    .slideRight{
+        animation: slideRightAnimation 1s ease-in-out forwards;
+        animation-fill-mode: forwards;
+        
+    }
+
+    @keyframes slideLeftAnimation {
+        from {
+            transform: translateX(-50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideRightAnimation {
+        from {
+            transform: translateX(50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+}
+
+//Contenedor en caso de que no haya imagenes para mostrar
+.no-images-container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    p{
+        text-align: center;
+    }
+}
