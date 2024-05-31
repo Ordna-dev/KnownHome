@@ -50,6 +50,8 @@
       </ion-card-content>
     </ion-card>
     
+    <ion-searchbar animated="true" placeholder="Buscar grupo por nombre" color="medium" [debounce]="500" (ionInput)="handleSearchInput($event)"></ion-searchbar>
+    
     <b><h3 class="groups-message">Tus grupos:</h3></b>
 
     <!-- AGM 30/01/2024 - Cartas de los grupos creados por el maestro --> 

@@ -26,6 +26,10 @@ export class DashboardMaestroService {
         return this.http.get(`${this.baseUrl}/maestro`, { withCredentials: true });
     }
 
+    getGroupsByQuery(query: string): Observable<any> {
+        return this.http.get(`${this.baseUrl}/grupo-alumno/teacher-search-groups?query=${query}`, { withCredentials: true });
+    }
+
     createGroupService(nombre: string, descripcion: string): Observable<any> {
         const formData = new FormData();
         formData.append('nombre', nombre);

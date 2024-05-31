@@ -22,7 +22,10 @@ import {
   IonModal,
   IonToolbar,
   IonTitle,
-  IonInput
+  IonInput,
+  IonSearchbar,
+  IonList,
+  IonLabel
 } from '@ionic/angular/standalone';
 
 
@@ -51,7 +54,10 @@ import {
     IonModal,
     IonToolbar,
     IonTitle,
-    IonInput
+    IonInput,
+    IonSearchbar,
+    IonList,
+    IonLabel
   ]
 })
 export class DashboardAlumnoPage implements OnInit {
@@ -124,15 +130,11 @@ export class DashboardAlumnoPage implements OnInit {
         next: async (response) => {
           this.setOpen(false);
           console.log('Respuesta del servidor:', response);
+          this.getGroups(); 
           const alert = await this.alertController.create({
             header: 'Inscripción exitosa',
             message: 'Te has inscrito al grupo.',
-            buttons: [{
-              text: 'OK',
-              handler: () => {
-                this.getGroups();
-              }
-            }]
+            buttons: ['OK']
           });
           await alert.present();
         },
@@ -147,6 +149,26 @@ export class DashboardAlumnoPage implements OnInit {
       });
     } else {
       this.errorMessage = 'El código del grupo es necesario para la inscripción';
+    }
+  }
+
+  handleSearchInput(event: CustomEvent) {
+    const query = (event.target as HTMLInputElement).value.toLowerCase();
+    if (query && query.trim() !== '') {
+      this.dashboardAlumnoService.getGroupsByQuery(query).subscribe({
+        next: (response) => {
+          if (!response.error) {
+            console.log(this.grupos);
+            this.grupos = response.grupos;
+          } else {
+            this.grupos = [];
+            console.error(response.message || 'No se encontraron grupos.');
+          }
+        },
+        error: (error) => console.error('Error al buscar grupos:', error),
+      });
+    } else {
+      this.getGroups();  // Restaurar la lista original si no hay consulta
     }
   }
 

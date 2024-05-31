@@ -25,7 +25,8 @@ import {
   IonTitle,
   IonItem,
   IonTextarea,
-  IonInput
+  IonInput,
+  IonSearchbar
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -55,7 +56,8 @@ import {
     IonTitle,
     IonItem,
     IonTextarea,
-    IonInput
+    IonInput,
+    IonSearchbar
   ]  
 })
 export class DashboardMaestroPage implements OnInit {
@@ -509,6 +511,27 @@ export class DashboardMaestroPage implements OnInit {
       },
       error: (error) => console.error('Error al obtener los grupos:', error)
     });
+  }
+
+  // AGM 13/02/2024 - Buscar los grupos creados o administrados por el maestro
+  handleSearchInput(event: CustomEvent) {
+    const query = (event.target as HTMLInputElement).value.toLowerCase();
+    if (query && query.trim() !== '') {
+      this.dashboardMaestroService.getGroupsByQuery(query).subscribe({
+        next: (response) => {
+          if (!response.error) {
+            console.log(this.grupos);
+            this.grupos = response.grupos;
+          } else {
+            this.grupos = [];
+            console.error(response.message || 'No se encontraron grupos.');
+          }
+        },
+        error: (error) => console.error('Error al buscar grupos:', error),
+      });
+    } else {
+      this.getGroups();  // Restaurar la lista original si no hay consulta
+    }
   }
 
   // AGM 08/02/2024 - Al iniciar la página, automáticamente obtiene los grupos del maestro

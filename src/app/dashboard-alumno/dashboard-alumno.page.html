@@ -3,7 +3,6 @@
   <ion-content class="ion-padding ion-text-right"> 
     <h1>Grupos</h1>
     <h5 (click)="setOpen(true)">Registrarse a un grupo</h5>
-    <h5 (click)="setFifthOpen(true)">Mis grupos</h5>
 
     <h1>Sesión</h1>
     <h5 (click)="logOut()">Cerrar sesión</h5>
@@ -36,6 +35,8 @@
     </ion-card>
 
     <!-- AGM 30/01/2024 - Mensaje de 'Mis grupos' -->
+    <ion-searchbar animated="true" placeholder="Buscar grupo por nombre" color="medium" [debounce]="1000" (ionInput)="handleSearchInput($event)"></ion-searchbar>
+    
     <b><h3 class="groups-message">Mis grupos:</h3></b>
 
     <!-- Contenedor para las tarjetas de los grupos -->

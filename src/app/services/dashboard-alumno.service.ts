@@ -14,6 +14,10 @@ export class DashboardAlumnoService {
         return this.http.get(`${this.baseUrl}/alumno`, { withCredentials: true });
     }
 
+    getGroupsByQuery(query: string): Observable<any> {
+        return this.http.get(`${this.baseUrl}/grupo-alumno/student-search-groups?query=${query}`, { withCredentials: true });
+    }
+
     getGroup(groupId: number): Observable<any> {
         return this.http.get(`${this.baseUrl}/grupo/${groupId}`, { withCredentials: true });
     }
