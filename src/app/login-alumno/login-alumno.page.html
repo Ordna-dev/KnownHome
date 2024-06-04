@@ -31,4 +31,14 @@
       <ion-icon name="log-in-outline" slot="end"></ion-icon>
     </ion-button>
   </div>
+
+  <!-- Mostrar datos JSON -->
+  <ion-list>
+    <ion-item *ngFor="let item of jsonData">
+      <ion-label>
+        <h2>{{ item.name }}</h2>
+        <p>{{ item.email }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>

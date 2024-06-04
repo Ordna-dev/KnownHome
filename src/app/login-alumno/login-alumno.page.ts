@@ -10,7 +10,9 @@ import {
   IonInput,
   IonButton,
   IonText,
-  IonIcon
+  IonIcon,
+  IonItem,
+  IonLabel
 } from '@ionic/angular/standalone';
 
 
@@ -27,17 +29,35 @@ import {
     IonInput,
     IonButton,
     IonText,
-    IonIcon
+    IonIcon,
+    IonItem,
+    IonLabel
   ]  
 })
 export class LoginAlumnoPage implements OnInit {
   username: string = '';
   password: string = '';
   errorMessage: string = '';
+  jsonData: any[] = []; // Array para almacenar los datos JSON
 
   constructor(private router: Router, private authService: AuthService) {} 
 
-  ngOnInit() {}
+  fetchJsonData() {
+    this.authService.getJsonData().subscribe({
+      next: (data) => {
+        console.log('Datos JSON recibidos', data);
+        this.jsonData = data;
+      },
+      error: (error) => {
+        console.error('Error al obtener los datos JSON:', error);
+        this.errorMessage = 'Error al obtener los datos JSON';
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.fetchJsonData();
+  }
 
   goToStudentLogin() {
     this.router.navigate(['/login']);

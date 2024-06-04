@@ -79,7 +79,7 @@
 
     <ion-card color="light" class="fixed-margin-card" *ngIf="grupos.length === 0">
       <ion-card-content class="ion-text-center">
-        No tienes ningún grupo registrado, si crees que se trata de un error, consulta la opción de ayuda para más detalles.
+        Grupo o grupos no encontrados.
       </ion-card-content>
     </ion-card>
 
@@ -188,54 +188,31 @@
         </ion-header>
         
         <ion-content class="ion-padding ion-text-center">
+          <ion-searchbar animated="true" placeholder="Buscar alumno por nombre" color="medium" [debounce]="500" (ionInput)="handleSearchInputStudents($event)"></ion-searchbar>
+
           <h1 class="fixed-title-modal">Alumnos registrados por mí</h1>
           
-          <ion-card color="light" class="fixed-margin-card-modal">
+          <ion-card *ngFor="let student of students" color="light" class="fixed-margin-card-modal">
             <div class="icon-container">
               <ion-icon name="accessibility" class="icon-size"></ion-icon>
             </div>
             
             <div class="text-container">
               <ion-card-header class="ion-text-center">
-                <ion-card-subtitle>Alejandro Guerrero Moya</ion-card-subtitle>
+                <ion-card-subtitle>{{ student.username }}</ion-card-subtitle>
               </ion-card-header>
             </div>
-
+    
             <div class="icon-container-v2">
-              <ion-icon color="danger" name="trash" class="icon-size"></ion-icon>
+              <ion-icon color="danger" name="trash" class="icon-size" (click)="deleteStudent(student.id)"></ion-icon>
+              <ion-icon color="warning" name="pencil-sharp" class="icon-size" (click)="editStudentCredentials(student.id)"></ion-icon>
             </div>
           </ion-card>
-
-          <ion-card color="light" class="fixed-margin-card-modal">
-            <div class="icon-container">
-              <ion-icon name="accessibility" class="icon-size"></ion-icon>
-            </div>
-            
-            <div class="text-container">
-              <ion-card-header class="ion-text-center">
-                <ion-card-subtitle>Alejandro Díaz Raygoza</ion-card-subtitle>
-              </ion-card-header>
-            </div>
-
-            <div class="icon-container-v2">
-              <ion-icon color="danger" name="trash" class="icon-size"></ion-icon>
-            </div>
-          </ion-card>
-
-          <ion-card color="light" class="fixed-margin-card-modal">
-            <div class="icon-container">
-              <ion-icon name="accessibility" class="icon-size"></ion-icon>
-            </div>
-            
-            <div class="text-container">
-              <ion-card-header class="ion-text-center">
-                <ion-card-subtitle>Carlos Daniel Medina Sahagún</ion-card-subtitle>
-              </ion-card-header>
-            </div>
-
-            <div class="icon-container-v2">
-              <ion-icon color="danger" name="trash" class="icon-size"></ion-icon>
-            </div>
+    
+          <ion-card *ngIf="students.length === 0" color="light" class="fixed-margin-card-modal">
+            <ion-card-header class="ion-text-center">
+              <ion-card-subtitle>No se encontraron alumnos activos.</ion-card-subtitle>
+            </ion-card-header>
           </ion-card>
         </ion-content>
       </ng-template>

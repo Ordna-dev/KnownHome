@@ -64,40 +64,67 @@ ion-title {
     }
 }
 
-.low{
+.low {
     --ion-background-color: #E3FFDE;
     --ion-background-color: linear-gradient(225deg, #E3FFDE, #46C94D);
-    
     .photo-text{
-        color: rgb(135, 134, 134);
+        color: #2B2B2B;
     }
+
+    /*--ion-background-color: linear-gradient(90deg, rgba(154,255,152,1) 8%, rgba(93,252,78,1) 100%); // Verdes suaves
+    .photo-text {
+      color: #2B2B2B; // Texto oscuro para mejor legibilidad
+    }*/
 }
 
-.low-middle{
+.low-middle {
     --ion-background-color: #5DA2FF;
     --ion-background-color: linear-gradient(45deg, #5DA2FF, #89E0FF);
     .photo-text{
-        color: #878686;
-        color: linear-gradient(45deg,#878686, #ffffff);
+        color: #2B2B2B;
     }
+
+    /*--ion-background-color: linear-gradient(90deg, rgba(152,242,255,1) 8%, rgba(78,228,252,1) 100%); // Azules suaves
+    .photo-text {
+        color: #2B2B2B; // Texto oscuro para mejor legibilidad
+    }*/
 }
 
-.middle{
+.middle {
     --ion-background-color: #FFE25D;
     --ion-background-color: linear-gradient(45deg, #FFE25D, #FDF7DC);
     .photo-text{
-        color: #878686;
-        color: linear-gradient(45deg,#878686, #ffffff);
+        color: #2B2B2B;
     }
+
+    /*--ion-background-color: linear-gradient(90deg, rgba(255,150,150,1) 8%, rgba(252,78,78,1) 100%); //linear-gradient(90deg, rgba(253,255,170,1) 8%, rgba(251,255,85,1) 100%);
+    .photo-text {
+        color: #2B2B2B; // Texto oscuro para mejor legibilidad
+    }*/
 }
 
-.middle-danger{
+.middle-danger {
     --ion-background-color: #FF9C01;
     --ion-background-color: linear-gradient(45deg, #FF9C01, #FFD098);
-    
+    .photo-text{
+        color: #2B2B2B;
+    }
+
+    /*--ion-background-color: linear-gradient(90deg, rgba(255,221,126,1) 8%, rgba(252,200,78,1) 100%); // Naranjas
+    .photo-text {
+        color: #2B2B2B; // Texto oscuro para mejor legibilidad
+    }*/
 }
 
-.danger{
+.danger {
     --ion-background-color: #CC4545;
     --ion-background-color: linear-gradient(45deg, #CC4545, #f68a8a);
+    .photo-text{
+        color: #2B2B2B;
+    }
+    
+    /*--ion-background-color: linear-gradient(45deg, #CC4545, #f68a8a); // Rojos intensos
+    .photo-text {
+        color: #FFFFFF; // Texto claro para mejor legibilidad
+    }*/
 }

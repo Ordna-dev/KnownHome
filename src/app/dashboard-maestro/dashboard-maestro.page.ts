@@ -67,6 +67,7 @@ export class DashboardMaestroPage implements OnInit {
   password: string = '';
   grupos: any[] = []; 
   username: string = '';
+  students: any[] = [];
   studentUsername: string = '';
   studentPassword: string = '';
   studentUsernameFile: string = '';
@@ -170,7 +171,8 @@ export class DashboardMaestroPage implements OnInit {
 
   // AGM 30/01/2024 - Abrir o cerrar el cuarto modal
   setFourthOpen(isOpen: boolean) {
-    this.isFourthModalOpen = isOpen; 
+    this.isFourthModalOpen = isOpen;
+    this.getActiveStudents();
   }
 
   // AGM 31/01/2024 - Abrir o cerrar el quinto modal
@@ -530,12 +532,85 @@ export class DashboardMaestroPage implements OnInit {
         error: (error) => console.error('Error al buscar grupos:', error),
       });
     } else {
-      this.getGroups();  // Restaurar la lista original si no hay consulta
+      this.getGroups();  
     }
+  }
+
+  // AGM 04/06/2024 - Mostrar los alumnos activos registrados por el maestro
+  getActiveStudents() {
+    this.dashboardMaestroService.getActiveStudents().subscribe({
+      next: (response) => {
+        console.log('Response received:', response); // Log the full response
+        if (!response.error) {
+          this.students = response.estudiantes;
+          console.log('Active students found:', this.students); // Log the students found
+        } else {
+          this.students = [];
+          console.error(response.message || 'No se encontraron alumnos activos.');
+          console.log('No active students found or error:', response.message); // Log the error message
+        }
+      },
+      error: (error) => {
+        console.error('Error al buscar alumnos activos:', error);
+        console.log('HTTP request error:', error); // Log the HTTP request error
+      },
+    });
+  }
+
+  handleSearchInputStudents(event: CustomEvent) {
+    const query = (event.target as HTMLInputElement).value.toLowerCase();
+    if (query && query.trim() !== '') {
+        this.dashboardMaestroService.getStudentsByQuery(query).subscribe({
+            next: (response) => {
+                if (!response.error) {
+                    console.log('Students found:', response.estudiantes);
+                    this.students = response.estudiantes;
+                } else {
+                    this.students = [];
+                    console.error(response.message || 'No se encontraron alumnos.');
+                }
+            },
+            error: (error) => console.error('Error al buscar alumnos:', error),
+        });
+    } else {
+        this.getActiveStudents();
+    }
+  }
+
+  async deleteStudent(studentId: number) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar eliminación',
+      message: '¿Está seguro de dar de baja al alumno de la plataforma?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancelado');
+          },
+        },
+        {
+          text: 'Sí',
+          handler: async () => {
+            console.log('Eliminando alumno con ID:', studentId);
+            await this.dashboardMaestroService.deactivateStudent(studentId).toPromise(); 
+            this.getActiveStudents(); 
+          },
+        },
+      ],
+    });
+    await alert.present();
+    this.getActiveStudents(); 
+  }
+
+  editStudentCredentials(studentId: number) {
+    console.log('Editing student with ID:', studentId);
+    // Aquí puedes agregar la lógica para eliminar al estudiante con el ID proporcionado
   }
 
   // AGM 08/02/2024 - Al iniciar la página, automáticamente obtiene los grupos del maestro
   ngOnInit() {
     this.getGroups();
+    this.getActiveStudents();
   }
 }
