@@ -26,7 +26,8 @@ import {
   IonItem,
   IonTextarea,
   IonInput,
-  IonSearchbar
+  IonSearchbar,
+  IonButtons
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -57,7 +58,8 @@ import {
     IonItem,
     IonTextarea,
     IonInput,
-    IonSearchbar
+    IonSearchbar,
+    IonButtons
   ]  
 })
 export class DashboardMaestroPage implements OnInit {
@@ -68,6 +70,7 @@ export class DashboardMaestroPage implements OnInit {
   grupos: any[] = []; 
   username: string = '';
   students: any[] = [];
+  inactiveStudents: any[] = [];
   studentUsername: string = '';
   studentPassword: string = '';
   studentUsernameFile: string = '';
@@ -76,6 +79,7 @@ export class DashboardMaestroPage implements OnInit {
   successMessageArray: string[] = [];
   errorMessage: string = '';
   selectedGroup: any = { id: null, nombre: '', descripcion: '' };
+  selectedStudent: any = { id: null, username: '', password: '' };
 
   // AGM 30/01/2024 - Declaración de variables bandera para cerrar o abrir los modal
   isModalOpen = false;
@@ -84,6 +88,8 @@ export class DashboardMaestroPage implements OnInit {
   isFourthModalOpen = false; 
   isFifthModalOpen = false;
   isSixthModalOpen = false;
+  isSeventhModalOpen = false;
+  isEighthModalOpen = false;
 
   // AGM 30/01/2024 - Declarar la variable del archivo txt
   fileName: string | null = null;
@@ -189,6 +195,18 @@ export class DashboardMaestroPage implements OnInit {
   handleDocumentIconClick() {
     this.setSecondOpen(false); 
     this.setThirdOpen(true);   
+  }
+
+  setSeventhOpen(isOpen: boolean) {
+    this.getActiveStudents();
+    this.getInactiveStudents();
+    this.isSeventhModalOpen = isOpen;
+  }
+
+  setEighthOpen(isOpen: boolean) {
+    this.getActiveStudents();
+    this.getInactiveStudents();
+    this.isEighthModalOpen = isOpen;
   }
 
   //AGM 30/01/2024 - Manejar la selección del archivo txt de los alumnos
@@ -536,6 +554,27 @@ export class DashboardMaestroPage implements OnInit {
     }
   }
 
+  // Nuevo método para manejar la búsqueda en el modal
+  handleModalSearchInput(event: CustomEvent) {
+    const query = (event.target as HTMLInputElement).value.toLowerCase();
+    if (query && query.trim() !== '') {
+      this.dashboardMaestroService.getGroupsByQuery(query).subscribe({
+        next: (response) => {
+          if (!response.error) {
+            console.log(this.grupos);
+            this.grupos = response.grupos;
+          } else {
+            this.grupos = [];
+            console.error(response.message || 'No se encontraron grupos.');
+          }
+        },
+        error: (error) => console.error('Error al buscar grupos:', error),
+      });
+    } else {
+      this.getGroups();  
+    }
+  }
+
   // AGM 04/06/2024 - Mostrar los alumnos activos registrados por el maestro
   getActiveStudents() {
     this.dashboardMaestroService.getActiveStudents().subscribe({
@@ -557,6 +596,7 @@ export class DashboardMaestroPage implements OnInit {
     });
   }
 
+  // AGM 04/06/2024 - Buscar los alumnos activos registrados por el maestro
   handleSearchInputStudents(event: CustomEvent) {
     const query = (event.target as HTMLInputElement).value.toLowerCase();
     if (query && query.trim() !== '') {
@@ -577,40 +617,181 @@ export class DashboardMaestroPage implements OnInit {
     }
   }
 
+  // AGM 04/06/2024 - Dar de baja a los alumnos
   async deleteStudent(studentId: number) {
+    const confirmAlert = await this.alertController.create({
+        header: 'Confirmar eliminación',
+        message: '¿Está seguro de dar de baja al alumno de la plataforma?',
+        buttons: [
+            {
+                text: 'No',
+                role: 'cancel',
+                handler: () => {
+                    console.log('Cancelado');
+                },
+            },
+            {
+                text: 'Sí',
+                handler: async () => {
+                    console.log('Eliminando alumno con ID:', studentId);
+                    try {
+                        await this.dashboardMaestroService.deactivateStudent(studentId).toPromise(); // Realiza la eliminación
+                        this.getActiveStudents(); // Actualiza la lista de estudiantes activos
+
+                        // Mostrar alerta de éxito
+                        const successAlert = await this.alertController.create({
+                            header: 'Operación exitosa',
+                            message: 'Este estudiante ha sido dado de baja.',
+                            buttons: ['OK']
+                        });
+                        await successAlert.present();
+                    } catch (error) {
+                        console.error('Error al eliminar al alumno:', error);
+                    }
+                },
+            },
+        ],
+    });
+    await confirmAlert.present();
+  }
+
+  // AGM 04/06/2024 - Editar las credenciales del estudiante
+  prepareEditStudentCredentials(studentId: number) {
+    const student = this.students.find(s => s.id === studentId);
+    if (student) {
+      this.selectedStudent = { ...student };
+      this.setEighthOpen(true);
+    }
+  }
+
+  async modifyStudentCredentials() {
+    if (!this.selectedStudent.username.trim() || !this.selectedStudent.password) {
+      this.errorMessage = 'Por favor, rellene todos los campos.';
+      return;
+    }
+
+    this.dashboardMaestroService.editStudentCredentials(this.selectedStudent.id, this.selectedStudent.username, this.selectedStudent.password).subscribe({
+      next: async (response) => {
+        if (response.error) {
+          this.errorMessage = response.message;
+        } else {
+          const finalizeModification = () => {
+            this.setEighthOpen(false);
+            this.errorMessage = '';
+          };
+
+          const successAlert = await this.alertController.create({
+            header: 'Operación exitosa',
+            message: 'El alumno ha sido actualizado exitosamente.',
+            buttons: [{
+              text: 'OK',
+              role: 'confirm',
+              handler: () => finalizeModification()
+            }],
+            backdropDismiss: true 
+          });
+
+          successAlert.onDidDismiss().then((detail) => {
+            if (detail.role === 'backdrop' || detail.role === 'cancel' || detail.role === 'confirm') {
+              finalizeModification();
+            }
+          });
+
+          await successAlert.present();
+        }
+      },
+      error: async (error) => {
+        console.error('Error from server:', error);
+        this.errorMessage = error.error?.message || 'Error al actualizar al alumno.';
+      }
+    });
+  }
+
+  getInactiveStudents() {
+    this.dashboardMaestroService.getInactiveStudents().subscribe({
+      next: (response) => {
+        console.log('Response received:', response);
+        if (!response.error) {
+          this.inactiveStudents = response.estudiantes;
+          console.log('Inactive students found:', this.inactiveStudents);
+        } else {
+          this.inactiveStudents = [];
+          console.error(response.message || 'No se encontraron alumnos inactivos.');
+        }
+      },
+      error: (error) => {
+        console.error('Error al buscar alumnos inactivos:', error);
+      },
+    });
+  }
+
+  handleSearchInputInactiveStudents(event: CustomEvent) {
+    const query = (event.target as HTMLInputElement).value.toLowerCase();
+    if (query && query.trim() !== '') {
+      this.dashboardMaestroService.getInactiveStudentsByQuery(query).subscribe({
+        next: (response) => {
+          if (!response.error) {
+            console.log('Inactive students found:', response.estudiantes);
+            this.inactiveStudents = response.estudiantes;
+          } else {
+            this.inactiveStudents = [];
+            console.error(response.message || 'No se encontraron alumnos inactivos.');
+          }
+        },
+        error: (error) => console.error('Error al buscar alumnos inactivos:', error),
+      });
+    } else {
+      this.getInactiveStudents();
+    }
+  }
+
+  async reactivateStudent(studentId: number) {
+    console.log('Reactivating student with ID:', studentId);
     const alert = await this.alertController.create({
-      header: 'Confirmar eliminación',
-      message: '¿Está seguro de dar de baja al alumno de la plataforma?',
+      header: 'Confirmación',
+      message: '¿Está seguro de dar de alta al alumno?',
       buttons: [
         {
           text: 'No',
           role: 'cancel',
           handler: () => {
-            console.log('Cancelado');
+            console.log('Cancel clicked');
           },
         },
         {
           text: 'Sí',
-          handler: async () => {
-            console.log('Eliminando alumno con ID:', studentId);
-            await this.dashboardMaestroService.deactivateStudent(studentId).toPromise(); 
-            this.getActiveStudents(); 
+          handler: () => {
+            this.dashboardMaestroService.activateStudent(studentId).subscribe({
+              next: async (response) => {
+                if (!response.error) {
+                  const reactivationAlert = await this.alertController.create({
+                    header: 'Operación exitosa',
+                    message: 'El alumno ha sido dado de alta.',
+                    buttons: ['OK']
+                  });
+                  await reactivationAlert.present();
+                  console.log(`Student with ID ${studentId} reactivated`);
+                  this.getInactiveStudents();  
+                } else {
+                  console.error('Error reactivating student:', response.message);
+                }
+              },
+              error: (error) => {
+                console.error('Error reactivating student:', error);
+              }
+            });
           },
         },
       ],
     });
-    await alert.present();
-    this.getActiveStudents(); 
-  }
 
-  editStudentCredentials(studentId: number) {
-    console.log('Editing student with ID:', studentId);
-    // Aquí puedes agregar la lógica para eliminar al estudiante con el ID proporcionado
+    await alert.present();
   }
 
   // AGM 08/02/2024 - Al iniciar la página, automáticamente obtiene los grupos del maestro
   ngOnInit() {
     this.getGroups();
     this.getActiveStudents();
+    this.getInactiveStudents();
   }
 }

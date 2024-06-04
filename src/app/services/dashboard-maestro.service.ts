@@ -42,6 +42,25 @@ export class DashboardMaestroService {
         return this.http.delete(`${this.baseUrl}/alumno/deactivate-student/${studentId}`, { withCredentials: true });
     }
 
+    editStudentCredentials(studentId: number, username: string, password: string): Observable<any> {
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('password', password);
+        return this.http.put(`${this.baseUrl}/alumno/edit-student/${studentId}`, formData, { withCredentials: true });
+    }
+
+    getInactiveStudents(): Observable<any> {
+        return this.http.get(`${this.baseUrl}/alumno/inactive-students`, { withCredentials: true });
+    }
+
+    getInactiveStudentsByQuery(query: string): Observable<any> {
+        return this.http.get(`${this.baseUrl}/alumno/deactivated-students?query=${query}`, { withCredentials: true });
+    }
+
+    activateStudent(studentId: number): Observable<any> {
+        return this.http.post(`${this.baseUrl}/alumno/activate-student/${studentId}`, {}, { withCredentials: true });
+    }
+
     createGroupService(nombre: string, descripcion: string): Observable<any> {
         const formData = new FormData();
         formData.append('nombre', nombre);
