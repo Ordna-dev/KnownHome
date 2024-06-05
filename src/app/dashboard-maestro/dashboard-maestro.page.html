@@ -236,7 +236,7 @@
           <ion-searchbar animated="true" placeholder="Buscar grupo por nombre" color="medium" [debounce]="500" (ionInput)="handleModalSearchInput($event)"></ion-searchbar>
           
           <!-- Iterar sobre los grupos con *ngFor -->
-          <ion-card color="light" class="fixed-margin-card-modal" *ngFor="let grupo of grupos">
+          <ion-card color="light" class="fixed-margin-card-modal" *ngFor="let grupo of groupsModal">
             <div class="icon-container">
               <ion-icon name="people-outline" class="icon-size"></ion-icon>
             </div>
@@ -260,7 +260,7 @@
             </div>
           </ion-card>
           
-          <ion-card color="light" class="fixed-margin-card-modal" *ngIf="grupos.length === 0">
+          <ion-card color="light" class="fixed-margin-card-modal" *ngIf="groupsModal.length === 0">
             <ion-card-header class="ion-text-center">
               <ion-card-subtitle>No se encontraron grupos activos.</ion-card-subtitle>
             </ion-card-header>

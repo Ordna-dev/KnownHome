@@ -68,6 +68,7 @@ export class DashboardMaestroPage implements OnInit {
   message: string = '';
   password: string = '';
   grupos: any[] = []; 
+  groupsModal: any[] = []; 
   username: string = '';
   students: any[] = [];
   inactiveStudents: any[] = [];
@@ -188,6 +189,7 @@ export class DashboardMaestroPage implements OnInit {
 
   // AGM 31/01/2024 - Abrir o cerrar el sexto modal
   setSixthOpen(isOpen: boolean) {
+    this.getGroupsForModal();
     this.isSixthModalOpen = isOpen; 
   }
 
@@ -364,6 +366,7 @@ export class DashboardMaestroPage implements OnInit {
           const handleClose = () => {
             this.setOpen(false);
             this.getGroups();
+            this.getGroupsForModal();
           };
   
           const alert = await this.alertController.create({
@@ -420,8 +423,12 @@ export class DashboardMaestroPage implements OnInit {
     this.dashboardMaestroService.deleteGroupService(groupId).subscribe({
       next: async (data) => {
         console.log('Grupo eliminado con exito:', data);
+
+        this.getGroupsForModal();
+        this.getGroups();
   
         const handleAlertClose = () => {
+          this.getGroupsForModal();
           this.getGroups();
         };
   
@@ -494,6 +501,7 @@ export class DashboardMaestroPage implements OnInit {
             this.setSixthOpen(false);
             this.errorMessage = '';
             this.getGroups();
+            this.getGroupsForModal();
           };
   
           const alert = await this.alertController.create({
@@ -533,6 +541,16 @@ export class DashboardMaestroPage implements OnInit {
     });
   }
 
+  getGroupsForModal() { // Nuevo método para obtener los grupos del modal
+    this.dashboardMaestroService.getGroupsService().subscribe({
+      next: (json) => {
+        console.log(json);
+        this.groupsModal = json.grupos; // Guardar los grupos en la nueva lista
+      },
+      error: (error) => console.error('Error al obtener los grupos para el modal:', error)
+    });
+  }
+
   // AGM 13/02/2024 - Buscar los grupos creados o administrados por el maestro
   handleSearchInput(event: CustomEvent) {
     const query = (event.target as HTMLInputElement).value.toLowerCase();
@@ -561,17 +579,17 @@ export class DashboardMaestroPage implements OnInit {
       this.dashboardMaestroService.getGroupsByQuery(query).subscribe({
         next: (response) => {
           if (!response.error) {
-            console.log(this.grupos);
-            this.grupos = response.grupos;
+            console.log(this.groupsModal);
+            this.groupsModal = response.grupos;
           } else {
-            this.grupos = [];
+            this.groupsModal = [];
             console.error(response.message || 'No se encontraron grupos.');
           }
         },
         error: (error) => console.error('Error al buscar grupos:', error),
       });
     } else {
-      this.getGroups();  
+      this.getGroupsForModal();  
     }
   }
 
@@ -791,6 +809,7 @@ export class DashboardMaestroPage implements OnInit {
   // AGM 08/02/2024 - Al iniciar la página, automáticamente obtiene los grupos del maestro
   ngOnInit() {
     this.getGroups();
+    this.getGroupsForModal();
     this.getActiveStudents();
     this.getInactiveStudents();
   }
