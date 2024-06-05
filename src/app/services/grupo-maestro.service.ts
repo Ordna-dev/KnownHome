@@ -29,6 +29,17 @@ export class GrupoMaestroService {
     return this.http.get(`${this.baseUrl}/grupo-alumno/${grupoId}/enrolled-students`, { withCredentials: true });
   }
 
+  getEnrolledStudentsModal(grupoId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/grupo-alumno/${grupoId}/enrolled-students`, { withCredentials: true });
+  }
+
+  searchEnrolledStudents(grupoId: number, query: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/grupo-alumno/${grupoId}/search-enrolled-students`, {
+      params: new HttpParams().set('query', query),
+      withCredentials: true
+    });
+  }
+
   removeStudentFromGroup(studentId: number, groupId: number): Observable<any> {
     const formData = new FormData();
     formData.append('id_alumno', studentId.toString());

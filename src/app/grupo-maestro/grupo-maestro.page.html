@@ -61,6 +61,8 @@
       </div>
     </ion-card>
 
+    <ion-searchbar animated="true" placeholder="Buscar alumno por nombre" color="medium" [debounce]="500" (ionInput)="handleSearchInput($event)"></ion-searchbar>
+
     <!-- AGM 31/01/2024 - Sección de los alumnos -->
     <b><h3 class="ion-text-center">Alumnos:</h3></b>
 
@@ -176,8 +178,10 @@
         </ion-header>
         
         <ion-content class="ion-padding ion-text-center">
-          <ng-container *ngIf="enrolledStudents?.length; else noStudentsTemplate">
-            <ion-card color="light" class="fixed-margin-card-modal" *ngFor="let student of enrolledStudents">
+          <ion-searchbar animated="true" placeholder="Buscar alumno por nombre" color="medium" [debounce]="500" (ionInput)="handleModalSearchInput($event)"></ion-searchbar>
+    
+          <ng-container *ngIf="modalEnrolledStudents?.length; else noStudentsTemplate">
+            <ion-card color="light" class="fixed-margin-card-modal" *ngFor="let student of modalEnrolledStudents">
               <div class="icon-container">
                 <ion-icon name="accessibility" class="icon-size"></ion-icon>
               </div>
@@ -187,13 +191,13 @@
                   <ion-card-subtitle>{{ student.nombre }}</ion-card-subtitle>
                 </ion-card-header>
               </div>
-
+    
               <div class="icon-container-v2">
                 <ion-icon color="danger" name="trash" class="icon-size" (click)="confirmStudentDeletion(student.id_alumno)"></ion-icon>
               </div>
             </ion-card>
           </ng-container>
-
+    
           <ng-template #noStudentsTemplate>
             <ion-card color="light" class="fixed-margin-card-teacher">
               <div class="text-container">
@@ -206,6 +210,5 @@
         </ion-content>
       </ng-template>
     </ion-modal>
-
   </div>
 </ion-content>

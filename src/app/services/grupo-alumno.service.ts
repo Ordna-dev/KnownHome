@@ -18,6 +18,13 @@ export class GrupoAlumnoService {
     return this.http.get(`${this.baseUrl}/grupo-alumno/${groupId}/students`, { withCredentials: true });
   }
 
+  searchStudents(groupId: number, query: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/grupo-alumno/${groupId}/search-students`, { 
+      params: { query },
+      withCredentials: true 
+    });
+  }
+
   leaveGroup(groupId: number): Observable<any> {
     const formData = new FormData();
     formData.append('id_grupo', groupId.toString());
@@ -48,7 +55,6 @@ export class GrupoAlumnoService {
   getStudentPhotoDetail(groupId: number,  studentId: number, photoId: number): Observable<any>{
     return this.http.get(`${this.baseUrl}/imagenes-alumno/group/${groupId}/student-photos/${studentId}/detail/${photoId}`, {withCredentials: true})
   }
-
   
   getTeacherPhotos(groupId: number, teacherId: number) : Observable<any>{
     return this.http.get(`${this.baseUrl}/imagenes-alumno/group/${groupId}/teacher-photos/${teacherId}`, {withCredentials: true})
@@ -57,5 +63,4 @@ export class GrupoAlumnoService {
   getTeacherPhotoDetail(groupId: number,  teacherId: number, photoId: number): Observable<any>{
     return this.http.get(`${this.baseUrl}/imagenes-alumno/group/${groupId}/teacher-photos/${teacherId}/detail/${photoId}`, {withCredentials: true})
   }
-
 }

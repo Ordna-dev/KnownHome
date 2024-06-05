@@ -23,7 +23,8 @@ import {
   IonButton,
   IonText,
   IonTitle,
-  IonCardSubtitle
+  IonCardSubtitle,
+  IonSearchbar
 } from '@ionic/angular/standalone';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -57,7 +58,8 @@ import { EvaluatePhotoComponent } from '../componentes/evaluate-photo/evaluate-p
     IonButton,
     IonText,
     IonTitle,
-    IonCardSubtitle
+    IonCardSubtitle,
+    IonSearchbar
   ],
   providers: [ModalController],
 })
@@ -66,6 +68,7 @@ export class GrupoMaestroPage implements OnInit {
   grupoId!: number;
   errorMessage: string = '';
   enrolledStudents: any[] = [];
+  modalEnrolledStudents: any[] = [];
   imageSource: any;
   
   constructor(
@@ -421,6 +424,18 @@ export class GrupoMaestroPage implements OnInit {
     });
   }
 
+  getEnrolledStudentsModal(groupId: number) {
+    this.grupoMaestroService.getEnrolledStudentsModal(groupId).subscribe({
+      next: (response) => {
+        this.modalEnrolledStudents = response.estudiantes;
+        console.log('Alumnos inscritos en el modal:', this.modalEnrolledStudents);
+      },
+      error: (error) => {
+        console.error('Error al obtener los alumnos inscritos en el modal:', error);
+      }
+    });
+  }
+
   // AGM 16/02/2024 - Cargar los datos del grupo (Parte del inicio de página)
   loadGroupData(groupId: number) {
     this.grupoMaestroService.getGroup(groupId).subscribe({
@@ -507,6 +522,50 @@ export class GrupoMaestroPage implements OnInit {
 
   }
 
+  handleSearchInput(event: CustomEvent) {
+    const query = (event.target as HTMLInputElement).value.toLowerCase();
+    if (query && query.trim() !== '') {
+      this.grupoMaestroService.searchEnrolledStudents(this.grupoId, query).subscribe({
+        next: (response) => {
+          if (!response.error) {
+            this.enrolledStudents = response.estudiantes;
+          } else {
+            this.enrolledStudents = [];
+            console.error(response.mensaje || 'No se encontraron alumnos.');
+          }
+        },
+        error: (error) => {
+          console.error('Error al buscar alumnos:', error);
+          this.enrolledStudents = [];
+        }
+      });
+    } else {
+      this.getEnrolledStudents(this.grupoId);
+    }
+  }
+
+  handleModalSearchInput(event: CustomEvent) {
+    const query = (event.target as HTMLInputElement).value.toLowerCase();
+    if (query && query.trim() !== '') {
+      this.grupoMaestroService.searchEnrolledStudents(this.grupoId, query).subscribe({
+        next: (response) => {
+          if (!response.error) {
+            this.modalEnrolledStudents = response.estudiantes;
+          } else {
+            this.modalEnrolledStudents = [];
+            console.error(response.mensaje || 'No se encontraron alumnos.');
+          }
+        },
+        error: (error) => {
+          console.error('Error al buscar alumnos en el modal:', error);
+          this.modalEnrolledStudents = [];
+        }
+      });
+    } else {
+      this.getEnrolledStudentsModal(this.grupoId);
+    }
+  }
+
   // AGM 11/02/2024 Lógica al iniciar la página
   ngOnInit() {
     const navigation = this.router.getCurrentNavigation();
@@ -517,6 +576,7 @@ export class GrupoMaestroPage implements OnInit {
         console.log('Grupo-maestro: groupId:', this.grupoId);
         this.loadGroupData(this.grupoId);
         this.getEnrolledStudents(this.grupoId);
+        this.getEnrolledStudentsModal(this.grupoId);
       } else {
         console.error('groupId no está presente en el estado de navegación.');
       }
