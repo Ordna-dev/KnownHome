@@ -8,7 +8,6 @@ import { AlertController } from '@ionic/angular/standalone';
 import { GrupoMaestroService } from '../../services/grupo-maestro.service';
 import { EvaluatePhotoComponent } from '../evaluate-photo/evaluate-photo.component';
 
-
 @Component({
   selector: 'app-gallery',
   templateUrl: './gallery.component.html',
@@ -30,7 +29,7 @@ export class GalleryComponent{
 
   @Input() images:any[] | [] = [];
   @Input() grupoId: any;
-  @Input() studentId: number | null = null;
+  @Input() studentId: any;
   @Input() teacherLogged: any;
   @Input() teacherImgs: any;
 
@@ -43,6 +42,146 @@ export class GalleryComponent{
 
   dismiss(){
     return this.modalCtrl.dismiss();
+  }
+
+  async confirmDeleteImage(photoId: number) {
+    const alert = await this.alertController.create({
+      header: 'Confirmación',
+      message: '¿Estas seguro de eliminar la imagen del alumno? Una vez borrada no se puede recuperar.',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel'
+        },
+        {
+          text: 'Si',
+          handler: () => {
+            this.deleteImageFromStudent(photoId);
+          }
+        }
+      ],
+      backdropDismiss: true
+    });
+    await alert.present();
+  }
+
+  deleteImageFromStudent(photoId: number) {
+    this.grupoMaestroService.deleteStudentPhoto(this.grupoId, this.studentId, photoId).subscribe({
+      next: async (response) => {
+        if (response.error == false) {
+          const finalizeDeletion = () => {
+            this.refreshModal();
+          };
+  
+          const alert = await this.alertController.create({
+            header: 'Eliminación exitosa',
+            message: 'La imagen del alumno ha sido borrada permanentemente',
+            buttons: [{
+              text: 'Ok',
+              handler: () => finalizeDeletion()
+            }],
+            backdropDismiss: true
+          });
+  
+          alert.onDidDismiss().then((detail) => {
+            if (detail.role === 'backdrop' || detail.role === 'cancel' || detail.role === 'confirm') {
+              finalizeDeletion();
+            }
+          });
+  
+          await alert.present();
+        } else {
+          this.showAlert('Error', response.message, ['Aceptar']);
+        }
+      },
+      error: async (error) => {
+        let message = 'No se pudo eliminar la imagen. Por favor intente de nuevo';
+        this.showAlert('Error', message, ['Aceptar']);
+      }
+    });
+  }
+
+  refreshModal() {
+    this.grupoMaestroService.getStudentPhotos(this.grupoId, this.studentId).subscribe({
+      next: (response) => {
+        if (response.error == false) {
+          this.images = response.images;
+        }
+      },
+      error: (error) => {
+        console.error('Error al refrescar las imágenes: ', error);
+      }
+    });
+  }
+
+  async confirmDeleteImageFromTeacher(photoId: number) {
+    const alert = await this.alertController.create({
+      header: 'Confirmación',
+      message: '¿Estás seguro de eliminar la imagen? Una vez borrada no se puede recuperar.',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel'
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            this.deleteImageFromTeacher(photoId);
+          }
+        }
+      ],
+      backdropDismiss: true
+    });
+    await alert.present();
+  }
+
+  deleteImageFromTeacher(photoId: number) {
+    this.grupoMaestroService.deleteTeacherPhoto(this.grupoId, photoId).subscribe({
+      next: async (response) => {
+        if (!response.error) {
+          const finalizeDeletion = () => {
+            this.refreshModalFromTeacher();
+          };
+  
+          const alert = await this.alertController.create({
+            header: 'Eliminación exitosa',
+            message: 'La imagen ha sido borrada permanentemente',
+            buttons: [{
+              text: 'Ok',
+              handler: () => finalizeDeletion()
+            }],
+            backdropDismiss: true
+          });
+  
+          alert.onDidDismiss().then((detail) => {
+            if (detail.role === 'backdrop' || detail.role === 'cancel' || detail.role === 'confirm') {
+              finalizeDeletion();
+            }
+          });
+  
+          await alert.present();
+        } else {
+          this.showAlert('Error', response.message, ['Aceptar']);
+        }
+      },
+      error: async (error) => {
+        let message = 'No se pudo eliminar la imagen. Por favor intente de nuevo';
+        this.showAlert('Error', message, ['Aceptar']);
+      }
+    });
+  }
+
+  refreshModalFromTeacher() {
+    this.grupoMaestroService.getTeacherPhotos(this.grupoId).subscribe({
+      next: (response) => {
+        if (!response.error) {
+          this.images = response.images;
+        }
+      },
+      error: (error) => {
+        console.error('Error al refrescar las imágenes: ', error);
+      }
+    });
   }
 
   async showAlert(header: string, message:string, buttons:any, backDropDismiss:boolean = true){

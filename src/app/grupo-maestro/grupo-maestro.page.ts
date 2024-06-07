@@ -502,6 +502,7 @@ export class GrupoMaestroPage implements OnInit {
               }],
               backdropDismiss: true // Permite cerrar la alerta tocando fuera
             });
+            console.log(response.exception);
             await alert.present();
           }
         },

@@ -20,59 +20,79 @@ ion-title {
 //Contenedor para mostrar las imagenes de x alumno o profesor
 .image-authorization-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-top: 1px solid #ccc; 
-    padding-top: 20px; 
-    padding-bottom: 25px; 
-
-    img{
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+    padding-bottom: 25px;
+  
+    .image-button-container {
+      display: flex;
+      align-items: center;
+  
+      .button-group {
+        display: flex;
+        flex-direction: column; // Para que los botones estén uno encima del otro
+        margin-left: 20px;
+  
+        ion-button {
+          margin-bottom: 10px; // Espacio entre los botones
+        }
+      }
+  
+      img {
         max-width: 200px;
         height: auto;
         position: relative;
-    }
-
-    .image-authorized img{
+      }
+  
+      .image-authorized img {
         box-shadow: 2px 2px 16px lightgreen;
-    }
-    
-    .image-unauthorized img{
+      }
+  
+      .image-unauthorized img {
         box-shadow: 2px 2px 16px lightcoral;
-    }
-
-    .slideLeft{
+      }
+  
+      .slideLeft {
         animation: slideLeftAnimation 1s ease-in-out forwards;
         animation-fill-mode: forwards;
-    }
-    
-    .slideRight{
+      }
+  
+      .slideRight {
         animation: slideRightAnimation 1s ease-in-out forwards;
         animation-fill-mode: forwards;
-        
+      }
     }
-
+  
+    .card-image-tooked {
+      max-width: 200px;
+      height: auto;
+    }
+  
     @keyframes slideLeftAnimation {
-        from {
-            transform: translateX(-50px);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
+      from {
+        transform: translateX(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
     }
-
+  
     @keyframes slideRightAnimation {
-        from {
-            transform: translateX(50px);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
+      from {
+        transform: translateX(50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
     }
-}
+}  
 
 //Contenedor en caso de que no haya imagenes para mostrar
 .no-images-container{

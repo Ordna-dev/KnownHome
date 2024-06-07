@@ -15,12 +15,20 @@
     </div>
     <!-- Formato para la vista del maestro consultando sus imagenes -->
     <div *ngIf="teacherLogged == 1 && teacherImgs == 1">
-      <img [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="teacherShowImageDetail(image.user_id, image.image_id)" [src]="'http://localhost:5000/'+image.image_path" class="card-image-tooked">
+      <div class="image-button-container">
+        <img [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="teacherShowImageDetail(image.user_id, image.image_id)" [src]="'http://localhost:5000/'+image.image_path" class="card-image-tooked">
+        <ion-button color="danger" (click)="confirmDeleteImageFromTeacher(image.image_id)"><ion-icon color="light" name="trash"></ion-icon></ion-button>
+      </div>
     </div>
     <!-- Formato para la vista del maestro consultando las imagenes del alumno -->
-    <div *ngIf="teacherLogged == 1 && teacherImgs == 0" [ngClass]="(image.authorized == 1 ? 'image-authorized' : 'image-unauthorized')">
-      <img *ngIf="teacherLogged == 1 && image.authorized == 1" [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="teacherShowImageDetail(image.user_id, image.image_id)" [src]="'http://localhost:5000/'+image.image_path" class="card-image-tooked">
-      <img *ngIf="teacherLogged == 1 && image.authorized == 0" [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="checkStudentImage(image.image_id)" [src]="'http://localhost:5000/'+image.image_path" class="card-image-tooked">
+    <div *ngIf="teacherLogged == 1 && teacherImgs == 0">
+      <div class="image-button-container">
+        <img [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="teacherShowImageDetail(image.user_id, image.image_id)" [src]="'http://localhost:5000/'+image.image_path" class="card-image-tooked">
+        <div class="button-group">
+          <ion-button color="danger" (click)="confirmDeleteImage(image.image_id)"><ion-icon color="light" name="trash"></ion-icon></ion-button>
+          <ion-button *ngIf="teacherLogged == 1 && image.authorized == 0" (click)="checkStudentImage(image.image_id)" color="success"><ion-icon name="checkbox-outline" style="color: black;"></ion-icon></ion-button>
+        </div>
+      </div>
     </div>
   </div>
 </ion-content>

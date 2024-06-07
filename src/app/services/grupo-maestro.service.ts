@@ -100,4 +100,12 @@ export class GrupoMaestroService {
 
     return this.http.put(`${this.baseUrl}/imagenes-maestro/group/${groupId}/update-image-object/${imageId}`, body, options);
   }
+
+  deleteStudentPhoto(groupId: number, studentId: number, photoId: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/imagenes-maestro/group/${groupId}/student-photos/${studentId}/photo/${photoId}/delete`, { withCredentials: true });
+  }  
+
+  deleteTeacherPhoto(groupId: number, photoId: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/imagenes-maestro/group/${groupId}/teacher-photo/${photoId}/delete`, { withCredentials: true });
+  }  
 }
