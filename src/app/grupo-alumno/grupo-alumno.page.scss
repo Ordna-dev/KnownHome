@@ -16,6 +16,15 @@
     text-align: center; 
 }
 
+.teacher-main-text {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.student-main-text {
+    font-size: 28px;
+}
+
 // Ícono a la izquierda - Alineado a la izquierda en el grupo de cabecera
 .icon-left-back {
     font-size: 40px;
@@ -27,11 +36,16 @@
 }
 
 // Usado en el menú deslizante
+// Configuracion especifica del primer h1 en el menu
+.menu-h1 {
+    margin-top: 5px;
+}
+
 // Estilos para títulos secundarios - Aplicados a los títulos dentro de ion-content
 ion-content h1:not(:first-child) {
     border-top: 1px solid #ccc;
     padding-top: 10px;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 // Sección de fotografías del profesor y alumno
@@ -41,6 +55,16 @@ ion-content h1:not(:first-child) {
     align-items: center; 
     margin-left: 5%;
     margin-right: 5%;
+    padding: 5px;
+}
+
+.fixed-margin-card-student {
+    display: flex;
+    align-items: center; 
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 20px;
+    padding: 5px;
 }
 
 // Contenedor de íconos con margen izquierdo - Usado en las tarjetas de alumnos y el profesor
@@ -96,5 +120,19 @@ ion-title {
 .fixed-margin-card-modal {
     display: flex;
     align-items: center; 
+    padding: 5px;
+    margin-bottom: 20px;
 }
  
+.search-bar {
+    width: 93%; 
+    max-width: 500px; 
+    margin: 0 auto; 
+    margin-top: 30px;
+}  
+
+.search-bar-modal {
+    width: 93%; 
+    max-width: 500px; 
+    margin: 0 auto; 
+}

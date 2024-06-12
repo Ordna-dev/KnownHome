@@ -4,6 +4,7 @@
     text-align: center; 
     margin-top: 10%; 
     margin-bottom: 20px;
+    font-size: 28px;
 }
 
 // Estilos para el margen fijo de las tarjetas
@@ -29,11 +30,15 @@ ion-item {
     margin-top: 30px;
 }
 
+.menu-h1 {
+    margin-top: 5px;
+}
+
 // Estilos para los encabezados H1, excepto el primero
 ion-content h1:not(:first-child) {
     border-top: 1px solid #ccc;
     padding-top: 10px;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 // Estilos para las tarjetas de grupo con margen fijo
@@ -42,11 +47,14 @@ ion-content h1:not(:first-child) {
     align-items: center; 
     margin-left: 5%;
     margin-right: 5%;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    padding: 3px;
 }
 
 // Contenedor de los iconos - Usado en toda la pagina en general
 .icon-container {
-    margin-left: 10px; 
+    margin-left: 20px; 
     flex-grow: 0; 
     flex-shrink: 0;
 }
@@ -71,7 +79,7 @@ ion-content h1:not(:first-child) {
 
 // Tamaño de ícono variante 2 - Usado en las tarjetas de la sección de grupos
 .icon-size-v2 {
-    font-size: 30px; 
+    font-size: 40px; 
 }
 
 // Margen para tarjetas dentro de modales - Usado en las tarjetas de los modals
@@ -99,5 +107,16 @@ ion-content h1:not(:first-child) {
 
 // Separador entre input y botones - Usado en el modal de registro a grupo
 .separator {
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    width: 93%; 
+    max-width: 500px; 
+    margin: 0 auto; 
+    margin-top: 30px;
+}  
+
+.error-message-modal {
     margin-bottom: 20px;
 }

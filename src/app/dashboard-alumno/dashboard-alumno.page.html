@@ -1,11 +1,22 @@
 <!-- AGM 30/01/2024 - Menú deslizante del alumno en el dashboard -->
 <ion-menu side="end" contentId="main-content4">
+  <ion-header>
+    <ion-toolbar color="light">
+      <div class="ion-text-end">
+        <ion-title>Menú de usuario</ion-title>
+      </div>
+    </ion-toolbar>
+  </ion-header>
   <ion-content class="ion-padding ion-text-right"> 
-    <h1>Grupos</h1>
-    <h5 (click)="setOpen(true)">Registrarse a un grupo</h5>
-
+    <h1 class="menu-h1">Grupos</h1>
+    <ion-text color="medium">
+      <h5 (click)="setOpen(true)">Registrarse a un grupo</h5>
+    </ion-text>
+    
     <h1>Sesión</h1>
-    <h5 (click)="logOut()">Cerrar sesión</h5>
+    <ion-text color="danger">
+      <h5 (click)="logOut()">Cerrar sesión</h5>
+    </ion-text>
   </ion-content>
 </ion-menu>
 
@@ -19,7 +30,14 @@
     </ion-refresher>
 
     <!-- AGM 30/01/2024 - Mensaje de bienvenida -->
-    <b><h1 class="welcome-message">¡Bienvenido {{ username }}!</h1></b>
+    <b>
+      <h1 class="welcome-message">
+        ¡Bienvenido! <br>
+        <ion-text color="primary">
+          {{ username }}
+        </ion-text>
+      </h1>
+    </b>
 
     <!-- AGM 30/01/2024 - Tarjeta de registro en grupo -->
     <ion-card class="fixed-margin">
@@ -34,9 +52,10 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- AGM 30/01/2024 - Mensaje de 'Mis grupos' -->
-    <ion-searchbar animated="true" placeholder="Buscar grupo por nombre" color="medium" [debounce]="1000" (ionInput)="handleSearchInput($event)"></ion-searchbar>
+    <!-- AGM 12/06/2024 - Barra de busqueda -->
+    <ion-searchbar class="search-bar" placeholder="Buscar grupo por nombre" color="light" [debounce]="1000" (ionInput)="handleSearchInput($event)"></ion-searchbar>
     
+    <!-- AGM 30/01/2024 - Mensaje de 'Mis grupos' -->
     <b><h3 class="groups-message">Mis grupos:</h3></b>
 
     <!-- Contenedor para las tarjetas de los grupos -->
@@ -59,7 +78,7 @@
         </div>
         
         <div class="icon-container-v2">
-          <ion-icon name="chevron-forward-outline" class="icon-size-v2" (click)="goToGroup(grupo.id)"></ion-icon>
+          <ion-icon name="chevron-forward-circle" class="icon-size-v2" color="success" (click)="goToGroup(grupo.id)"></ion-icon>
         </div>
       </ion-card>
     </div>
@@ -68,7 +87,7 @@
     <ng-template #noGroupsTemplate>
       <ion-card color="light" class="fixed-margin-card">
         <ion-card-content class="ion-text-center">
-          No estás inscrito en ningún grupo todavía.
+          Grupos no encontrados.
         </ion-card-content>
       </ion-card>
     </ng-template>
@@ -92,7 +111,7 @@
             <ion-input placeholder="Código del grupo" [(ngModel)]="groupCode"></ion-input>
           </ion-item>
           <!-- Mensaje de error -->
-          <div>
+          <div class="error-message-modal">
             <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
           </div>
           
