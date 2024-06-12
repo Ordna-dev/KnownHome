@@ -9,27 +9,27 @@
 
   <!-- AGM 25/01/2024 - Imagen de perfil del maestro -->
   <ion-avatar class="image-container">
-    <img alt="Silhouette of a person's head" src="https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D"/>
+    <img src="assets/app/teacher-login.png"/>
   </ion-avatar>
 
   <!-- AGM 25/01/2024 - Datos modificables del maestro -->
   <div class="custom-div">
-    <h2>Nombre de usuario</h2>
+    <h2>Nombre de usuario:</h2>
     <ion-text color="medium">
       <h5>
         {{ username }}
-        <ion-icon name="pencil-sharp" (click)="setOpen(true)"></ion-icon>
+        <ion-icon name="pencil-sharp" color="warning" (click)="setOpen(true)"></ion-icon>
       </h5>
     </ion-text>
-    <h5>Contraseña</h5> 
+    <h2>Contraseña:</h2> 
     <ion-text color="medium">
       <h5>
         ********
-        <ion-icon name="pencil-sharp" (click)="setSecondOpen(true)"></ion-icon>
+        <ion-icon name="pencil-sharp" color="warning" (click)="setSecondOpen(true)"></ion-icon>
       </h5>
     </ion-text>
-    <h5>Fecha de registro:</h5> 
-    <h5>(Día-Mes-Año)</h5>
+    <h2>Fecha de registro:</h2> 
+    <h2>(Día-Mes-Año)</h2>
     <h5>
       <ion-text color="medium">
         <i>

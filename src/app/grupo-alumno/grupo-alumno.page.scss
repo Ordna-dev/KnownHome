@@ -58,6 +58,7 @@ ion-content h1:not(:first-child) {
     padding: 5px;
 }
 
+// Margen fijo para tarjetas - Usado en las tarjetas de la sección de fotografías del alumno
 .fixed-margin-card-student {
     display: flex;
     align-items: center; 
@@ -124,6 +125,7 @@ ion-title {
     margin-bottom: 20px;
 }
  
+// Estilos para la barra de búsqueda de alumnos en pantalla principal del grupo
 .search-bar {
     width: 93%; 
     max-width: 500px; 
@@ -131,6 +133,7 @@ ion-title {
     margin-top: 30px;
 }  
 
+// Estilos para la barra de búsqueda de alumnos en los modal
 .search-bar-modal {
     width: 93%; 
     max-width: 500px; 

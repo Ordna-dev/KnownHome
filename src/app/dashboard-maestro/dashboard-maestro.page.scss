@@ -6,6 +6,7 @@
     text-align: center; 
     margin-top: 10%; 
     margin-bottom: 20px;
+    font-size: 28px;
 }
 
 // Margen fijo - Aplicado a las tarjetas de registro de grupo y alumnos
@@ -24,6 +25,10 @@
     text-align: center; 
     margin-top: 5%; 
     margin-bottom: 20px;
+}
+
+.menu-h1 {
+    margin-top: 5px;
 }
 
 // Estilización de los ítems de Ionic - Usado en los inputs de los modales
@@ -51,7 +56,7 @@ ion-header {
 ion-content h1:not(:first-child) {
     border-top: 1px solid #ccc;
     padding-top: 10px;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 // Botón de cancelar con margen derecho - Usado en los modales de registro
@@ -89,6 +94,9 @@ ion-content h1:not(:first-child) {
     align-items: center; 
     margin-left: 5%;
     margin-right: 5%;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    padding: 3px;
 }
 
 // Margen para tarjetas dentro de modales - Usado en las tarjetas de los modales de alumnos registrados
@@ -96,6 +104,9 @@ ion-content h1:not(:first-child) {
     display: flex;
     align-items: center; 
     justify-content: space-between;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    padding: 5px;
 }
 
 // Título fijo para modales - Usado en el título del modal de alumnos registrados
@@ -113,12 +124,12 @@ ion-content h1:not(:first-child) {
 
 // Tamaño de ícono variante 2 - Usado en las tarjetas de la sección de grupos
 .icon-size-v2 {
-    font-size: 30px; 
+    font-size: 40px; 
 }
 
 // Tamaño de ícono variante 3 - Usado en las tarjetas de la sección de grupos
 .icon-size-v3 {
-    font-size: 20px; 
+    font-size: 25px; 
 }
   
 // Contenedor de texto flexible - Usado en las tarjetas de grupos y alumnos
@@ -147,4 +158,23 @@ ion-content h1:not(:first-child) {
 // Titulo dentro del modal
 ion-title {
     margin-top: 10px;
+}
+
+// Barra de búsqueda en el dashboard
+.search-bar {
+    width: 93%; 
+    max-width: 500px; 
+    margin: 0 auto; 
+    margin-top: 30px;
+}  
+
+.search-bar-modal {
+    width: 93%; 
+    max-width: 500px; 
+    margin: 0 auto; 
+}  
+
+// Mensaje de error en operaciones de registro o de edicion
+.error-message-modal {
+    margin-bottom: 20px;
 }

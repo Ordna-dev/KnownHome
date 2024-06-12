@@ -1,27 +1,44 @@
 <!-- AGM 30/01/2024 - Menú deslizante del maestro --> 
 <ion-menu side="end" contentId="teacher-dashboard-content" menuId="teacher-main">
   <ion-header>
-    <ion-avatar class="avatar-right">
-      <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-    </ion-avatar>
+    <ion-toolbar color="light">
+      <div class="ion-text-end">
+        <ion-title>Menú de usuario</ion-title>
+      </div>
+    </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding ion-text-right"> 
-    <h1>Usuario</h1>
-    <h5 (click)="goToProfile()">Visualizar o ver perfil</h5>
-    <h5 (click)="logOut()">Cerrar sesión</h5>
+    <h1 class="menu-h1">Usuario</h1>
+    <ion-text color="medium">
+      <h5 (click)="goToProfile()">Visualizar o ver perfil</h5>
+    </ion-text>
+    <ion-text color="danger">
+      <h5 (click)="logOut()">Cerrar sesión</h5>
+    </ion-text>
 
     <h1>Grupos</h1>
-    <h5 (click)="setFifthOpen(true)">Ver o gestionar mis grupos</h5>
-    <h5 (click)="setOpen(true)">Registrar un grupo</h5>
-
+    <ion-text color="medium">
+      <h5 (click)="setFifthOpen(true)">Ver o gestionar mis grupos</h5>
+    </ion-text>
+    <ion-text color="medium">
+      <h5 (click)="setOpen(true)">Registrar un grupo</h5>
+    </ion-text>
+    
     <h1>Alumnos</h1>
-    <h5 (click)="setSecondOpen(true)">Registrar un alumno</h5>
-    <h5 (click)="setThirdOpen(true)">Registrar varios alumnos</h5>
-    <h5 (click)="setFourthOpen(true)">Alumnos registrados por mí</h5>
-
+    <ion-text color="medium">
+      <h5 (click)="setSecondOpen(true)">Registrar un alumno</h5>
+    </ion-text>
+    <ion-text color="medium">
+      <h5 (click)="setThirdOpen(true)">Registrar varios alumnos</h5>
+    </ion-text>
+    <ion-text color="medium">
+      <h5 (click)="setFourthOpen(true)">Alumnos registrados por mí</h5>
+    </ion-text>
+    
     <h1>Ayuda</h1>
-    <h5>Preguntas frecuentes</h5>
-    <h5>Reportes o sugerencias</h5>
+    <ion-text color="medium">
+      <h5>Tutorial</h5>
+    </ion-text>
   </ion-content>
 </ion-menu>
 
@@ -35,9 +52,16 @@
     </ion-refresher>
     
     <!-- AGM 30/01/2024 - Mensaje de bienvenida al maestro --> 
-    <b><h1 class="welcome-message">Bienvenido {{ username }}</h1></b>
+    <b>
+      <h1 class="welcome-message">
+        ¡Bienvenido! <br>
+        <ion-text color="primary">
+          {{ username }}
+        </ion-text>
+      </h1>
+    </b>
 
-    <!-- AGM 30/01/2024 - Recuadro de inscripcion al grupo --> 
+    <!-- AGM 30/01/2024 - Recuadro de registro de un grupo --> 
     <ion-card class="fixed-margin">
       <ion-card-header>
         <ion-card-title>¡Registra un grupo!</ion-card-title>
@@ -50,7 +74,7 @@
       </ion-card-content>
     </ion-card>
     
-    <ion-searchbar animated="true" placeholder="Buscar grupo por nombre" color="medium" [debounce]="500" (ionInput)="handleSearchInput($event)"></ion-searchbar>
+    <ion-searchbar class="search-bar" animated="true" placeholder="Buscar grupo por nombre" color="light" [debounce]="500" (ionInput)="handleSearchInput($event)"></ion-searchbar>
     
     <b><h3 class="groups-message">Tus grupos:</h3></b>
 
@@ -73,7 +97,7 @@
       </div>
     
       <div class="icon-container-v2">
-        <ion-icon name="chevron-forward-outline" class="icon-size-v2" (click)="goToGroup(grupo.id)"></ion-icon>
+        <ion-icon name="chevron-forward-circle" class="icon-size-v2" color="success" (click)="goToGroup(grupo.id)"></ion-icon>
       </div>
     </ion-card>
 
@@ -102,7 +126,7 @@
             <ion-textarea placeholder="Descripción del grupo" [(ngModel)]="groupDescription"></ion-textarea>
           </ion-item>
 
-          <ion-text class="ion-text-center" color="danger" *ngIf="message">
+          <ion-text class="ion-text-center error-message-modal" color="danger" *ngIf="message">
             <p>{{ message }}</p>
           </ion-text>
         
@@ -132,7 +156,7 @@
             <ion-input type="password" placeholder="Contraseña del alumno" [(ngModel)]="studentPassword"></ion-input>
           </ion-item>
 
-          <div>
+          <div class="error-message-modal">
             <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
           </div>
           
@@ -192,7 +216,7 @@
         </ion-header>
         
         <ion-content class="ion-padding ion-text-center">
-          <ion-searchbar animated="true" placeholder="Buscar alumno por nombre" color="medium" [debounce]="500" (ionInput)="handleSearchInputStudents($event)"></ion-searchbar>
+          <ion-searchbar class="search-bar-modal" animated="true" placeholder="Buscar alumno por nombre" color="light" [debounce]="500" (ionInput)="handleSearchInputStudents($event)"></ion-searchbar>
     
           <h1 class="fixed-title-modal">Alumnos registrados por mí</h1>
           
@@ -233,7 +257,7 @@
         </ion-header>
         
         <ion-content class="ion-padding ion-text-center">
-          <ion-searchbar animated="true" placeholder="Buscar grupo por nombre" color="medium" [debounce]="500" (ionInput)="handleModalSearchInput($event)"></ion-searchbar>
+          <ion-searchbar class="search-bar-modal" placeholder="Buscar grupo por nombre" color="light" [debounce]="500" (ionInput)="handleModalSearchInput($event)"></ion-searchbar>
           
           <!-- Iterar sobre los grupos con *ngFor -->
           <ion-card color="light" class="fixed-margin-card-modal" *ngFor="let grupo of groupsModal">
@@ -256,7 +280,7 @@
             </div>
           
             <div class="icon-container-v2">
-              <ion-icon name="chevron-forward-outline" class="icon-size-v3" (click)="goToGroup(grupo.id)"></ion-icon>
+              <ion-icon name="chevron-forward-circle" class="icon-size-v3" color="success" (click)="goToGroup(grupo.id)"></ion-icon>
             </div>
           </ion-card>
           
@@ -288,7 +312,7 @@
             <ion-input placeholder="Descripción del grupo" [(ngModel)]="selectedGroup.descripcion"></ion-input>
           </ion-item>
 
-          <ion-text class="ion-text-center" color="danger" *ngIf="errorMessage">
+          <ion-text class="ion-text-center error-message-modal" color="danger" *ngIf="errorMessage">
             <p>{{ errorMessage }}</p>
           </ion-text>
 
@@ -308,7 +332,7 @@
         </ion-header>
         
         <ion-content class="ion-padding ion-text-center">
-          <ion-searchbar animated="true" placeholder="Buscar alumno inactivo por nombre" color="medium" [debounce]="500" (ionInput)="handleSearchInputInactiveStudents($event)"></ion-searchbar>
+          <ion-searchbar class="search-bar-modal" animated="true" placeholder="Buscar alumno por nombre" color="light" [debounce]="500" (ionInput)="handleSearchInputInactiveStudents($event)"></ion-searchbar>
     
           <h1 class="fixed-title-modal">Alumnos que han sido dados de baja</h1>
           
@@ -355,7 +379,7 @@
             <ion-input [(ngModel)]="selectedStudent.password" type="password" placeholder="Nueva contraseña del alumno"></ion-input>
           </ion-item>
     
-          <div>
+          <div class="error-message-modal">
             <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
           </div>
           

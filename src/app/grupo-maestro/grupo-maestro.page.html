@@ -1,26 +1,41 @@
 <!-- AGM 31/01/2024 - Menú deslizante del maestro dentro de la vista del grupo --> 
 <ion-menu side="end" contentId="teacher-group" menuId="teacher-submain1">
   <ion-header>
-    <ion-avatar class="avatar-right">
-      <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-    </ion-avatar>
+    <ion-toolbar color="light">
+      <div class="ion-text-end">
+        <ion-title>Menú de grupo</ion-title>
+      </div>
+    </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding ion-text-right"> 
-    <h1>Grupo</h1>
-    <h5 (click)="setOpen(true)">Código de acceso del grupo</h5>
-    <h5 (click)="setSecondOpen(true)">Modificar propiedades del grupo</h5>
-    <h5 (click)="confirmGroupDeletion(group?.id || 'Id de grupo no disponible')">Eliminar grupo</h5>
+    <h1 class="menu-h1">Grupo</h1>
+    <ion-text color="medium">
+      <h5 (click)="setOpen(true)">Código de acceso del grupo</h5>
+    </ion-text>
+    <ion-text color="warning">
+      <h5 (click)="setSecondOpen(true)">Modificar propiedades del grupo</h5>
+    </ion-text>
+    <ion-text color="danger">
+      <h5 (click)="confirmGroupDeletion(group?.id || 'Id de grupo no disponible')">Eliminar grupo</h5>
+    </ion-text>
 
     <h1>Fotografías</h1>
-    <h5 (click)="setThirdOpen(true)">Autorizar fotografías</h5>
-    <h5 (click)="takePicture(group?.id)">Tomar fotografía</h5>
-
+    <ion-text color="medium">
+      <h5 (click)="takePicture(group?.id)">Tomar fotografía</h5>
+    </ion-text>
+    
     <h1>Alumnos</h1>
-    <h5 (click)="setFourthOpen(true)">Alumnos registrados en el grupo</h5>
-
+    <ion-text color="medium">
+      <h5 (click)="setFourthOpen(true)">Alumnos registrados en el grupo</h5>
+    </ion-text>
+    
     <h1>Sesión</h1>
-    <h5 (click)="redirectToProfile()">Ver o gestionar mi perfil</h5>
-    <h5 (click)="redirectToLogin()">Cerrar sesión</h5>
+    <ion-text color="medium">
+      <h5 (click)="redirectToProfile()">Ver o gestionar mi perfil</h5>
+    </ion-text>
+    <ion-text color="danger">
+      <h5 (click)="redirectToLogin()">Cerrar sesión</h5>
+    </ion-text>
   </ion-content>
 </ion-menu>
 
@@ -36,18 +51,18 @@
     <!-- AGM 31/01/2024 - Header de la pagina --> 
     <div class="header-group">
       <ion-icon name="arrow-back-outline" class="icon-left-back" (click)="goBack()"></ion-icon>
-
-      <b><h3 class="welcome-message">{{ group?.nombre || 'Nombre de grupo no disponible' }}</h3></b>
-
+      <ion-text color="primary">
+        <b><h3 class="welcome-message">{{ group?.nombre || 'Nombre de grupo no disponible' }}</h3></b>
+      </ion-text>
       <ion-icon name="camera" class="icon-right-camera" (click)="takePicture(group?.id)"></ion-icon>
     </div>
 
     <!-- AGM 31/01/2024 - Sección del profesor -->
-    <b><h3 class="ion-text-center">Profesor:</h3></b>
+    <b><h3 class="ion-text-center teacher-main-text">Maestro encargado:</h3></b>
 
     <ion-card color="light" class="fixed-margin-card-teacher">
       <div class="icon-container">
-        <ion-icon name="images" color="success" class="icon-size"></ion-icon>
+        <ion-icon name="person-outline" class="icon-size"></ion-icon>
       </div>
       
       <div class="text-container">
@@ -57,21 +72,21 @@
       </div>
 
       <div class="icon-container-v2">
-        <ion-icon (click)="showTeacherGallery()" name="chevron-forward-outline" class="icon-size"></ion-icon>
+        <ion-icon (click)="showTeacherGallery()" name="images" color="success" class="icon-size"></ion-icon>
       </div>
     </ion-card>
 
-    <ion-searchbar animated="true" placeholder="Buscar alumno por nombre" color="medium" [debounce]="500" (ionInput)="handleSearchInput($event)"></ion-searchbar>
+    <ion-searchbar class="search-bar" placeholder="Buscar alumno por nombre" color="light" [debounce]="500" (ionInput)="handleSearchInput($event)"></ion-searchbar>
 
     <!-- AGM 31/01/2024 - Sección de los alumnos -->
-    <b><h3 class="ion-text-center">Alumnos:</h3></b>
+    <b><h3 class="ion-text-center student-main-text">Alumnos:</h3></b>
 
     <!-- Tarjetas de alumnos inscritos, solo se muestran si hay alumnos -->
     <ng-container *ngIf="enrolledStudents?.length; else noStudentsTemplate">
       <div *ngFor="let student of enrolledStudents">
-        <ion-card color="light" class="fixed-margin-card-teacher">
+        <ion-card color="light" class="fixed-margin-card-student">
           <div class="icon-container">
-            <ion-icon name="images" color="success" class="icon-size"></ion-icon>
+            <ion-icon name="person-circle-outline" class="icon-size"></ion-icon>
           </div>
           
           <div class="text-container">
@@ -81,7 +96,7 @@
           </div>
 
           <div class="icon-container-v2">
-            <ion-icon (click)="showStudentGallery(student.id_alumno)" name="chevron-forward-outline" class="icon-size"></ion-icon>
+            <ion-icon (click)="showStudentGallery(student.id_alumno)" name="images" color="success" class="icon-size"></ion-icon>
           </div>
         </ion-card>
       </div>
@@ -178,7 +193,7 @@
         </ion-header>
         
         <ion-content class="ion-padding ion-text-center">
-          <ion-searchbar animated="true" placeholder="Buscar alumno por nombre" color="medium" [debounce]="500" (ionInput)="handleModalSearchInput($event)"></ion-searchbar>
+          <ion-searchbar class="search-bar-modal" placeholder="Buscar alumno por nombre" color="light" [debounce]="500" (ionInput)="handleModalSearchInput($event)"></ion-searchbar>
     
           <ng-container *ngIf="modalEnrolledStudents?.length; else noStudentsTemplate">
             <ion-card color="light" class="fixed-margin-card-modal" *ngFor="let student of modalEnrolledStudents">

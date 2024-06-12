@@ -190,12 +190,12 @@ export class DashboardMaestroPage implements OnInit {
   // AGM 31/01/2024 - Abrir o cerrar el sexto modal
   setSixthOpen(isOpen: boolean) {
     this.getGroupsForModal();
+    this.errorMessage = "";
     this.isSixthModalOpen = isOpen; 
   }
 
   //AGM 30/01/2024 - Cerrar el segundo modal cuando se abre el tercer modal
   handleDocumentIconClick() {
-    this.setSecondOpen(false); 
     this.setThirdOpen(true);   
   }
 
