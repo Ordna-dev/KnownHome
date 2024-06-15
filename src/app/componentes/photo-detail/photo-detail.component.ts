@@ -4,11 +4,10 @@ import { ModalController } from '@ionic/angular';
 import { IonContent, IonHeader, IonToolbar, IonTitle, IonButton, IonIcon } from '@ionic/angular/standalone';
 
 interface DangerLevelsClasses {
-  Minimo: string,
   Bajo: string,
-  Moderado: string,
-  Peligroso: string,
-  'Extremadamente peligroso': string 
+  'Medio-Bajo': string,
+  'Medio-Alto': string,
+  Alto: string
 }
 
 @Component({
@@ -32,11 +31,10 @@ export class PhotoDetailComponent {
 
   // Danger CSS classes
   dangerLevelsClasses:DangerLevelsClasses = {
-    Minimo: 'low',
-    Bajo: 'low-middle',
-    Moderado: 'middle',
-    Peligroso: 'middle-danger',
-    'Extremadamente peligroso': 'danger'
+    Bajo: 'low',
+    'Medio-Bajo': 'low-middle',
+    'Medio-Alto': 'middle-danger',
+    Alto: 'middle-danger'
   };
 
   constructor(private modalCtrl: ModalController) {}
