@@ -82,7 +82,8 @@ export class GrupoAlumnoPage implements OnInit {
 
   // AGM 31/01/2024 - Volver a la pagina anterior
   goBack() {
-    this.navCtrl.back();
+    this.router.navigateByUrl('/dashboard-alumno', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/dashboard-alumno', { timestamp: Date.now() }]));
   }
 
   // AGM 31/01/2024 - Cerrar sesion
@@ -107,7 +108,6 @@ export class GrupoAlumnoPage implements OnInit {
     this.grupoAlumnoService.getTeacherPhotos(this.grupoId, teacherId).subscribe({
       next: async(response) => {
         if (response.error == false){
-          // crear una instancia del modal galery
           const modal = await this.modalCtrl.create({
             component: GalleryComponent,
             componentProps:{
@@ -142,7 +142,6 @@ export class GrupoAlumnoPage implements OnInit {
     this.grupoAlumnoService.getStudentPhotos(this.grupoId, studentId).subscribe({
       next: async(response) => {
         if (response.error == false){
-          // crear una instancia del modal galery
           const modal = await this.modalCtrl.create({
             component: GalleryComponent,
             componentProps:{
@@ -152,7 +151,6 @@ export class GrupoAlumnoPage implements OnInit {
               teacherImgs: false
             }
           });
-          //Mostrar el modal
           return await modal.present();
         }else{
           const errorAlert = await this.alertController.create({
