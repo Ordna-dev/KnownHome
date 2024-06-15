@@ -134,7 +134,8 @@ export class DashboardAlumnoPage implements OnInit {
           const alert = await this.alertController.create({
             header: 'Inscripción exitosa',
             message: 'Te has inscrito al grupo.',
-            buttons: ['OK']
+            buttons: ['OK'],
+            backdropDismiss: false
           });
           await alert.present();
         },
