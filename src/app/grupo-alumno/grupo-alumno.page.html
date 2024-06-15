@@ -72,22 +72,33 @@
     <b><h3 class="ion-text-center student-main-text">Alumnos:</h3></b>
 
     <!-- Itera sobre la lista de estudiantes para mostrar cada uno -->
-    <ion-card color="light" class="fixed-margin-card-student" *ngFor="let student of students">
-      <div class="icon-container">
-        <ion-icon name="person-circle-outline" class="icon-size"></ion-icon>
-      </div>
-      
-      <div class="text-container">
-        <ion-card-header class="ion-text-center">
-          <!-- Muestra el nombre del estudiante -->
-          <ion-card-title>{{ student.nombre  }}</ion-card-title>
-        </ion-card-header>
-      </div>
+    
+    <div *ngIf="students && students.length; else noStudentsTemplate">
+      <ion-card color="light" class="fixed-margin-card-student" *ngFor="let student of students">
+        <div class="icon-container">
+          <ion-icon name="person-circle-outline" class="icon-size"></ion-icon>
+        </div>
+        
+        <div class="text-container">
+          <ion-card-header class="ion-text-center">
+            <!-- Muestra el nombre del estudiante -->
+            <ion-card-title>{{ student.nombre  }}</ion-card-title>
+          </ion-card-header>
+        </div>
+  
+        <div class="icon-container-v2">
+          <ion-icon (click)="showStudentGallery(student.id_alumno)" name="images" color="success" class="icon-size"></ion-icon>
+        </div>
+      </ion-card>
+    </div>
 
-      <div class="icon-container-v2">
-        <ion-icon (click)="showStudentGallery(student.id_alumno)" name="images" color="success" class="icon-size"></ion-icon>
-      </div>
-    </ion-card>
+    <ng-template #noStudentsTemplate>
+      <ion-card color="light" class="fixed-margin-card">
+        <ion-card-content class="ion-text-center">
+          Alumnos no encontrados.
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
 
     <!-- AGM 31/01/2024 - Modal para mostrar los alumnos registrados en el grupo mediante el menú deslizante-->
     <ion-modal [isOpen]="isFourthModalOpen">
@@ -101,19 +112,28 @@
         
         <ion-content class="ion-padding ion-text-center">
           <ion-searchbar class="search-bar-modal" animated="true" placeholder="Buscar alumno por nombre" color="light" [debounce]="500" (ionInput)="handleModalSearchInput($event)"></ion-searchbar>
+          <div *ngIf="studentsModal && studentsModal.length; else noStudentsModalTemplate">
+            <ion-card color="light" class="fixed-margin-card-modal" *ngFor="let student of studentsModal">
+              <div class="icon-container">
+                <ion-icon name="accessibility" class="icon-size"></ion-icon>
+              </div>
+              
+              <div class="text-container">
+                <ion-card-header class="ion-text-center">
+                  <!-- Muestra el nombre del estudiante -->
+                  <ion-card-subtitle>{{ student.nombre }}</ion-card-subtitle>
+                </ion-card-header>
+              </div>
+            </ion-card>
+          </div>
 
-          <ion-card color="light" class="fixed-margin-card-modal" *ngFor="let student of studentsModal">
-            <div class="icon-container">
-              <ion-icon name="accessibility" class="icon-size"></ion-icon>
-            </div>
-            
-            <div class="text-container">
-              <ion-card-header class="ion-text-center">
-                <!-- Muestra el nombre del estudiante -->
-                <ion-card-subtitle>{{ student.nombre }}</ion-card-subtitle>
-              </ion-card-header>
-            </div>
-          </ion-card>
+          <ng-template #noStudentsModalTemplate>
+            <ion-card color="light" class="fixed-margin-card">
+              <ion-card-content class="ion-text-center">
+                Alumnos no encontrados.
+              </ion-card-content>
+            </ion-card>
+          </ng-template>
         </ion-content>
       </ng-template>
     </ion-modal>

@@ -42,21 +42,7 @@ export class LoginAlumnoPage implements OnInit {
 
   constructor(private router: Router, private authService: AuthService) {} 
 
-  fetchJsonData() {
-    this.authService.getJsonData().subscribe({
-      next: (data) => {
-        console.log('Datos JSON recibidos', data);
-        this.jsonData = data;
-      },
-      error: (error) => {
-        console.error('Error al obtener los datos JSON:', error);
-        this.errorMessage = 'Error al obtener los datos JSON';
-      }
-    });
-  }
-
   ngOnInit() {
-    this.fetchJsonData();
   }
 
   goToStudentLogin() {

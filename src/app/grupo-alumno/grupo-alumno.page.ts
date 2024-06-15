@@ -21,7 +21,8 @@ import {
   IonToolbar,
   IonTitle,
   IonButton,
-  IonSearchbar
+  IonSearchbar,
+  IonCardContent
 } from '@ionic/angular/standalone';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -50,7 +51,8 @@ import { GalleryComponent } from '../componentes/gallery/gallery.component';
     IonToolbar,
     IonTitle,
     IonButton,
-    IonSearchbar
+    IonSearchbar,
+    IonCardContent
   ],  
   providers: [ModalController],
 })
@@ -210,7 +212,6 @@ export class GrupoAlumnoPage implements OnInit {
       this.grupoAlumnoService.getEnrolledStudents(this.grupoId).subscribe({
         next: (response) => {
           this.studentsModal = response.estudiantes || []; 
-          console.log('Alumnos inscritos:', this.students); 
         },
         error: (error) => {
           console.error('Error al obtener los alumnos inscritos:', error);
@@ -296,7 +297,7 @@ export class GrupoAlumnoPage implements OnInit {
     this.grupoAlumnoService.leaveGroup(this.grupoId).subscribe({
       next: async (response) => {
         console.log(response.message);
-        // Define la acción de redireccionamiento
+
         const redirectToDashboard = () => {
           this.router.navigateByUrl('/dashboard-alumno', {skipLocationChange: true}).then(()=>
           this.router.navigate(['/dashboard-alumno', { timestamp: Date.now() }]));
@@ -304,15 +305,14 @@ export class GrupoAlumnoPage implements OnInit {
   
         const alert = await this.alertController.create({
           header: 'Salida del grupo',
-          message: 'Has salido del grupo. Redirigiendo a la pantalla principal...',
+          message: 'Has salido del grupo. Vas a ser redirigido a la pantalla principal.',
           buttons: [{
             text: 'Aceptar',
             handler: () => redirectToDashboard()
           }],
-          backdropDismiss: true // Permite cerrar la alerta tocando fuera
+          backdropDismiss: false 
         });
   
-        // Asegúrate de ejecutar redirectToDashboard si la alerta se cierra de cualquier manera
         alert.onDidDismiss().then((detail) => {
           if (detail.role === 'backdrop' || detail.role === 'cancel') {
             redirectToDashboard();
@@ -367,7 +367,7 @@ export class GrupoAlumnoPage implements OnInit {
               buttons: [{
                 text: 'Aceptar',
               }],
-              backdropDismiss: true // Permite cerrar la alerta tocando fuera
+              backdropDismiss: true 
             });
             await alert.present();
           }else{
@@ -377,7 +377,7 @@ export class GrupoAlumnoPage implements OnInit {
               buttons: [{
                 text: 'Aceptar',
               }],
-              backdropDismiss: true // Permite cerrar la alerta tocando fuera
+              backdropDismiss: true
             });
             await alert.present();
             console.log(response.message);

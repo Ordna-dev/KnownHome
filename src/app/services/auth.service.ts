@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 export class AuthService {
     // AGM 15/02/2024 - Código del login refactorizado
     private baseUrl: string = 'http://localhost:5000/auth';
-    private jsonUrl: string = 'https://jsonplaceholder.typicode.com/users'; // URL del JSON de ejemplo
 
     constructor(private http: HttpClient) {}
 
@@ -30,9 +29,5 @@ export class AuthService {
 
     logout(): Observable<any> {
         return this.http.get(`${this.baseUrl}/logout`, { withCredentials: true });
-    }
-
-    getJsonData(): Observable<any> {
-        return this.http.get(this.jsonUrl);
     }
 }
