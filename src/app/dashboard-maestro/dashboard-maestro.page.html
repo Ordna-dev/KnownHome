@@ -91,11 +91,13 @@
           </ion-text>
         </ion-card-header>
       
-        <ion-card-content class="ion-text-center">
-          {{ grupo.descripcion }}
+        <ion-card-content class="ion-text-center multiline-text">
+          <ng-container *ngFor="let part of getSplitDescription(grupo.descripcion, 30)">
+            {{ part }}<br/>
+          </ng-container>
         </ion-card-content>
       </div>
-    
+      
       <div class="icon-container-v2">
         <ion-icon name="chevron-forward-circle" class="icon-size-v2" color="success" (click)="goToGroup(grupo.id)"></ion-icon>
       </div>
@@ -119,15 +121,15 @@
           <h1>Registro de un grupo</h1>
 
           <ion-item class="separator">
-            <ion-input placeholder="Nombre del grupo" [(ngModel)]="groupName"></ion-input>
+            <ion-input [(ngModel)]="groupName" label="Nombre del grupo:" labelPlacement="stacked" placeholder="Escribe aquí el nombre del grupo." [counter]="true" maxlength="50"></ion-input>
           </ion-item>
           
           <ion-item>
-            <ion-textarea placeholder="Descripción del grupo" [(ngModel)]="groupDescription"></ion-textarea>
+            <ion-textarea [(ngModel)]="groupDescription" [autoGrow]="true" label="Descripción del grupo:" labelPlacement="stacked" placeholder="Escribe aquí la descripcion del grupo." [counter]="true" maxlength="100"></ion-textarea>
           </ion-item>
 
-          <ion-text class="ion-text-center error-message-modal" color="danger" *ngIf="message">
-            <p>{{ message }}</p>
+          <ion-text class="ion-text-center error-message-modal" color="danger" *ngIf="errorMessage">
+            <p>{{ errorMessage }}</p>
           </ion-text>
         
           <ion-button class="btn-cancelar" (click)="setOpen(false)" color="danger">Cancelar</ion-button>
@@ -149,11 +151,16 @@
           <h1>Registro de un alumno en el sistema</h1>
 
           <ion-item class="separator">
-            <ion-input placeholder="Nombre del alumno" [(ngModel)]="studentUsername"></ion-input>
+            <ion-input [(ngModel)]="studentUsername" label="Nombre del alumno:" labelPlacement="stacked" placeholder="Escribe aqui el nombre del alumno." [counter]="true" maxlength="50"></ion-input>
           </ion-item>
 
           <ion-item>
-            <ion-input type="password" placeholder="Contraseña del alumno" [(ngModel)]="studentPassword"></ion-input>
+            <ion-input [(ngModel)]="studentPassword" [type]="showPassword ? 'text' : 'password'" label="Contraseña del alumno:" labelPlacement="stacked" placeholder="Escribe aquí la contraseña del alumno."></ion-input>
+            <ion-icon
+              [name]="showPassword ? 'eye-off' : 'eye'"
+              slot="end"
+              (click)="togglePasswordVisibility()">
+            </ion-icon>
           </ion-item>
 
           <div class="error-message-modal">
@@ -232,7 +239,7 @@
             </div>
     
             <div class="icon-container-v2">
-              <ion-icon color="danger" name="trash" class="icon-size" (click)="deleteStudent(student.id)"></ion-icon>
+              <ion-icon color="danger" name="trash" class="icon-size" (click)="deleteStudent(student.id)" style="margin-right: 10px;"></ion-icon>
               <ion-icon color="warning" name="pencil-sharp" class="icon-size" (click)="prepareEditStudentCredentials(student.id)"></ion-icon>
             </div>
           </ion-card>
@@ -305,11 +312,11 @@
           <h1>Modificar propiedades del grupo</h1>
 
           <ion-item class="separator">
-            <ion-input placeholder="Nombre del grupo" [(ngModel)]="selectedGroup.nombre"></ion-input>
+            <ion-input [(ngModel)]="selectedGroup.nombre" label="Nuevo nombre del grupo:" labelPlacement="stacked" placeholder="Escribe aquí el nuevo nombre del grupo." [counter]="true" maxlength="50"></ion-input>
           </ion-item>
           
           <ion-item>
-            <ion-input placeholder="Descripción del grupo" [(ngModel)]="selectedGroup.descripcion"></ion-input>
+            <ion-textarea [(ngModel)]="selectedGroup.descripcion" label="Nueva descripcion del grupo:" labelPlacement="stacked" placeholder="Escribe aquí la nueva descripcion del grupo." [autoGrow]="true" [counter]="true" maxlength="100"></ion-textarea>
           </ion-item>
 
           <ion-text class="ion-text-center error-message-modal" color="danger" *ngIf="errorMessage">
@@ -361,6 +368,7 @@
       </ng-template>
     </ion-modal>
 
+    <!-- AGM 04/06/2024 - Modal del panel para modificar las credenciales del alumno -->
     <ion-modal [isOpen]="isEighthModalOpen">
       <ng-template>
         <ion-header>
@@ -372,11 +380,16 @@
           <h1>Modificar las credenciales del alumno</h1>
     
           <ion-item class="separator">
-            <ion-input [(ngModel)]="selectedStudent.username" placeholder="Nuevo nombre del alumno"></ion-input>
+            <ion-input [(ngModel)]="selectedStudent.username" label="Nuevo nombre del alumno:" labelPlacement="stacked" placeholder="Escribe aquí el nombre del alumno." [counter]="true" maxlength="50"></ion-input>
           </ion-item>
     
           <ion-item>
-            <ion-input [(ngModel)]="selectedStudent.password" type="password" placeholder="Nueva contraseña del alumno"></ion-input>
+            <ion-input [(ngModel)]="selectedStudent.password" [type]="showPassword2 ? 'text' : 'password'" label="Contraseña del alumno:" labelPlacement="stacked" placeholder="Escribe aquí la contraseña del alumno."></ion-input>
+            <ion-icon
+              [name]="showPassword2 ? 'eye-off' : 'eye'"
+              slot="end"
+              (click)="togglePasswordVisibilityFromEditingStudent()">
+            </ion-icon>
           </ion-item>
     
           <div class="error-message-modal">
@@ -384,7 +397,7 @@
           </div>
           
           <ion-button class="btn-cancelar" (click)="setEighthOpen(false)" color="danger">Cancelar</ion-button>
-          <ion-button class="btn-registrar" (click)="modifyStudentCredentials()" color="primary">Modificar credenciales</ion-button>
+          <ion-button class="btn-registrar" (click)="modifyStudentCredentials()" color="warning">Modificar credenciales</ion-button>
         </ion-content>
       </ng-template>
     </ion-modal>

@@ -23,7 +23,7 @@
 // Mensaje para secciones de grupos - Usado en el encabezado de la sección de grupos
 .groups-message {
     text-align: center; 
-    margin-top: 5%; 
+    margin-top: 20px; 
     margin-bottom: 20px;
 }
 
@@ -137,6 +137,14 @@ ion-content h1:not(:first-child) {
     flex-grow: 1; 
 }
 
+/* Estilo para ajustar texto en múltiples líneas y truncarlo */
+.multiline-text {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-wrap: break-word; /* Compatible con IE */
+    max-width: 100%; /* Ajusta según sea necesario */
+  }
+
 // Ajustes para el contenedor de los íconos apilados verticalmente
 .icons-right-container {
     display: flex;
@@ -163,14 +171,12 @@ ion-title {
 // Barra de búsqueda en el dashboard
 .search-bar {
     width: 93%; 
-    max-width: 500px; 
     margin: 0 auto; 
     margin-top: 30px;
 }  
 
 .search-bar-modal {
     width: 93%; 
-    max-width: 500px; 
     margin: 0 auto; 
 }  
 

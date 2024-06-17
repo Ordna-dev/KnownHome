@@ -326,7 +326,7 @@ export class GrupoMaestroPage implements OnInit {
         text: 'Aceptar',
         handler: () => redirectAction()
       }],
-      backdropDismiss: true 
+      backdropDismiss: false
     });
   
     alert.onDidDismiss().then((detail) => {
@@ -373,6 +373,7 @@ export class GrupoMaestroPage implements OnInit {
 
           const afterAlertActions = () => {
             this.getEnrolledStudents(this.group.id);
+            this.getEnrolledStudentsModal(this.grupoId);
           };
 
           const successAlert = await this.alertController.create({
@@ -382,7 +383,7 @@ export class GrupoMaestroPage implements OnInit {
               text: 'OK',
               handler: () => afterAlertActions()
             }],
-            backdropDismiss: true
+            backdropDismiss: false
           });
 
           successAlert.onDidDismiss().then((detail) => {
