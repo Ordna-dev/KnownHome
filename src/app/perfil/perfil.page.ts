@@ -40,8 +40,13 @@ import {
 export class PerfilPage implements OnInit {
   username: string = '';
   newUsername: string = '';
+  passwordActual: string = '';
   password: string = '';
   confirmPassword: string = '';
+  showPassword: boolean = false;
+  showPassword2: boolean = false;
+  showPassword3: boolean = false;
+  showPassword4: boolean = false;
   errorMessage: string = '';
   creationDate: string = ''; 
 
@@ -58,16 +63,18 @@ export class PerfilPage implements OnInit {
 
   // AGM 20/02/2024 - Abrir o cerrar el primer modal
   setOpen(isOpen: boolean) {
-    this.isModalOpen = isOpen;
     this.errorMessage = '';
     this.newUsername = '';
+    this.passwordActual = '';
+    this.isModalOpen = isOpen;
   }
 
   setSecondOpen(isOpen: boolean) {
-    this.isSecondModalOpen = isOpen;
     this.errorMessage = '';
     this.password = '';
     this.confirmPassword = '';
+    this.passwordActual = '';
+    this.isSecondModalOpen = isOpen;
   }
 
   // AGM 01/02/2024 - Redireccionar a la pagina anterior
@@ -107,9 +114,14 @@ export class PerfilPage implements OnInit {
 
   // AGM 20/02/2024 - Confirmar a la hora de querer efectuar cambios en el perfil
   async presentConfirmEditUsername() {
+    if (!this.newUsername || !this.passwordActual) {
+      this.errorMessage = 'Se requiere rellenar todos los campos.';
+      return;
+    }
+
     const alert = await this.alertController.create({
       header: 'Confirmar Cambios',
-      message: '¿Estás seguro de efectuar los cambios a tu perfil? Una vez efectuados, no se puede deshacer esta acción.',
+      message: '¿Estás seguro de efectuar los cambios a tu nombre de usuario? Una vez efectuado el cambio, no se puede deshacer esta acción.',
       buttons: [
         {
           text: 'Cancelar',
@@ -132,33 +144,39 @@ export class PerfilPage implements OnInit {
 
   // AGM 20/02/2024 - Lógica de manejo de edición de username
   editUsername() {
-    if (!this.newUsername) {
-      this.errorMessage = 'Se requiere un nombre de usuario.';
-      return;
-    }
-  
-    this.perfilService.updateUser(this.newUsername, undefined, undefined).subscribe({
+    this.perfilService.updateUser(this.newUsername, this.passwordActual, undefined, undefined).subscribe({
       next: (response) => {
         if (response.error) {
           this.errorMessage = response.message;
         } else {
           console.log('Perfil actualizado con éxito:', response.message);
           this.setOpen(false);
-          this.presentUpdateSuccessAlert(); 
+          this.presentUpdateSuccessAlert();
         }
       },
       error: (err) => {
         console.error('Error al actualizar el perfil:', err);
         this.errorMessage = err.error.message || 'Ocurrió un error al actualizar el perfil.';
+        this.presentErrorAlert(this.errorMessage); // Mostrar alerta de error
       }
     });
   }
   
   // AGM 20/02/2024 - Confirmar a la hora de querer efectuar cambios en el password
   async presentConfirmEditPassword() {
+    if (!this.passwordActual || !this.password || !this.confirmPassword) {
+      this.errorMessage = 'Todos los campos son requeridos.';
+      return;
+    }
+  
+    if (this.password !== this.confirmPassword) {
+      this.errorMessage = 'Las contraseñas no coinciden.';
+      return;
+    }
+
     const alert = await this.alertController.create({
       header: 'Confirmar Cambios',
-      message: '¿Estás seguro de efectuar los cambios a tu perfil? Una vez efectuados, no se puede deshacer esta acción.',
+      message: '¿Estás seguro de efectuar los cambios a tu contraseña? Una vez efectuado el cambio, no se puede deshacer esta acción.',
       buttons: [
         {
           text: 'Cancelar',
@@ -179,22 +197,25 @@ export class PerfilPage implements OnInit {
     await alert.present();
   }
 
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  togglePasswordVisibility2() {
+    this.showPassword2 = !this.showPassword2;
+  }
+
+  togglePasswordVisibility3() {
+    this.showPassword3 = !this.showPassword3;
+  }
+
+  togglePasswordVisibility4() {
+    this.showPassword4 = !this.showPassword4;
+  }
+
   // AGM 20/02/2024 - Lógica de manejo de edición de password
   editPassword() {
-    if (!this.password || !this.confirmPassword) {
-      this.errorMessage = 'Se requieren todos los campos de contraseña.';
-      return;
-    }
-  
-    if (this.password !== this.confirmPassword) {
-      this.errorMessage = 'Las contraseñas no coinciden.';
-      return;
-    }
-
-    console.log(this.password);
-    console.log(this.confirmPassword);
-  
-    this.perfilService.updateUser(undefined, this.password, this.confirmPassword).subscribe({
+    this.perfilService.updateUser(undefined, this.passwordActual, this.password, this.confirmPassword).subscribe({
       next: (response) => {
         if (response.error) {
           this.errorMessage = response.message;
@@ -207,9 +228,10 @@ export class PerfilPage implements OnInit {
       error: (err) => {
         console.error('Error al actualizar el perfil:', err);
         this.errorMessage = err.error.message || 'Ocurrió un error al actualizar el perfil.';
+        this.presentErrorAlert(this.errorMessage); // Mostrar alerta de error
       }
     });
-  }  
+  }
 
   // AGM 20/02/2024 - Alerta que confirma que el perfil ha sido actualizado
   async presentUpdateSuccessAlert() {
@@ -222,7 +244,7 @@ export class PerfilPage implements OnInit {
           this.logOut();
         }
       }],
-      backdropDismiss: true 
+      backdropDismiss: false
     });
   
     await alert.present();
@@ -232,6 +254,18 @@ export class PerfilPage implements OnInit {
       this.logOut();
     }
   }
+
+  // AGM 20/02/2024 - Alerta para todos los errores
+  async presentErrorAlert(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Error al modificar credenciales',
+      message: message,
+      buttons: ['OK']
+    });
+  
+    await alert.present();
+  }
+  
 
   /*
   AgmX77777#

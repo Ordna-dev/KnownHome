@@ -251,12 +251,40 @@ export class GrupoMaestroPage implements OnInit {
           await alert.present();
         },
         error: async (error) => {
-          if (error && error.error && error.error.mensaje) {
+          let errorMessage = 'Ocurrió un error inesperado al actualizar el grupo.';
+        
+          // Verifica si existe un mensaje específico de error en la respuesta del servidor
+          if (error.error.mensaje) {
             console.error('Error al actualizar el grupo:', error.error.mensaje);
-            this.errorMessage = error.error.mensaje;
+            errorMessage = error.error.mensaje;
+        
+            // Alerta para errores específicos de la respuesta del servidor
+            const serverResponseErrorAlert = await this.alertController.create({
+              header: 'Error al actualizar el grupo:',
+              message: errorMessage,
+              buttons: ['Aceptar'],
+              backdropDismiss: false
+            });
+        
+            await serverResponseErrorAlert.present();
           } else {
             console.error('Error al actualizar el grupo:', error);
+        
+            // Mensaje general para cualquier otro tipo de error
+            errorMessage = 'Ocurrió un error inesperado que no corresponde a una respuesta del servidor. Por favor, verifica tu conexión.';
+        
+            // Alerta para errores generales o desconocidos
+            const generalErrorAlert = await this.alertController.create({
+              header: 'Error General',
+              message: errorMessage,
+              buttons: ['Aceptar'],
+              backdropDismiss: false
+            });
+        
+            await generalErrorAlert.present();
           }
+        
+          this.errorMessage = errorMessage;
         }
       });
   }  
@@ -304,7 +332,7 @@ export class GrupoMaestroPage implements OnInit {
           console.error('Error al eliminar el grupo:', error);
           const alert = await this.alertController.create({
             header: 'Error',
-            message: 'Ha ocurrido un error al intentar eliminar el grupo.',
+            message: 'Ha ocurrido un error al contactar con el servidor. Comprueba tu conexión o reinicia la aplicación.',
             buttons: ['OK']
           });
           await alert.present();
@@ -373,7 +401,7 @@ export class GrupoMaestroPage implements OnInit {
 
           const afterAlertActions = () => {
             this.getEnrolledStudents(this.group.id);
-            this.getEnrolledStudentsModal(this.grupoId);
+            this.getEnrolledStudentsModal(this.group.id);
           };
 
           const successAlert = await this.alertController.create({
@@ -383,7 +411,7 @@ export class GrupoMaestroPage implements OnInit {
               text: 'OK',
               handler: () => afterAlertActions()
             }],
-            backdropDismiss: false
+            backdropDismiss: true
           });
 
           successAlert.onDidDismiss().then((detail) => {
@@ -395,7 +423,7 @@ export class GrupoMaestroPage implements OnInit {
           await successAlert.present();
         },
         error: async (error) => {
-          const errorMsg = error.error?.message || 'Se produjo un error al eliminar al alumno.';
+          const errorMsg = error.error?.message || 'Se produjo un error de comunicacion con el servidor.';
           console.error('Error:', errorMsg);
 
           const errorAlert = await this.alertController.create({

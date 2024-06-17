@@ -125,33 +125,33 @@ export class DashboardAlumnoPage implements OnInit {
   }
 
   enrollStudentInGroup() {
-    if (this.groupCode) {
-      this.dashboardAlumnoService.enrollStudentInGroup(this.groupCode).subscribe({
-        next: async (response) => {
-          this.setOpen(false);
-          console.log('Respuesta del servidor:', response);
-          this.getGroups(); 
-          const alert = await this.alertController.create({
-            header: 'Inscripción exitosa',
-            message: 'Te has inscrito al grupo.',
-            buttons: ['OK'],
-            backdropDismiss: false
-          });
-          await alert.present();
-        },
-        error: (error) => {
-          if (error.error && error.error.message) {
-            this.errorMessage = error.error.message;
-          } else {
-            this.errorMessage = 'Error al inscribir al alumno en el grupo: ' + (error.message || 'Error desconocido');
-          }
-          console.error('Error completo:', error);
+  if (this.groupCode) {
+    this.dashboardAlumnoService.enrollStudentInGroup(this.groupCode).subscribe({
+      next: async (response) => {
+        this.setOpen(false);
+        console.log('Respuesta del servidor:', response);
+        this.getGroups(); 
+        const alert = await this.alertController.create({
+          header: 'Inscripción exitosa',
+          message: 'Te has inscrito al grupo "' + response.nombre_grupo + '".',
+          buttons: ['OK'],
+          backdropDismiss: false
+        });
+        await alert.present();
+      },
+      error: (error) => {
+        if (error.error && error.error.message) {
+          this.errorMessage = error.error.message;
+        } else {
+          this.errorMessage = 'Error al inscribir al alumno en el grupo: ' + (error.message || 'Error desconocido');
         }
-      });
-    } else {
-      this.errorMessage = 'El código del grupo es necesario para la inscripción';
-    }
+        console.error('Error completo:', error);
+      }
+    });
+  } else {
+    this.errorMessage = 'El código del grupo es necesario para la inscripción';
   }
+}
 
   handleSearchInput(event: CustomEvent) {
     const query = (event.target as HTMLInputElement).value.toLowerCase();

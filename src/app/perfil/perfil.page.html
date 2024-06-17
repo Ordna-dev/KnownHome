@@ -42,27 +42,38 @@
   <!-- AGM 30/01/2024 - Modal de edición de usuario (username) -->
   <ion-modal [isOpen]="isModalOpen">
     <ng-template>
-
-      <!-- AGM 30/01/2024 - Header del modal -->
       <ion-header>
         <ion-toolbar>
           <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setOpen(false)"></ion-icon>
         </ion-toolbar>
       </ion-header>
-
-      <!-- AGM 30/01/2024 - Contenido principal del modal -->
-      <ion-content class="ion-padding ion-text-center">
   
+      <ion-content class="ion-padding ion-text-center">
+        <!-- Campo para nombre de usuario nuevo -->
         <ion-item>
-          <ion-input labelPlacement="floating" [(ngModel)]="newUsername">
-            <div slot="label">Nombre de usuario <ion-text color="danger">(Requerido)</ion-text></div>
+          <ion-input [(ngModel)]="newUsername" labelPlacement="stacked" placeholder="Escribe aquí tu nuevo nombre de usuario.">
+            <div slot="label">Nuevo nombre de usuario <ion-text color="danger">(Requerido)</ion-text></div>
           </ion-input>
         </ion-item>
-        
+  
+        <!-- Campo para contraseña actual -->
+        <ion-item>
+          <ion-input [(ngModel)]="passwordActual" [type]="showPassword ? 'text' : 'password'" labelPlacement="stacked" placeholder="Escribe aquí tu contraseña actual.">
+            <div slot="label">Contraseña Actual <ion-text color="danger">(Requerido)</ion-text></div>
+          </ion-input>
+          <ion-icon
+              [name]="showPassword ? 'eye-off' : 'eye'"
+              slot="end"
+              (click)="togglePasswordVisibility()">
+          </ion-icon>
+        </ion-item>
+  
+        <!-- Mensaje de error, si aplica -->
         <div class="top-separator">
           <ion-text color="danger" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
         </div>
-        
+  
+        <!-- Botones para cancelar y guardar cambios -->
         <ion-button class="btn-cancel" (click)="setOpen(false)" color="danger">Cancelar</ion-button>
         <ion-button class="btn-register" (click)="presentConfirmEditUsername()" color="primary">Guardar cambios</ion-button>
       </ion-content>
@@ -72,26 +83,44 @@
   <!-- AGM 30/01/2024 - Modal de edición de usuario (password) -->
   <ion-modal [isOpen]="isSecondModalOpen">
     <ng-template>
-
-      <!-- AGM 30/01/2024 - Header del modal -->
       <ion-header>
         <ion-toolbar>
           <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setSecondOpen(false)"></ion-icon>
         </ion-toolbar>
       </ion-header>
-
-      <!-- AGM 30/01/2024 - Contenido principal del modal -->
+  
       <ion-content class="ion-padding ion-text-center">
         <ion-item>
-          <ion-input labelPlacement="floating" [(ngModel)]="password" type="password">
-            <div slot="label">Contraseña <ion-text color="danger">(Requerido)</ion-text></div>
+          <ion-input [(ngModel)]="passwordActual" [type]="showPassword2 ? 'text' : 'password'" labelPlacement="stacked" placeholder="Escribe aquí tu contraseña actual.">
+            <div slot="label">Contraseña Actual <ion-text color="danger">(Requerido)</ion-text></div>
           </ion-input>
+          <ion-icon
+              [name]="showPassword2 ? 'eye-off' : 'eye'"
+              slot="end"
+              (click)="togglePasswordVisibility2()">
+          </ion-icon>
         </ion-item>
-
+  
         <ion-item>
-          <ion-input labelPlacement="floating" [(ngModel)]="confirmPassword" type="password">
-            <div slot="label">Confirmar contraseña <ion-text color="danger">(Requerido)</ion-text></div>
+          <ion-input [(ngModel)]="password" [type]="showPassword3 ? 'text' : 'password'" labelPlacement="stacked" placeholder="Escribe aquí tu nueva contraseña.">
+            <div slot="label">Nueva Contraseña <ion-text color="danger">(Requerido)</ion-text></div>
           </ion-input>
+          <ion-icon
+              [name]="showPassword3 ? 'eye-off' : 'eye'"
+              slot="end"
+              (click)="togglePasswordVisibility3()">
+          </ion-icon>
+        </ion-item>
+  
+        <ion-item>
+          <ion-input [(ngModel)]="confirmPassword" [type]="showPassword4 ? 'text' : 'password'" labelPlacement="stacked" placeholder="Escribe aquí de nuevo la nueva contraseña.">
+            <div slot="label">Confirmar nueva contraseña <ion-text color="danger">(Requerido)</ion-text></div>
+          </ion-input>
+          <ion-icon
+              [name]="showPassword4 ? 'eye-off' : 'eye'"
+              slot="end"
+              (click)="togglePasswordVisibility4()">
+          </ion-icon>
         </ion-item>
         
         <div class="top-separator">

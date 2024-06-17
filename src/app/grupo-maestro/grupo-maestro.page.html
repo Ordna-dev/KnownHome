@@ -144,14 +144,11 @@
           <h1>Modificacion de grupo</h1>
 
           <ion-item class="separator">
-            <ion-input placeholder="Nombre del grupo" [(ngModel)]="group.nombre"></ion-input>
+            <ion-input [(ngModel)]="group.nombre" label="Nuevo nombre del grupo:" labelPlacement="stacked" placeholder="Escribe aquí el nuevo nombre del grupo." [counter]="true" maxlength="50"></ion-input>
           </ion-item>
           
-          <ion-item class="large-textarea">
-            <ion-textarea
-              placeholder="Descripción del grupo"
-              [autoGrow]="true"
-              [(ngModel)]="group.descripcion">
+          <ion-item>
+            <ion-textarea [(ngModel)]="group.descripcion" label="Nueva descripcion del grupo:" labelPlacement="stacked" placeholder="Escribe aquí la nueva descripcion del grupo." [autoGrow]="true" [counter]="true" maxlength="100">
             </ion-textarea>
           </ion-item>
 
