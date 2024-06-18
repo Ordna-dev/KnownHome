@@ -13,6 +13,19 @@
   }
 }
 
+// Estilos para el contenedor de inputs en el inicio de sesión
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+
+  ion-item {
+    width: 80%;  
+    margin-bottom: 20px;
+  }
+}
+
 // Estilos de la lista de inputs para el inicio de sesión
 .custom-list {
   width: 75%;

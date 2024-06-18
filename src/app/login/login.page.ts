@@ -10,7 +10,8 @@ import {
   IonInput,
   IonButton,
   IonText,
-  IonIcon
+  IonIcon,
+  IonItem
 } from '@ionic/angular/standalone';
 
 
@@ -27,7 +28,8 @@ import {
     IonInput,
     IonButton,
     IonText,
-    IonIcon
+    IonIcon,
+    IonItem
   ]  
 })
 
@@ -35,6 +37,7 @@ export class LoginPage implements OnInit {
   // AGM 15/02/2024 - Código del login refactorizado
   username: string = '';
   password: string = '';
+  showPassword: boolean = false;
   errorMessage: string = '';
 
   constructor(private router: Router, private authService: AuthService) {} 
@@ -43,6 +46,11 @@ export class LoginPage implements OnInit {
 
   goToStudentLogin() {
     this.router.navigate(['/login-alumno']);
+  }
+
+  // AGM 17/06/2024 - Ver contraseña del maestro
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
   onLogin() {

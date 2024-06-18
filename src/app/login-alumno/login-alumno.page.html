@@ -7,11 +7,20 @@
   </div>
   
   <!-- AGM 04-01-24 - Inputs del inicio de sesion del alumno -->
-  <ion-list class="custom-list">
-    <ion-input [(ngModel)]="username" label="Nombre de usuario" label-placement="floating" fill="outline" placeholder="Tu nombre de usuario"></ion-input>
-
-    <ion-input [(ngModel)]="password" type="password" label="Contraseña" label-placement="floating" fill="outline" placeholder="Tu contraseña"></ion-input>
-  </ion-list>
+  <div class="login-container">
+    <ion-item>
+      <ion-input [(ngModel)]="username" label="Nombre de usuario:" labelPlacement="stacked" placeholder="Escribe aquí tu nombre de usuario."></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-input [(ngModel)]="password" [type]="showPassword ? 'text' : 'password'" label="Contraseña:" labelPlacement="stacked" placeholder="Escribe aquí tu contraseña."></ion-input>
+      <ion-icon
+        [name]="showPassword ? 'eye-off' : 'eye'"
+        slot="end"
+        (click)="togglePasswordVisibility()">
+      </ion-icon>
+    </ion-item>
+  </div>
 
   <!-- Mensaje de error -->
   <div *ngIf="errorMessage" class="error-message ion-text-center">

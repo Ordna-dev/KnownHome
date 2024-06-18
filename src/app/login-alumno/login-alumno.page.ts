@@ -37,6 +37,7 @@ import {
 export class LoginAlumnoPage implements OnInit {
   username: string = '';
   password: string = '';
+  showPassword: boolean = false;
   errorMessage: string = '';
   jsonData: any[] = []; // Array para almacenar los datos JSON
 
@@ -47,6 +48,11 @@ export class LoginAlumnoPage implements OnInit {
 
   goToStudentLogin() {
     this.router.navigate(['/login']);
+  }
+
+  // AGM 17/06/2024 - Ver contraseña del alumno
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
   onLogin() {

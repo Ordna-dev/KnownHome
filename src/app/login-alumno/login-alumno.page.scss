@@ -1,39 +1,52 @@
 // AGM 04-01-24 
 // Estilos del contenedor de la imagen del login
 .image-container {
-    text-align: center; 
-    margin-top: 25%; 
+  text-align: center; 
+  margin-top: 25%; 
+  margin-bottom: 20px;
+
+  img {
+    width: 50%; 
+    height: auto; 
+    display: inline-block; 
+    object-fit: contain; 
+  }
+}
+
+// Estilos para el contenedor de inputs en el inicio de sesión
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; // Ajusta esto según necesites que ocupe toda la altura de la pantalla o menos
+
+  ion-item {
+    width: 80%;  // Ajusta esto para controlar el ancho de los inputs
     margin-bottom: 20px;
-  
-    img {
-      width: 50%; 
-      height: auto; 
-      display: inline-block; 
-      object-fit: contain; 
-    }
   }
+}
   
-  // Estilos de la lista de inputs para el inicio de sesión
-  .custom-list {
-    width: 75%;
-    margin: 0 auto; 
-    background: #121212; 
-    ion-input {
-      margin-bottom: 10px; 
-      --background: #FFF;
-      color: #000;
-    }
+// Estilos de la lista de inputs para el inicio de sesión
+.custom-list {
+  width: 75%;
+  margin: 0 auto; 
+  background: #121212; 
+  ion-input {
+    margin-bottom: 10px; 
+    --background: #FFF;
+    color: #000;
   }
-  
-  // Estilos del botón de iniciar sesión
-  .button-container {
-    display: flex;
-    justify-content: center; 
-    margin-top: 10px; 
-  }
-  
-  // Estilo del error del mensaje
-  .error-message {
-    margin-right: 5%;
-    margin-left: 5%;
-  }
+}
+
+// Estilos del botón de iniciar sesión
+.button-container {
+  display: flex;
+  justify-content: center; 
+  margin-top: 10px; 
+}
+
+// Estilo del error del mensaje
+.error-message {
+  margin-right: 5%;
+  margin-left: 5%;
+}
