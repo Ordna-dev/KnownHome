@@ -1,0 +1,59 @@
+/* tutorial-alumno-grupos.component.scss */
+ion-text {
+    color: var(--ion-color-dark);
+}
+
+.title {
+    color: var(--ion-color-primary);
+    font-size: 1.5em;
+}
+
+.section-title {
+    color: var(--ion-color-secondary);
+    font-size: 1.3em;
+}
+
+.subsection-title {
+    color: var(--ion-color-tertiary);
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+.intro {
+    font-size: 1.1em;
+    color: var(--ion-color-medium);
+}
+
+ul, ol {
+    margin-left: 1em;
+    margin-bottom: 15px; /* Añade espacio entre las listas */
+}
+
+ul li, ol li {
+    margin-bottom: 10px; /* Espacio entre los elementos de la lista */
+}
+
+.optional {
+    color: var(--ion-color-medium);
+    font-style: italic;
+}
+
+.scrollable-pre {
+    overflow-x: auto; /* Habilita el desplazamiento horizontal */
+    background-color: #f5f5f5; /* Fondo claro para diferenciar */
+    padding: 10px; /* Espacio alrededor del contenido */
+    border-radius: 5px; /* Bordes redondeados para estética */
+    white-space: nowrap; /* Evita que el contenido se ajuste */
+    max-width: 100%; /* Limita el ancho al contenedor */
+    font-family: monospace; /* Fuente adecuada para bloques de código */
+}
+
+.important {
+    color: var(--ion-color-warning); /* Color de advertencia */
+    font-weight: bold; /* Negrita */
+}
+
+.caution {
+    color: var(--ion-color-danger); /* Color de peligro */
+    font-weight: bold; /* Negrita */
+}  

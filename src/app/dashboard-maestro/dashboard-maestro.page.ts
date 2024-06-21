@@ -179,6 +179,16 @@ export class DashboardMaestroPage implements OnInit {
   goToProfile() {
     this.router.navigate(['/perfil']);
   }
+
+  // AGM 20/06/2024 - Redireccionamiento al tutorial de dashboard del maestro
+  goToTutorialMaestroDashboard() {
+    this.router.navigate(['/tutorial-maestro-dashboard']);
+  }
+
+  // AGM 20/06/2024 - Redireccionamiento al tutorial de grupos del maestro
+  goToTutorialMaestroGrupos() {
+    this.router.navigate(['/tutorial-maestro-grupos']);
+  }
   
   // Reemplazando fetch en cerrarSesion por el método del servicio
   logOut() {

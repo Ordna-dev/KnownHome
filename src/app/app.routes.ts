@@ -38,5 +38,21 @@ export const routes: Routes = [
   {
     path: 'login-alumno',
     loadComponent: () => import('./login-alumno/login-alumno.page').then( m => m.LoginAlumnoPage)
+  },
+  {
+    path: 'tutorial-maestro-dashboard',
+    loadComponent: () => import('./tutorial-maestro-dashboard/tutorial-maestro-dashboard.page').then( m => m.TutorialMaestroDashboardPage)
+  },
+  {
+    path: 'tutorial-maestro-grupos',
+    loadComponent: () => import('./tutorial-maestro-grupos/tutorial-maestro-grupos.page').then( m => m.TutorialMaestroGruposPage)
+  },
+  {
+    path: 'tutorial-alumno-dashboard',
+    loadComponent: () => import('./tutorial-alumno-dashboard/tutorial-alumno-dashboard.page').then( m => m.TutorialAlumnoDashboardPage)
+  },
+  {
+    path: 'tutorial-alumno-grupos',
+    loadComponent: () => import('./tutorial-alumno-grupos/tutorial-alumno-grupos.page').then( m => m.TutorialAlumnoGruposPage)
   }
 ];

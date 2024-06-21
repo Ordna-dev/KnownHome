@@ -97,6 +97,16 @@ export class DashboardAlumnoPage implements OnInit {
     });
   }
 
+  // AGM 20/06/2024 - Redireccionamiento al tutorial de dashboard del alumno
+  goToTutorialAlumnoDashboard() {
+    this.router.navigate(['/tutorial-alumno-dashboard']);
+  }
+
+  // AGM 20/06/2024 - Redireccionamiento al tutorial de grupos del alumno
+  goToTutorialAlumnoGrupos() {
+    this.router.navigate(['/tutorial-alumno-grupos']);
+  }
+
   // AGM 31/01/2024 - Abrir o cerrar el primer modal
   isModalOpen = false;
 

@@ -1,0 +1,96 @@
+<!-- tutorial-alumno.component.html -->
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">tutorial-alumno-dashboard</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list>
+    <!-- Pantalla Principal -->
+    <ion-item>
+      <ion-text>
+        <h2 class="title">Tutorial para Alumnos: Pantalla Principal</h2>
+        <p class="intro">¡Bienvenido a nuestra plataforma educativa! Como alumno, tendrás acceso a herramientas clave para navegar y participar en los grupos. Vamos a explorar juntos:</p>
+        <h3 class="section-title">1. Explora la Pantalla Principal</h3>
+        <p>Cuando inicies sesión, llegarás a la pantalla principal. Aquí encontrarás varios elementos importantes:</p>
+        <ul>
+          <li><strong>a. Menú Deslizante:</strong> Puedes deslizar el dedo hacia la izquierda para desplegar el menú de acciones disponibles en la aplicación. Cada una de estas acciones es importante para tu experiencia.</li>
+          <li><strong>b. Búsqueda:</strong> Utiliza la función de búsqueda para encontrar grupos. Ingresa el nombre del grupo o palabras clave relacionadas. Por ejemplo, busca “Grupo 1A”, “Grupo” o “Grupo 3C”.</li>
+          <li><strong>c. Registro de Grupos:</strong> Si aún no te has registrado en algún grupo, toca el botón correspondiente. Esto te permitirá unirte a un grupo disponible en el sistema.</li>
+        </ul>
+        <!-- Imagen sugerida: Pantalla principal de la aplicación para alumnos -->
+      </ion-text>
+    </ion-item>
+
+    <!-- Registro en un Grupo -->
+    <ion-item>
+      <ion-text>
+        <h2 class="title">Tutorial para Alumnos: Registro en un Grupo</h2>
+        <p>¡Claro! Aquí aprenderás cómo inscribirte en un grupo de forma eficiente:</p>
+        <h3 class="section-title">2. Registrarse en un Grupo</h3>
+        <ol>
+          <li><strong>Selecciona la Opción:</strong> En la pantalla principal o en el menú, busca la opción para inscribirte en un grupo.</li>
+          <li><strong>Ingresa el Código del Grupo:</strong> Escribe el código del grupo al que deseas unirte.</li>
+          <p class="important">Importante:</p>
+          <ul>
+            <li>No puedes inscribirte en un grupo en el que ya estés registrado.</li>
+            <li>Asegúrate de ingresar un código de acceso válido.</li>
+          </ul>
+          <li><strong>Confirmación:</strong> Si te has inscrito correctamente, recibirás una alerta con el nombre del grupo al que te uniste. Puedes buscar el grupo en el buscador para acceder a su tablero.</li>
+        </ol>
+        <!-- Imagen sugerida: Proceso de registro en un grupo con captura del formulario -->
+      </ion-text>
+    </ion-item>
+
+    <!-- Muestra y Búsqueda de Grupos -->
+    <ion-item>
+      <ion-text>
+        <h2 class="title">Tutorial para Alumnos: Muestra y Búsqueda de Grupos</h2>
+        <p>¡Claro! Aquí aprenderás cómo identificar los grupos en los que te has inscrito y cómo buscar otros grupos en la plataforma:</p>
+        <h3 class="section-title">3. Muestra de Grupos</h3>
+        <ol>
+          <li><strong>Identifica la Sección de Grupos:</strong> Busca la sección de grupos en tu pantalla principal. Si ya te has inscrito en algún grupo, verás una lista de los grupos en los que estás registrado.</li>
+          <li><strong>Acceso al Tablero del Grupo (Opcional):</strong> Si deseas acceder al tablero de un grupo específico, pincha el ícono verde de acceso junto al nombre del grupo.</li>
+        </ol>
+        <!-- Imagen sugerida: Captura de pantalla de la sección de grupos -->
+        <h3 class="section-title">4. Búsqueda de Grupos</h3>
+        <ol>
+          <li><strong>Identifica la Barra de Búsqueda:</strong> En la pantalla principal, busca la barra de búsqueda de grupos.</li>
+          <li><strong>Ingresa el Nombre del Grupo:</strong> Escribe el nombre del grupo que deseas encontrar. A medida que ingreses letras o palabras, se mostrarán los grupos que coincidan con tu búsqueda.</li>
+        </ol>
+        <!-- Imagen sugerida: Uso de la barra de búsqueda para encontrar grupos -->
+      </ion-text>
+    </ion-item>
+
+    <!-- Consejos y Recomendaciones -->
+    <ion-item>
+      <ion-text>
+        <h2 class="title">Sección Final: Consejos y Recomendaciones</h2>
+        <p>¡Casi has completado la configuración! Antes de sumergirte en la aplicación, aquí tienes algunos consejos importantes:</p>
+        <h3 class="section-title">1. Consulta el Tutorial</h3>
+        <ul>
+          <li>Si tienes dudas sobre las acciones disponibles en la pantalla principal, no dudes en revisar el tutorial. Allí encontrarás detalles sobre lo que puedes hacer en la aplicación.</li>
+        </ul>
+        <!-- Imagen sugerida: Icono o ilustración representando la consulta del tutorial -->
+        <h3 class="section-title">2. Conexión a Internet</h3>
+        <ul>
+          <li>La aplicación requiere de conexión a internet. Asegúrate de tener una conexión estable.</li>
+          <li>Si experimentas problemas de conexión, reinicia la aplicación inmediatamente.</li>
+        </ul>
+        <!-- Imagen sugerida: Icono o ilustración representando la conexión a Internet -->
+        <h3 class="section-title">3. Explora la Vista de Grupos</h3>
+        <ul>
+          <li>Consulta el tutorial específico sobre el tablero de grupo. Esto es especialmente útil si aún no estás familiarizado con su funcionamiento.</li>
+        </ul>
+        <!-- Imagen sugerida: Icono o ilustración representando la vista de grupos -->
+      </ion-text>
+    </ion-item>
+
+    <!-- Botón para volver a la página principal -->
+    <ion-item>
+      <ion-button expand="full" (click)="goToDashboardAlumno()">Volver a la página principal</ion-button>
+      <!-- Imagen sugerida: Flecha o icono indicando la vuelta a la página principal -->
+    </ion-item>
+  </ion-list>
+</ion-content>
