@@ -73,4 +73,7 @@ export class TutorialAlumnoDashboardPage implements OnInit {
     this.router.navigate(['/dashboard-alumno']);
   }
 
+  goToGroupsTutorial() {
+    this.router.navigate(['/tutorial-alumno-grupos']);
+  }
 }

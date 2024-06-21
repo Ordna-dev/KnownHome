@@ -10,8 +10,8 @@
     <!-- Explora el Tablero de Grupo -->
     <ion-item>
       <ion-text>
-        <h2 class="title">Tutorial para alumnos: Explora el Tablero de Grupo</h2>
-        <p class="intro">Como alumno, tendrás acceso a herramientas clave para interactuar con el grupo. Aquí tienes los elementos más importantes:</p>
+        <h2 class="title">Tutorial para alumnos: Tablero del grupo</h2>
+        <p class="intro">Como alumno, tendrás acceso a herramientas clave para interactuar con el grupo. Aquí tienes los elementos más importantes ene sta pantalla:</p>
         <h3 class="section-title">a) Tomar fotografía</h3>
         <p>Puedes tomar una fotografía de algún objeto que encuentres en casa. Más adelante, hablaremos sobre las recomendaciones para tomar fotografías de manera efectiva.</p>
         <h3 class="section-title">b) Imágenes</h3>
@@ -33,11 +33,11 @@
         <p>Puedes tomar una fotografía tocando el icono de la cámara o seleccionando la opción “Tomar fotografía” en el menú lateral.</p>
         <!-- Imagen sugerida: Tablero del grupo remarcando el icono de la toma de la foto -->
         <p>Considera lo siguiente al tomar tus imágenes:</p>
-        <ul>
-          <li><strong>a. Objeto Único:</strong> Captura un solo objeto en cada imagen. Evita que aparezcan varios objetos alrededor.</li>
-          <li><strong>b. Fondo Iluminado:</strong> Elige un fondo claro o iluminado para mejorar la calidad de la imagen.</li>
-          <li><strong>c. Forma del Objeto:</strong> Prioriza tomar la fotografía desde un ángulo que resalte la forma del objeto.</li>
-        </ul>
+        <ol>
+          <li><strong>Objeto único:</strong> Captura un solo objeto en cada imagen. Evita que aparezcan varios objetos alrededor.</li>
+          <li><strong>Fondo iluminado:</strong> Elige un fondo claro o iluminado para mejorar la calidad de la imagen.</li>
+          <li><strong>Forma del objeto:</strong> Prioriza tomar la fotografía desde un ángulo que resalte la forma del objeto.</li>
+        </ol>
         <p>Una vez que subas la fotografía a la plataforma, espera a que tu profesor la autorice para que los demás alumnos puedan verla en el tablero.</p>
         <!-- Imagen sugerida: Proceso de toma de fotografía con las recomendaciones -->
       </ion-text>
@@ -52,7 +52,7 @@
         <ul>
           <li>Objeto identificado en la imagen.</li>
           <li>Recomendaciones relacionadas con el objeto.</li>
-          <li>Nivel de riesgo de accidente asociado.</li>
+          <li>Nivel de riesgo de accidente.</li>
         </ul>
         <!-- Imagen sugerida: Detalles de una imagen en la plataforma -->
       </ion-text>
@@ -63,7 +63,7 @@
       <ion-text>
         <h2 class="title">3. Búsqueda y muestra de alumnos en el grupo</h2>
         <p>En el tablero del grupo, puedes ver qué alumnos están inscritos en el grupo y también consultar las imágenes que han subido. Aquí tienes los pasos:</p>
-        <h3 class="section-title">3.1. Búsqueda de Alumnos</h3>
+        <h3 class="section-title">Búsqueda de Alumnos</h3>
         <ol>
           <li><strong>Identifica la Barra de Búsqueda:</strong> En el tablero del grupo, busca la barra de búsqueda.</li>
           <li><strong>Busca a tus Compañeros:</strong> Escribe el nombre de tus amigos o compañeros en la barra de búsqueda. A medida que ingreses letras o palabras, se mostrarán los alumnos que coincidan con tu búsqueda.</li>
@@ -80,23 +80,23 @@
         <p>Estando en el tablero del grupo, abriendo el menú de acciones lateral, está la opción de salir del grupo. Una vez que selecciones la opción, el sistema te preguntará si deseas salir del grupo.</p>
         <p class="caution">Cuidado:</p>
         <ul>
-          <li>En caso de salir del grupo, ya no podrás acceder a su tablero. Por lo que tienes que estar seguro a la hora de ejecutar dicha acción.</li>
+          <li>En caso de salir del grupo, ya no podrás acceder a su tablero. Por lo que tienes que estar seguro a la hora querer salir.</li>
         </ul>
         <!-- Imagen sugerida: Diálogo de confirmación de salida del grupo -->
       </ion-text>
     </ion-item>
 
     <!-- Consejos y Recomendaciones -->
-    <ion-item>
+    <ion-item class="margin-bottom">
       <ion-text>
-        <h2 class="title">5. Consejos y Recomendaciones</h2>
-        <p>¡Casi has completado el tutorial! Antes de sumergirte en la aplicación, aquí tienes algunos consejos importantes:</p>
-        <h3 class="section-title">5.1. Consulta el Tutorial</h3>
+        <h2 class="title">5. Consejos y recomendaciones</h2>
+        <p>Antes de sumergirte en la aplicación, concretamente en la parte del tablero del grupo, aquí tienes algunos consejos importantes:</p>
+        <h3 class="section-title">5.1. Consulta el tutorial</h3>
         <ul>
-          <li>Si tienes dudas sobre las acciones disponibles en el tablero de grupo, no dudes en revisar este tutorial nuevamente. Aquí encontrarás detalles sobre lo que puedes hacer y las limitaciones de cada función.</li>
+          <li>Si tienes dudas sobre las acciones disponibles en el tablero de grupo, no dudes en revisar este tutorial nuevamente. Aquí encontrarás detalles sobre lo que puedes hacer y las limitaciones de cada acción.</li>
         </ul>
         <!-- Imagen sugerida: Icono o ilustración representando la consulta del tutorial -->
-        <h3 class="section-title">5.2. Conexión a Internet</h3>
+        <h3 class="section-title">5.2. Conexión a internet</h3>
         <ul>
           <li>La aplicación se conecta al servidor a través de internet. Asegúrate de tener una conexión estable.</li>
           <li>Si experimentas problemas de conexión, reinicia la aplicación de inmediato para evitar errores.</li>
@@ -107,8 +107,8 @@
 
     <!-- Botón para volver a la página principal -->
     <ion-item>
-      <ion-button expand="full" (click)="goToDashboardAlumno()">Volver a la página principal</ion-button>
-      <!-- Imagen sugerida: Flecha o icono indicando la vuelta a la página principal -->
+      <ion-button expand="full" class="margin-auto" (click)="goToDashboardAlumno()">Volver a la página principal</ion-button>
+      <ion-button expand="full" class="margin-auto" color="tertiary" (click)="goToDashboardTutorial()">Ir al tutorial de pantalla principal</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>
