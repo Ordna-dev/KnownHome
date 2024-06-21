@@ -35,9 +35,12 @@
       <h5 (click)="setFourthOpen(true)">Alumnos registrados por mí</h5>
     </ion-text>
     
-    <h1>Ayuda</h1>
+    <h1>Tutoriales</h1>
     <ion-text color="success">
-      <h5>Tutorial</h5>
+      <h5 (click)="goToTutorialMaestroDashboard()">Tutorial inicial</h5>
+    </ion-text>
+    <ion-text color="success">
+      <h5 (click)="goToTutorialMaestroGrupos()">Tutorial de grupos</h5>
     </ion-text>
   </ion-content>
 </ion-menu>

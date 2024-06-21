@@ -66,3 +66,15 @@ ul li, ol li {
 .margin-bottom {
     margin-bottom: 20px;
 }
+
+.image-container {
+    text-align: center; 
+    margin-top: 20px; 
+    margin-bottom: 20px;
+  
+    img {
+      height: auto; 
+      display: inline-block; 
+      object-fit: contain; 
+    }
+}
