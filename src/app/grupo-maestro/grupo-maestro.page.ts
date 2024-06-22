@@ -82,15 +82,18 @@ export class GrupoMaestroPage implements OnInit {
 
   // AGM 31/01/2024 - Redireccionamiento a perfil, cierre de sesion o dashboard
   redirectToProfile() {
-    this.router.navigateByUrl('/perfil');
+    this.router.navigateByUrl('/perfil', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/perfil', { timestamp: Date.now() }]));
   }
   
   redirectToLogin() {
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/login', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/login', { timestamp: Date.now() }]));
   }
 
   goBack() {
-    this.navCtrl.back();
+    this.router.navigateByUrl('/dashboard-maestro', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/dashboard-maestro', { timestamp: Date.now() }]));
   }
 
   // AGM 31/01/2024 - Declaración de variables bandera para cerrar o abrir los modal

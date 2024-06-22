@@ -88,7 +88,8 @@ export class GrupoAlumnoPage implements OnInit {
 
   // AGM 31/01/2024 - Cerrar sesion
   redirectToLogin() {
-    this.router.navigateByUrl('/login-alumno');
+    this.router.navigateByUrl('/login-alumno', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/login-alumno', { timestamp: Date.now() }]));
   }
 
   // AGM 19/02/2024 - Refrescar pagina

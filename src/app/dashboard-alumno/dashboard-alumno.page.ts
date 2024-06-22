@@ -89,7 +89,8 @@ export class DashboardAlumnoPage implements OnInit {
     this.dashboardAlumnoService.logOut().subscribe({
       next: (html) => {
         console.log(html); // Mostrar la respuesta HTML en consola
-        this.router.navigate(['/login-alumno']);
+        this.router.navigateByUrl('/login-alumno', {skipLocationChange: true}).then(()=>
+        this.router.navigate(['/login-alumno', { timestamp: Date.now() }]));
       },
       error: (error) => {
         console.error('Error:', error);
@@ -99,12 +100,14 @@ export class DashboardAlumnoPage implements OnInit {
 
   // AGM 20/06/2024 - Redireccionamiento al tutorial de dashboard del alumno
   goToTutorialAlumnoDashboard() {
-    this.router.navigate(['/tutorial-alumno-dashboard']);
+    this.router.navigateByUrl('/tutorial-alumno-dashboard', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/tutorial-alumno-dashboard', { timestamp: Date.now() }]));
   }
 
   // AGM 20/06/2024 - Redireccionamiento al tutorial de grupos del alumno
   goToTutorialAlumnoGrupos() {
-    this.router.navigate(['/tutorial-alumno-grupos']);
+    this.router.navigateByUrl('/tutorial-alumno-grupos', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/tutorial-alumno-grupos', { timestamp: Date.now() }]));
   }
 
   // AGM 31/01/2024 - Abrir o cerrar el primer modal

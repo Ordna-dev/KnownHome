@@ -177,17 +177,20 @@ export class DashboardMaestroPage implements OnInit {
 
   // AGM 30/01/2024 - Redireccionamiento a perfil, grupo y login (Logout)
   goToProfile() {
-    this.router.navigate(['/perfil']);
+    this.router.navigateByUrl('/perfil', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/perfil', { timestamp: Date.now() }]));
   }
 
   // AGM 20/06/2024 - Redireccionamiento al tutorial de dashboard del maestro
   goToTutorialMaestroDashboard() {
-    this.router.navigate(['/tutorial-maestro-dashboard']);
+    this.router.navigateByUrl('/tutorial-maestro-dashboard', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/tutorial-maestro-dashboard', { timestamp: Date.now() }]));
   }
 
   // AGM 20/06/2024 - Redireccionamiento al tutorial de grupos del maestro
   goToTutorialMaestroGrupos() {
-    this.router.navigate(['/tutorial-maestro-grupos']);
+    this.router.navigateByUrl('/tutorial-maestro-grupos', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/tutorial-maestro-grupos', { timestamp: Date.now() }]));
   }
   
   // Reemplazando fetch en cerrarSesion por el método del servicio
@@ -195,7 +198,8 @@ export class DashboardMaestroPage implements OnInit {
     this.dashboardMaestroService.logOutService().subscribe({
       next: (html) => {
         console.log(html); // Mostrar la respuesta HTML en consola
-        this.router.navigate(['/login']);
+        this.router.navigateByUrl('/login', {skipLocationChange: true}).then(()=>
+        this.router.navigate(['/login', { timestamp: Date.now() }]));
       },
       error: (error) => {
         console.error('Error:', error);

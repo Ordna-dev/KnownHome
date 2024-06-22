@@ -70,10 +70,12 @@ export class TutorialMaestroGruposPage implements OnInit {
   }
 
   goToDashboardMaestro() {
-    this.router.navigate(['/dashboard-maestro']);
+    this.router.navigateByUrl('/dashboard-maestro', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/dashboard-maestro', { timestamp: Date.now() }]));
   }
 
   goToDashboardTutorial() {
-    this.router.navigate(['/tutorial-maestro-dashboard']);
+    this.router.navigateByUrl('/tutorial-maestro-dashboard', {skipLocationChange: true}).then(()=>
+    this.router.navigate(['/tutorial-maestro-dashboard', { timestamp: Date.now() }]));
   }
 }
