@@ -5,8 +5,15 @@ const config: CapacitorConfig = {
   appName: 'KnownHome',
   webDir: 'www',
   server: {
-    androidScheme: 'https'
-  }
+    androidScheme: 'http',
+    cleartext: true
+  },
+  android: {
+    allowMixedContent: true
+  },
+  plugins: {
+    CapacitorCookies: {
+      enabled: true,
+    },
+  },
 };
-
-export default config;

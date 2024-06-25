@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { CapacitorCookies } from '@capacitor/core';
 import { AuthService } from '../services/auth.service'; 
 import {
   IonContent,
@@ -15,6 +16,9 @@ import {
   IonLabel
 } from '@ionic/angular/standalone';
 
+const getCookies = () => {
+  return document.cookie;
+};
 
 @Component({
   selector: 'app-login-alumno',
@@ -64,14 +68,43 @@ export class LoginAlumnoPage implements OnInit {
   
     console.log('Enviando solicitud de inicio de sesión', this.username);
   
-    this.authService.studentLogin(this.username, this.password).subscribe({
+    /*this.authService.studentLogin(this.username, this.password).subscribe({
       next: (data) => {
+        console.log(data.user);
+        if (data.error !== false) {
+          this.errorMessage = data.message;
+        } else {
+          console.log('Inicio de sesión exitoso, redirigiendo...');
+          console.log(data.user);
+          this.router.navigate(['/dashboard-alumno'], { state: { userInfo: data } });
+        }
+      },
+      error: (error) => {
+        console.error('Error en el proceso de inicio de sesión:', error);
+        this.errorMessage = 'Error al conectar con el servidor';
+      }
+    });*/
+    this.authService.studentLogin(this.username, this.password).subscribe({
+      next: async (data) => {
         console.log('Datos de respuesta', data);
         if (data.error !== false) {
           this.errorMessage = data.message;
         } else {
           console.log('Inicio de sesión exitoso, redirigiendo...');
           this.router.navigate(['/dashboard-alumno'], { state: { userInfo: data } });
+          //console.log('Encabezado Server:', data.headers.get('Server'));
+    
+          // Recuperar la cookie de sesión del servidor utilizando CapacitorCookies
+          try {
+            const cookies = getCookies();
+            //const sessionCookie = cookies.cookies.find(cookie => cookie.name === 'session');
+            console.log(cookies);
+    
+            // Busca la cookie específica que deseas utilizando el nombre de la cookie
+            
+          } catch (error) {
+            console.error('Error al recuperar cookies:', error);
+          }
         }
       },
       error: (error) => {

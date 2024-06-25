@@ -64,7 +64,7 @@ export class LoginPage implements OnInit {
   
     this.authService.teacherLogin(this.username, this.password).subscribe({
       next: (data) => {
-        console.log('Datos de respuesta', data);
+        console.log(data);
         if (data.error !== false) {
           this.errorMessage = data.message;
         } else {

@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class DashboardMaestroService {
     // AGM 15/02/2024 - Refactorizacion de codigo de dashboard maestro
-    private baseUrl: string = 'http://localhost:5000'; 
+    private baseUrl: string = 'http://147.182.176.29'; 
+    // 192.168.1.69:5000
 
     constructor(private http: HttpClient) {}
 
