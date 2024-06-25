@@ -2,11 +2,28 @@
 
 // Estilos Generales de la Aplicación
 // Mensaje de bienvenida - Utilizado en el encabezado principal de bienvenida
-.welcome-message {
-    text-align: center; 
-    margin-top: 10%; 
+.welcome-container {
+    // margin-left: 40px;
     margin-bottom: 20px;
-    font-size: 28px;
+    margin-top: 30px;
+}
+
+.welcome-message {
+    // margin-left: 40px;
+    font-size: 32px;
+}
+
+ion-header {
+    --background: transparent;
+}
+ion-toolbar {
+    --background: transparent;
+}
+ion-content {
+    --padding-top: none;
+}
+ion-refresher ion-refresher-content {
+    margin-top: 60px; 
 }
 
 // Margen fijo - Aplicado a las tarjetas de registro de grupo y alumnos
@@ -74,6 +91,11 @@ ion-content h1:not(:first-child) {
 // Tamaño general de íconos - Aplicado a varios íconos en la aplicación
 .icon-size {
     font-size: 40px; 
+}
+
+.icon-size-welcome {
+    font-size: 40px;
+    margin-right: 20px;
 }
 
 // Ícono a la derecha en modales - Usado en los modales para cerrar o acciones adicionales

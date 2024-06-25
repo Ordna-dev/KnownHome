@@ -36,14 +36,18 @@
     </ion-refresher>
 
     <!-- AGM 30/01/2024 - Mensaje de bienvenida -->
-    <b>
-      <h1 class="welcome-message">
-        ¡Bienvenido! <br>
-        <ion-text color="primary">
-          {{ username }}
-        </ion-text>
-      </h1>
-    </b>
+    <ion-header translucent class="ion-no-border">
+      <ion-toolbar>
+        <div class="ion-text-center welcome-container">
+          <h1 class="welcome-message">
+            <b>¡Bienvenido! </b><br>
+            <ion-text color="primary">
+              {{ username }}
+            </ion-text>
+          </h1>
+        </div>
+      </ion-toolbar>
+    </ion-header>
 
     <!-- AGM 18/06/2024 - Recuadro de la versión del programa y tutoriales --> 
     <ion-card class="fixed-margin" color="dark">

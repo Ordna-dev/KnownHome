@@ -38,12 +38,25 @@
     </ion-refresher>
 
     <!-- AGM 31/01/2024 - Header de opciones --> 
-    <div class="header-group">
-      <ion-icon name="arrow-back-outline" class="icon-left-back" (click)="goBack()"></ion-icon>
+    <ion-header translucent class="ion-no-border">
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-icon name="arrow-back-outline" class="icon-size-start" (click)="goBack()"></ion-icon>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-icon name="camera" class="icon-size-end" (click)="takePicture(grupo?.id)"></ion-icon>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <div class="ion-text-center">
       <ion-text color="primary">
-        <b><h3 class="welcome-message">{{ grupo?.nombre_grupo || 'Nombre del grupo no encontrado' }}</h3></b>
+        <h1 class="welcome-message">
+          <b>
+            {{ grupo?.nombre_grupo || 'Nombre del grupo no encontrado' }}
+          </b>
+        </h1>
       </ion-text>
-      <ion-icon name="camera" class="icon-right-camera" (click)="takePicture(grupo?.id)"></ion-icon>
     </div>
 
     <b><h3 class="ion-text-center teacher-main-text">Profesor del grupo:</h3></b>

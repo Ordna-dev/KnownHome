@@ -24,7 +24,9 @@ import {
   IonText,
   IonTitle,
   IonCardSubtitle,
-  IonSearchbar
+  IonSearchbar,
+  IonMenuButton,
+  IonButtons
 } from '@ionic/angular/standalone';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -59,7 +61,9 @@ import { EvaluatePhotoComponent } from '../componentes/evaluate-photo/evaluate-p
     IonText,
     IonTitle,
     IonCardSubtitle,
-    IonSearchbar
+    IonSearchbar,
+    IonMenuButton,
+    IonButtons
   ],
   providers: [ModalController],
 })

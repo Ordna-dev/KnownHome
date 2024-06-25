@@ -25,7 +25,9 @@ import {
   IonInput,
   IonSearchbar,
   IonList,
-  IonLabel
+  IonLabel,
+  IonMenuButton,
+  IonButtons
 } from '@ionic/angular/standalone';
 
 
@@ -57,7 +59,9 @@ import {
     IonInput,
     IonSearchbar,
     IonList,
-    IonLabel
+    IonLabel,
+    IonMenuButton,
+    IonButtons
   ]
 })
 export class DashboardAlumnoPage implements OnInit {

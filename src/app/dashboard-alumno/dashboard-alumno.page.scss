@@ -1,10 +1,33 @@
 // AGM 30-01-24 
 // Estilos del mensaje de bienvenida
+.welcome-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; // Centra el contenido horizontalmente
+    position: relative; // Posiciona relativamente para el botón absoluto
+}
+
 .welcome-message {
-    text-align: center; 
-    margin-top: 10%; 
-    margin-bottom: 20px;
-    font-size: 28px;
+    font-size: 32px;
+    // margin-left: 40px;
+}
+
+.welcome-container {
+    // margin-left: 40px;
+    margin-top: 15px;
+}
+
+ion-header {
+    --background: transparent;
+}
+ion-toolbar {
+    --background: transparent;
+}
+ion-content {
+    --padding-top: none;
+}
+ion-refresher ion-refresher-content {
+    margin-top: 60px; 
 }
 
 // Estilos para el margen fijo de las tarjetas
@@ -63,6 +86,11 @@ ion-content h1:not(:first-child) {
 // Tamaño de los iconos - Usado en toda la pagina en general
 .icon-size {
     font-size: 40px; 
+}
+
+.icon-size-welcome {
+    font-size: 40px;
+    margin-right: 20px;
 }
   
 // Contenedor de texto - Usado en las tarjetas en general

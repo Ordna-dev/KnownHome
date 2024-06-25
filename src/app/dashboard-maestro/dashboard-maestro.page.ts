@@ -27,7 +27,8 @@ import {
   IonTextarea,
   IonInput,
   IonSearchbar,
-  IonButtons
+  IonButtons,
+  IonMenuButton
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -59,7 +60,8 @@ import {
     IonTextarea,
     IonInput,
     IonSearchbar,
-    IonButtons
+    IonButtons,
+    IonMenuButton
   ]  
 })
 export class DashboardMaestroPage implements OnInit {
