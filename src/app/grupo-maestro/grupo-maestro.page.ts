@@ -487,6 +487,7 @@ export class GrupoMaestroPage implements OnInit {
 
   // AGM 22/02/2024 - Lógica para tomar una foto en la app 
   takePicture = async (groupId: number) => {
+    console.log("Iniciando la captura de la foto...");
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
@@ -494,26 +495,21 @@ export class GrupoMaestroPage implements OnInit {
       source: CameraSource.Prompt,
       saveToGallery: true
     });
-
-    const loading = await this.loadingController.create({
-      message: 'Subiendo fotografía',
-      duration: 100000,
-    });
-
-    loading.present();
+    console.log("Foto capturada", image);
 
     if(image.webPath){
-      //Convertir la imagen a un Blob, luego a un File
+      console.log("Preparando la imagen para subir...");
       const response = await fetch(image.webPath);
       const blob = await response.blob();
       const file = new File([blob], 'photo.jpg', {type:'image/jpeg'});
+      console.log("Imagen convertida a File:", file);
 
-      //Utilizar el servicio para subir la foto
+      console.log("Subiendo la foto al servidor...");
       this.grupoMaestroService.uploadPhoto(groupId, file).subscribe(
         async (response) => {
           if (response.error == false){
-            loading.dismiss();
-            //Generar una instancia del modal para evaluar la foto tomada
+            console.log("Foto subida exitosamente, cerrando el indicador de carga...");
+            console.log("Creando modal para evaluar la foto...");
             const modal = await this.modalCtrl.create({
               component: EvaluatePhotoComponent,
               componentProps:{
@@ -522,37 +518,37 @@ export class GrupoMaestroPage implements OnInit {
                 objects: response.objetos
               }
             });
-            //Mostrar el modal
+            console.log("Mostrando el modal...");
             return await modal.present()
           }else{
-            loading.dismiss();
+            console.log("Error al subir la foto: ", response.message);
             const alert = await this.alertController.create({
               header: 'Fotografía no subida',
               message: response.message,
               buttons: [{
                 text: 'Aceptar',
               }],
-              backdropDismiss: true // Permite cerrar la alerta tocando fuera
+              backdropDismiss: true
             });
-            console.log(response.exception);
             await alert.present();
           }
         },
         async (error) => {
-          loading.dismiss();
+          console.log("Error al intentar subir la foto:", error);
           const alert = await this.alertController.create({
             header: 'Fotografía no subida',
             message: 'Error al subir la foto, porfavor vuelva a intentar',
             buttons: [{
               text: 'Aceptar',
             }],
-            backdropDismiss: true // Permite cerrar la alerta tocando fuera
+            backdropDismiss: true
           });
           await alert.present();
         }
       );
+    } else {
+      console.log("No se obtuvo una ruta web para la imagen, no se puede continuar.");
     }
-
   }
 
   handleSearchInput(event: CustomEvent) {

@@ -342,12 +342,12 @@ export class GrupoAlumnoPage implements OnInit {
       saveToGallery: true
     });
 
-    const loading = await this.loadingController.create({
+    /*const loading = await this.loadingController.create({
       message: 'Subiendo fotografía',
       duration: 100000,
-    });
+    });*/
 
-    loading.present();
+    //loading.present();
   
     if (image.webPath) {
       // Convertir la imagen a un Blob, luego a un File
@@ -358,7 +358,7 @@ export class GrupoAlumnoPage implements OnInit {
       // Utilizar el servicio para subir la foto
       this.grupoAlumnoService.uploadPhoto(groupId, file).subscribe(
         async (response) => {
-          loading.dismiss();
+          //loading.dismiss();
           if (response.error ==  false){
             const alert = await this.alertController.create({
               header: 'Fotografía subida',
