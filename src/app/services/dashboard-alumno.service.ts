@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DashboardAlumnoService {
-    private baseUrl: string = 'http://147.182.176.29'; 
+    private baseUrl: string = 'https://knownhome.xyz'; 
     // 192.168.1.69:5000
 
     constructor(private http: HttpClient) {}
@@ -27,7 +27,7 @@ export class DashboardAlumnoService {
         const formData = new FormData();
         formData.append('codigo_acceso', groupCode);
     
-        return this.http.post('http://147.182.176.29/grupo-alumno/join-group', formData, { withCredentials: true });
+        return this.http.post('https://knownhome.xyz/grupo-alumno/join-group', formData, { withCredentials: true });
     }
 
     logOut(): Observable<any> {
