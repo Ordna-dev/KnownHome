@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { CapacitorCookies } from '@capacitor/core';
 import { AuthService } from '../services/auth.service'; 
@@ -45,7 +45,7 @@ export class LoginAlumnoPage implements OnInit {
   errorMessage: string = '';
   jsonData: any[] = []; // Array para almacenar los datos JSON
 
-  constructor(private router: Router, private authService: AuthService) {} 
+  constructor(private router: Router, private authService: AuthService, private alertController: AlertController) {} 
 
   ngOnInit() {
   }
@@ -63,54 +63,38 @@ export class LoginAlumnoPage implements OnInit {
     if (!this.username || !this.password) {
       this.errorMessage = 'Se requieren ambos campos';
       console.log('Los campos están vacíos');
+      this.showErrorAlert('Error de autenticación', 'Se requieren ambos campos');
       return;
     }
   
     console.log('Enviando solicitud de inicio de sesión', this.username);
   
-    /*this.authService.studentLogin(this.username, this.password).subscribe({
-      next: (data) => {
-        console.log(data.user);
-        if (data.error !== false) {
-          this.errorMessage = data.message;
-        } else {
-          console.log('Inicio de sesión exitoso, redirigiendo...');
-          console.log(data.user);
-          this.router.navigate(['/dashboard-alumno'], { state: { userInfo: data } });
-        }
-      },
-      error: (error) => {
-        console.error('Error en el proceso de inicio de sesión:', error);
-        this.errorMessage = 'Error al conectar con el servidor';
-      }
-    });*/
     this.authService.studentLogin(this.username, this.password).subscribe({
       next: async (data) => {
         console.log('Datos de respuesta', data);
         if (data.error !== false) {
           this.errorMessage = data.message;
+          await this.showErrorAlert('Error de inicio de sesión', this.errorMessage);
         } else {
           console.log('Inicio de sesión exitoso, redirigiendo...');
           this.router.navigate(['/dashboard-alumno'], { state: { userInfo: data } });
-          //console.log('Encabezado Server:', data.headers.get('Server'));
-    
-          // Recuperar la cookie de sesión del servidor utilizando CapacitorCookies
-          try {
-            const cookies = getCookies();
-            //const sessionCookie = cookies.cookies.find(cookie => cookie.name === 'session');
-            console.log(cookies);
-    
-            // Busca la cookie específica que deseas utilizando el nombre de la cookie
-            
-          } catch (error) {
-            console.error('Error al recuperar cookies:', error);
-          }
         }
       },
-      error: (error) => {
+      error: async (error) => {
         console.error('Error en el proceso de inicio de sesión:', error);
         this.errorMessage = 'Error al conectar con el servidor';
+        await this.showErrorAlert('Error de conexión', this.errorMessage);
       }
     });
-  }  
+  }
+
+  async showErrorAlert(header: string, message: string) {
+      const alert = await this.alertController.create({
+        header: header,
+        message: message,
+        buttons: ['OK'],
+        backdropDismiss: false
+      });
+      await alert.present();
+  }
 }

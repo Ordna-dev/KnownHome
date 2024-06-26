@@ -372,6 +372,13 @@ export class DashboardMaestroPage implements OnInit {
       next: async (response) => {
         if (response.error) {
           this.errorMessage = response.message;
+          const errorAlert = await this.alertController.create({
+            header: 'Error en el registro del alumno:',
+            message: this.errorMessage,
+            buttons: ['OK'],
+            backdropDismiss: false
+          });
+          await errorAlert.present();
         } else {
           this.studentUsername = '';
           this.studentPassword = '';
@@ -382,7 +389,7 @@ export class DashboardMaestroPage implements OnInit {
           };
 
           const successAlert = await this.alertController.create({
-            header: 'Operación exitosa',
+            header: 'Operación exitosa:',
             message: 'El alumno ha sido registrado en el sistema.',
             buttons: [{
               text: 'OK',
@@ -404,6 +411,15 @@ export class DashboardMaestroPage implements OnInit {
       error: async (error) => {
         console.error('Error from server:', error);
         this.errorMessage = error.error?.message || 'Error al registrar al alumno.';
+
+        // Crear y mostrar una alerta para el error
+        const errorAlert = await this.alertController.create({
+          header: 'Error en el registro del alumno:',
+          message: this.errorMessage,
+          buttons: ['OK'],
+          backdropDismiss: false
+        });
+        await errorAlert.present();
       }
     });
   }

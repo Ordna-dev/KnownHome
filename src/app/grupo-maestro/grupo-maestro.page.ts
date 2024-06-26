@@ -26,7 +26,8 @@ import {
   IonCardSubtitle,
   IonSearchbar,
   IonMenuButton,
-  IonButtons
+  IonButtons,
+  IonLoading
 } from '@ionic/angular/standalone';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -63,7 +64,8 @@ import { EvaluatePhotoComponent } from '../componentes/evaluate-photo/evaluate-p
     IonCardSubtitle,
     IonSearchbar,
     IonMenuButton,
-    IonButtons
+    IonButtons,
+    IonLoading
   ],
   providers: [ModalController],
 })
@@ -491,7 +493,6 @@ export class GrupoMaestroPage implements OnInit {
 
   // AGM 22/02/2024 - Lógica para tomar una foto en la app 
   takePicture = async (groupId: number) => {
-    console.log("Iniciando la captura de la foto...");
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
@@ -499,21 +500,26 @@ export class GrupoMaestroPage implements OnInit {
       source: CameraSource.Prompt,
       saveToGallery: true
     });
-    console.log("Foto capturada", image);
+
+    const loading = await this.loadingController.create({
+      message: 'Subiendo fotografía',
+      duration: 100000,
+    });
+
+    loading.present();
 
     if(image.webPath){
-      console.log("Preparando la imagen para subir...");
+      //Convertir la imagen a un Blob, luego a un File
       const response = await fetch(image.webPath);
       const blob = await response.blob();
       const file = new File([blob], 'photo.jpg', {type:'image/jpeg'});
-      console.log("Imagen convertida a File:", file);
 
-      console.log("Subiendo la foto al servidor...");
+      //Utilizar el servicio para subir la foto
       this.grupoMaestroService.uploadPhoto(groupId, file).subscribe(
         async (response) => {
           if (response.error == false){
-            console.log("Foto subida exitosamente, cerrando el indicador de carga...");
-            console.log("Creando modal para evaluar la foto...");
+            loading.dismiss();
+            //Generar una instancia del modal para evaluar la foto tomada
             const modal = await this.modalCtrl.create({
               component: EvaluatePhotoComponent,
               componentProps:{
@@ -522,36 +528,35 @@ export class GrupoMaestroPage implements OnInit {
                 objects: response.objetos
               }
             });
-            console.log("Mostrando el modal...");
+            //Mostrar el modal
             return await modal.present()
           }else{
-            console.log("Error al subir la foto: ", response.message);
+            loading.dismiss();
             const alert = await this.alertController.create({
               header: 'Fotografía no subida',
               message: response.message,
               buttons: [{
                 text: 'Aceptar',
               }],
-              backdropDismiss: true
+              backdropDismiss: true // Permite cerrar la alerta tocando fuera
             });
+            console.log(response.exception);
             await alert.present();
           }
         },
         async (error) => {
-          console.log("Error al intentar subir la foto:", error);
+          loading.dismiss();
           const alert = await this.alertController.create({
             header: 'Fotografía no subida',
             message: 'Error al subir la foto, porfavor vuelva a intentar',
             buttons: [{
               text: 'Aceptar',
             }],
-            backdropDismiss: true
+            backdropDismiss: true // Permite cerrar la alerta tocando fuera
           });
           await alert.present();
         }
       );
-    } else {
-      console.log("No se obtuvo una ruta web para la imagen, no se puede continuar.");
     }
   }
 

@@ -23,7 +23,8 @@ import {
   IonButton,
   IonSearchbar,
   IonCardContent,
-  IonButtons
+  IonButtons,
+  IonLoading
 } from '@ionic/angular/standalone';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -54,7 +55,8 @@ import { GalleryComponent } from '../componentes/gallery/gallery.component';
     IonButton,
     IonSearchbar,
     IonCardContent,
-    IonButtons
+    IonButtons,
+    IonLoading
   ],  
   providers: [ModalController],
 })
@@ -344,12 +346,12 @@ export class GrupoAlumnoPage implements OnInit {
       saveToGallery: true
     });
 
-    /*const loading = await this.loadingController.create({
+    const loading = await this.loadingController.create({
       message: 'Subiendo fotografía',
       duration: 100000,
-    });*/
+    });
 
-    //loading.present();
+    loading.present();
   
     if (image.webPath) {
       // Convertir la imagen a un Blob, luego a un File
@@ -360,7 +362,7 @@ export class GrupoAlumnoPage implements OnInit {
       // Utilizar el servicio para subir la foto
       this.grupoAlumnoService.uploadPhoto(groupId, file).subscribe(
         async (response) => {
-          //loading.dismiss();
+          loading.dismiss();
           if (response.error ==  false){
             const alert = await this.alertController.create({
               header: 'Fotografía subida',
