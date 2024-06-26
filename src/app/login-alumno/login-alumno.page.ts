@@ -13,7 +13,8 @@ import {
   IonText,
   IonIcon,
   IonItem,
-  IonLabel
+  IonLabel,
+  IonAlert
 } from '@ionic/angular/standalone';
 
 const getCookies = () => {
@@ -35,7 +36,8 @@ const getCookies = () => {
     IonText,
     IonIcon,
     IonItem,
-    IonLabel
+    IonLabel,
+    IonAlert
   ]  
 })
 export class LoginAlumnoPage implements OnInit {
@@ -44,6 +46,7 @@ export class LoginAlumnoPage implements OnInit {
   showPassword: boolean = false;
   errorMessage: string = '';
   jsonData: any[] = []; // Array para almacenar los datos JSON
+  alertButtons = ['Action'];
 
   constructor(private router: Router, private authService: AuthService, private alertController: AlertController) {} 
 

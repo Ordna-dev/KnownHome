@@ -24,7 +24,8 @@ import {
   IonSearchbar,
   IonCardContent,
   IonButtons,
-  IonLoading
+  IonLoading,
+  IonMenuButton
 } from '@ionic/angular/standalone';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -56,7 +57,8 @@ import { GalleryComponent } from '../componentes/gallery/gallery.component';
     IonSearchbar,
     IonCardContent,
     IonButtons,
-    IonLoading
+    IonLoading,
+    IonMenuButton
   ],  
   providers: [ModalController],
 })
