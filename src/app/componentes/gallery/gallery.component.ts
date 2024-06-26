@@ -328,4 +328,41 @@ export class GalleryComponent{
     });
   }
 
+  //From the teacher view, evaluate the object detected uploaded by myself
+  async checkTeacherImage(imageId: number){
+    this.grupoMaestroService.getTeacherPhotoEvaluate(this.grupoId, imageId).subscribe({
+      next: async(response) => {
+        console.log(response)
+        if(response.error == false){
+          //Generar una instancia del modal para evaluar la foto tomada
+          const modal = await this.modalCtrl.create({
+            
+            component: EvaluatePhotoComponent,
+            componentProps:{
+              groupId: this.grupoId,
+              image: response.imagen,
+              objects: response.objetos
+            }
+          });
+          await modal.present()
+          if(await modal.onWillDismiss()){
+            this.grupoMaestroService.getTeacherPhotos(this.grupoId).subscribe({
+              next:async(response) => {
+                if(response.error == false){
+                  this.images = response.images
+                } 
+              }
+            })
+          }
+        }else{
+          this.showAlert('Error', response.message, ['Aceptar']);
+          console.log(response.exception);
+        }
+      }, error: async(error) => {
+        let message = 'No se pudo mostrar el detalle de la imagen. Por favor intente de nuevo';
+        this.showAlert('Error', message, ['Aceptar']);
+      }
+    });
+  }
+
 }

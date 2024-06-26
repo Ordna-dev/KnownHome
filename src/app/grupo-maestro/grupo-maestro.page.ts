@@ -517,6 +517,7 @@ export class GrupoMaestroPage implements OnInit {
       //Utilizar el servicio para subir la foto
       this.grupoMaestroService.uploadPhoto(groupId, file).subscribe(
         async (response) => {
+          console.log(response);
           if (response.error == false){
             loading.dismiss();
             //Generar una instancia del modal para evaluar la foto tomada

@@ -85,6 +85,10 @@ export class GrupoMaestroService {
     return this.http.get(`${this.baseUrl}/imagenes-maestro/group/${groupId}/student-photo/evaluate-photo/${photoId}`, {withCredentials: true});
   }
 
+  getTeacherPhotoEvaluate(groupId: number, photoId:number): Observable<any>{
+    return this.http.get(`${this.baseUrl}/imagenes-maestro/group/${groupId}/teacher-photo/evaluate-photo/${photoId}`, {withCredentials: true});
+  }
+
   authorizeImage(groupdId: number, imageId: number, authorized: boolean, clasification:boolean): Observable<any>{
 
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
