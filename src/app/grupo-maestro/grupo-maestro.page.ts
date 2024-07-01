@@ -1,9 +1,10 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { NavController, AlertController, ModalController, LoadingController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GrupoMaestroService } from '../services/grupo-maestro.service';
+import { DashboardMaestroService } from '../services/dashboard-maestro.service'; 
 import {
   IonMenu,
   IonHeader,
@@ -71,6 +72,8 @@ import { EvaluatePhotoComponent } from '../componentes/evaluate-photo/evaluate-p
 })
 export class GrupoMaestroPage implements OnInit {
   group: any;
+  tempNombre: string = '';
+  tempDescripcion: string = '';
   grupoId!: number;
   errorMessage: string = '';
   enrolledStudents: any[] = [];
@@ -84,7 +87,9 @@ export class GrupoMaestroPage implements OnInit {
     private loadingController: LoadingController,
     private router: Router, 
     private navCtrl: NavController,
-    ) { }
+    private ngZone: NgZone,
+    private dashboardMaestroService: DashboardMaestroService,
+  ) { }
 
   // AGM 31/01/2024 - Redireccionamiento a perfil, cierre de sesion o dashboard
   redirectToProfile() {
@@ -93,8 +98,32 @@ export class GrupoMaestroPage implements OnInit {
   }
   
   redirectToLogin() {
-    this.router.navigateByUrl('/login', {skipLocationChange: true}).then(()=>
-    this.router.navigate(['/login', { timestamp: Date.now() }]));
+    this.loadingController.create({
+      message: 'Cerrando sesión...'
+    }).then(loading => {
+      loading.present(); 
+  
+      this.dashboardMaestroService.logOutService().subscribe({
+        next: (html) => {
+          console.log(html);
+          loading.dismiss();
+          this.router.navigateByUrl('/login', {skipLocationChange: true}).then(() =>
+            this.router.navigate(['/login', { timestamp: Date.now() }])
+          );
+        },
+        error: async (error) => {
+          console.error('Error al cerrar sesión:', error);
+          loading.dismiss(); 
+          const alert = await this.alertController.create({
+            header: 'Error al cerrar sesión:',
+            message: 'No se pudo cerrar sesión correctamente debido a problemas de conexión. Por favor, inténtalo de nuevo o reinicia la aplicación.',
+            buttons: ['Aceptar'],
+            backdropDismiss: false
+          });
+          await alert.present();
+        }
+      });
+    });
   }
 
   goBack() {
@@ -114,6 +143,9 @@ export class GrupoMaestroPage implements OnInit {
   }
 
   setSecondOpen(isOpen: boolean) {
+    this.tempNombre = this.group.nombre;
+    this.tempDescripcion = this.group.descripcion;
+    this.errorMessage = '';
     this.isSecondModalOpen = isOpen;
   }
 
@@ -230,73 +262,52 @@ export class GrupoMaestroPage implements OnInit {
   }
 
   updateGroup() {
-    this.grupoMaestroService.updateGroup(this.group.id, this.group.nombre, this.group.descripcion)
-      .subscribe({
-        next: async (data) => {
-          console.log('Grupo actualizado con éxito:', JSON.stringify(data, null, 2));
-          this.setSecondOpen(false);
-          this.errorMessage = '';
-  
-          const afterAlertActions = () => {
-            this.refreshGroupData();
-          };
-  
-          const alert = await this.alertController.create({
-            header: 'Cambios realizados',
-            message: 'Los cambios se han efectuado en el grupo. Se ha actualizado la información.',
-            buttons: [{
-              text: 'Aceptar',
-              handler: () => afterAlertActions()
-            }],
-            backdropDismiss: true
-          });
-  
-          alert.onDidDismiss().then((detail) => {
-            if (detail.role === 'backdrop' || detail.role === 'cancel') {
-              afterAlertActions();
-            }
-          });
-  
-          await alert.present();
-        },
-        error: async (error) => {
-          let errorMessage = 'Ocurrió un error inesperado al actualizar el grupo.';
-        
-          // Verifica si existe un mensaje específico de error en la respuesta del servidor
-          if (error.error.mensaje) {
-            console.error('Error al actualizar el grupo:', error.error.mensaje);
-            errorMessage = error.error.mensaje;
-        
-            // Alerta para errores específicos de la respuesta del servidor
-            const serverResponseErrorAlert = await this.alertController.create({
-              header: 'Error al actualizar el grupo:',
-              message: errorMessage,
-              buttons: ['Aceptar'],
-              backdropDismiss: false
+    this.loadingController.create({
+        message: 'Actualizando grupo...'
+    }).then(loading => {
+        loading.present();
+
+        this.grupoMaestroService.updateGroup(this.group.id, this.tempNombre, this.tempDescripcion)
+            .subscribe({
+                next: async (data) => {
+                    console.log('Grupo actualizado con éxito:', JSON.stringify(data, null, 2));
+                    loading.dismiss();
+
+                    console.log("Aqui lo que se modifico:")
+                    console.log(this.tempNombre);
+                    console.log(this.tempDescripcion);
+                    
+                    const successAlert = await this.alertController.create({
+                        header: 'Cambios realizados:',
+                        message: 'Se ha actualizado la información del grupo.',
+                        buttons: [{
+                            text: 'Aceptar',
+                            handler: () => {
+                                this.ngZone.run(() => {
+                                    this.setSecondOpen(false);
+                                    this.refreshGroupData();
+                                    this.errorMessage = '';
+                                });
+                            }
+                        }],
+                        backdropDismiss: false
+                    });
+                    await successAlert.present();
+                },
+                error: async (error) => {
+                    console.error('Error al actualizar el grupo:', error);
+                    loading.dismiss();
+                    this.errorMessage = error.error.mensaje || 'Ha habido problemas de conexión. Verifica tu conexión a internet e inténtalo de nuevo o reinicia la aplicación.';
+                    this.alertController.create({
+                        header: 'Error al actualizar el grupo:',
+                        message: this.errorMessage,
+                        buttons: ['Aceptar'],
+                        backdropDismiss: false
+                    }).then(alert => alert.present());
+                }
             });
-        
-            await serverResponseErrorAlert.present();
-          } else {
-            console.error('Error al actualizar el grupo:', error);
-        
-            // Mensaje general para cualquier otro tipo de error
-            errorMessage = 'Ocurrió un error inesperado que no corresponde a una respuesta del servidor. Por favor, verifica tu conexión.';
-        
-            // Alerta para errores generales o desconocidos
-            const generalErrorAlert = await this.alertController.create({
-              header: 'Error General',
-              message: errorMessage,
-              buttons: ['Aceptar'],
-              backdropDismiss: false
-            });
-        
-            await generalErrorAlert.present();
-          }
-        
-          this.errorMessage = errorMessage;
-        }
-      });
-  }  
+    });
+  }
 
   // AGM 15/02/2024 - Refrescar los datos del grupo si ha sido modificado
   refreshGroupData() {
@@ -331,22 +342,30 @@ export class GrupoMaestroPage implements OnInit {
 
   // AGM 12/02/2024 - Petición DELETE del grupo
   deleteGroup(groupId: string) {
-    this.grupoMaestroService.deleteGroup(groupId)
-      .subscribe({
-        next: async (data) => {
-          console.log('Group deleted successfully:', data);
-          await this.presentGroupDeletedAlert();
-        },
-        error: async (error) => {
-          console.error('Error al eliminar el grupo:', error);
-          const alert = await this.alertController.create({
-            header: 'Error',
-            message: 'Ha ocurrido un error al contactar con el servidor. Comprueba tu conexión o reinicia la aplicación.',
-            buttons: ['OK']
-          });
-          await alert.present();
-        }
-      });
+    this.loadingController.create({
+        message: 'Eliminando grupo...'
+    }).then(loading => {
+        loading.present(); // Mostrar el recuadro de carga
+
+        this.grupoMaestroService.deleteGroup(groupId)
+            .subscribe({
+                next: async (data) => {
+                    console.log('Group deleted successfully:', data);
+                    loading.dismiss(); 
+                    await this.presentGroupDeletedAlert();
+                },
+                error: async (error) => {
+                    console.error('Error al eliminar el grupo:', error);
+                    loading.dismiss(); 
+                    const alert = await this.alertController.create({
+                        header: 'Error:',
+                        message: 'Ha ocurrido un error de conexión. Comprueba tu conexión a internet e inténtalo de nuevo o reinicia la aplicación.',
+                        buttons: ['Aceptar']
+                    });
+                    await alert.present();
+                }
+            });
+    });
   }
 
   // AGM 31/01/2024 - Se manda una alerta al maestro de que se eliminó el grupo
@@ -357,7 +376,7 @@ export class GrupoMaestroPage implements OnInit {
     };
   
     const alert = await this.alertController.create({
-      header: 'Se ha eliminado el grupo',
+      header: 'Se ha eliminado el grupo.',
       message: 'Usted será redireccionado al dashboard.',
       buttons: [{
         text: 'Aceptar',
@@ -404,47 +423,57 @@ export class GrupoMaestroPage implements OnInit {
   // AGM 17/02/2024 - Método que realiza la llamada al servicio para eliminar al alumno
   deleteStudentFromGroup(studentId: number) {
     if (this.group && this.group.id) {
-      this.grupoMaestroService.removeStudentFromGroup(studentId, this.group.id).subscribe({
-        next: async (response) => {
-          console.log('El alumno ha sido eliminado:', response);
+        this.loadingController.create({
+            message: 'Eliminando alumno del grupo...'
+        }).then(loading => {
+            loading.present(); 
 
-          const afterAlertActions = () => {
-            this.getEnrolledStudents(this.group.id);
-            this.getEnrolledStudentsModal(this.group.id);
-          };
+            this.grupoMaestroService.removeStudentFromGroup(studentId, this.group.id).subscribe({
+                next: async (response) => {
+                    console.log('El alumno ha sido eliminado:', response);
+                    loading.dismiss(); 
 
-          const successAlert = await this.alertController.create({
-            header: 'Operación exitosa',
-            message: 'El alumno ha sido eliminado del grupo.',
-            buttons: [{
-              text: 'OK',
-              handler: () => afterAlertActions()
-            }],
-            backdropDismiss: true
-          });
+                    const afterAlertActions = () => {
+                      this.ngZone.run(() => {
+                        this.getEnrolledStudents(this.group.id);
+                        this.getEnrolledStudentsModal(this.group.id);
+                      });
+                    };
 
-          successAlert.onDidDismiss().then((detail) => {
-            if (detail.role === 'backdrop' || detail.role === 'cancel') {
-              afterAlertActions();
-            }
-          });
+                    const successAlert = await this.alertController.create({
+                        header: 'Operación exitosa:',
+                        message: 'El alumno ha sido eliminado del grupo.',
+                        buttons: [{
+                            text: 'OK',
+                            handler: () => afterAlertActions()
+                        }],
+                        backdropDismiss: false
+                    });
 
-          await successAlert.present();
-        },
-        error: async (error) => {
-          const errorMsg = error.error?.message || 'Se produjo un error de comunicacion con el servidor.';
-          console.error('Error:', errorMsg);
+                    successAlert.onDidDismiss().then((detail) => {
+                        if (detail.role === 'backdrop' || detail.role === 'cancel') {
+                            afterAlertActions();
+                        }
+                    });
 
-          const errorAlert = await this.alertController.create({
-            header: 'ERROR',
-            message: errorMsg,
-            buttons: ['OK']
-          });
-          await errorAlert.present();
-        }
-      });
+                    await successAlert.present();
+                },
+                error: async (error) => {
+                    console.error('Error:', error);
+                    loading.dismiss();
+
+                    const errorMsg = error.error?.message || 'Error de conexión al expulsar al alumno, por favor vuelva a intentarlo o reinicie la aplicación.';
+                    const errorAlert = await this.alertController.create({
+                        header: 'Error:',
+                        message: errorMsg,
+                        buttons: ['Aceptar']
+                    });
+                    await errorAlert.present();
+                }
+            });
+        });
     } else {
-      console.error('No se ha proporcionado el ID del grupo.');
+        console.error('No se ha proporcionado el ID del grupo.');
     }
   }
 
@@ -503,7 +532,6 @@ export class GrupoMaestroPage implements OnInit {
 
     const loading = await this.loadingController.create({
       message: 'Subiendo fotografía',
-      duration: 100000,
     });
 
     loading.present();
@@ -520,7 +548,7 @@ export class GrupoMaestroPage implements OnInit {
           console.log(response);
           if (response.error == false){
             loading.dismiss();
-            //Generar una instancia del modal para evaluar la foto tomada
+
             const modal = await this.modalCtrl.create({
               component: EvaluatePhotoComponent,
               componentProps:{
@@ -529,7 +557,7 @@ export class GrupoMaestroPage implements OnInit {
                 objects: response.objetos
               }
             });
-            //Mostrar el modal
+            
             return await modal.present()
           }else{
             loading.dismiss();
@@ -539,7 +567,7 @@ export class GrupoMaestroPage implements OnInit {
               buttons: [{
                 text: 'Aceptar',
               }],
-              backdropDismiss: true // Permite cerrar la alerta tocando fuera
+              backdropDismiss: true 
             });
             console.log(response.exception);
             await alert.present();
@@ -549,7 +577,7 @@ export class GrupoMaestroPage implements OnInit {
           loading.dismiss();
           const alert = await this.alertController.create({
             header: 'Fotografía no subida',
-            message: 'Error al subir la foto, porfavor vuelva a intentar',
+            message: 'Error de conexión al subir la fotografía, porfavor vuelva a intentarlo o reinicie la aplicación.',
             buttons: [{
               text: 'Aceptar',
             }],

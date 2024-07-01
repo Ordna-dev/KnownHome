@@ -8,7 +8,7 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding ion-text-right"> 
-    <h1 class="menu-h1">Grupo</h1>
+    <h1 class="menu-h1" style="margin-top: 20px;">Grupo</h1>
     <ion-text color="medium">
       <h5 (click)="setOpen(true)">Código de acceso del grupo</h5>
     </ion-text>
@@ -137,10 +137,10 @@
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding ion-text-center">
-          <h1>Código de acceso al grupo</h1>
+          <h1>Código de acceso al grupo:</h1>
 
           <ion-item class="separator">
-            <ion-input class="ion-text-center" value="{{ group?.codigo_acceso || 'Código de acceso no disponible' }}" disabled></ion-input>
+            <ion-input class="ion-text-center" value="{{ group?.codigo_acceso || 'Código de acceso no disponible' }}" [readonly]="true"></ion-input>
           </ion-item>
 
         </ion-content>
@@ -150,30 +150,29 @@
     <!-- AGM 31/01/2024 - Modal para modificar las propiedades del grupo -->
     <ion-modal [isOpen]="isSecondModalOpen">
       <ng-template>
-        <ion-header>
-          <ion-toolbar>
-            <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setSecondOpen(false)"></ion-icon>
-          </ion-toolbar>
-        </ion-header>
-        <ion-content class="ion-padding ion-text-center">
-          <h1>Modificacion de grupo</h1>
-
-          <ion-item class="separator">
-            <ion-input [(ngModel)]="group.nombre" label="Nuevo nombre del grupo:" labelPlacement="stacked" placeholder="Escribe aquí el nuevo nombre del grupo." [counter]="true" maxlength="50"></ion-input>
-          </ion-item>
-          
-          <ion-item>
-            <ion-textarea [(ngModel)]="group.descripcion" label="Nueva descripcion del grupo:" labelPlacement="stacked" placeholder="Escribe aquí la nueva descripcion del grupo." [autoGrow]="true" [counter]="true" maxlength="100">
-            </ion-textarea>
-          </ion-item>
-
-          <ion-text class="ion-text-center" color="danger" *ngIf="errorMessage">
-            <p>{{ errorMessage }}</p>
-          </ion-text>
-
-          <ion-button class="btn-cancelar" (click)="setSecondOpen(false)" color="danger">Cancelar</ion-button>
-          <ion-button class="btn-registrar" color="warning" (click)="showConfirmAlert()">Modificar</ion-button>
-        </ion-content>
+          <ion-header>
+              <ion-toolbar>
+                  <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setSecondOpen(false)"></ion-icon>
+              </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding ion-text-center">
+              <h1>Modificación de grupo</h1>
+  
+              <ion-item class="separator">
+                  <ion-input [(ngModel)]="tempNombre" placeholder="Escribe aquí el nuevo nombre del grupo." label="Nuevo nombre del grupo:" labelPlacement="stacked"></ion-input>
+              </ion-item>
+              
+              <ion-item>
+                  <ion-textarea [(ngModel)]="tempDescripcion" placeholder="Escribe aquí la nueva descripción del grupo." label="Nueva descripción del grupo:" labelPlacement="stacked"></ion-textarea>
+              </ion-item>
+  
+              <ion-text class="ion-text-center" color="danger" *ngIf="errorMessage">
+                  <p>{{ errorMessage }}</p>
+              </ion-text>
+  
+              <ion-button class="btn-cancelar" (click)="setSecondOpen(false)" color="danger">Cancelar</ion-button>
+              <ion-button class="btn-registrar" color="warning" (click)="updateGroup()">Modificar</ion-button>
+          </ion-content>
       </ng-template>
     </ion-modal>
 

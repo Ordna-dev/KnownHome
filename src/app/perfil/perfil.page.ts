@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, NavController, AlertController } from '@ionic/angular';
+import { IonicModule, NavController, AlertController, LoadingController } from '@ionic/angular';
 import { PerfilService } from '../services/perfil.service'; 
 import { Router } from '@angular/router';
 import {
@@ -58,7 +58,8 @@ export class PerfilPage implements OnInit {
     private perfilService: PerfilService, 
     private router: Router,
     private alertController: AlertController,
-    private zone: NgZone
+    private zone: NgZone,
+    private loadingCtrl: LoadingController
     ) { }
 
   // AGM 20/02/2024 - Abrir o cerrar el primer modal
@@ -93,6 +94,7 @@ export class PerfilPage implements OnInit {
       },
       error: (error) => {
         console.error('Error:', error);
+        this.navCtrl.navigateRoot('/login');
       }
     });
   }
@@ -144,21 +146,30 @@ export class PerfilPage implements OnInit {
 
   // AGM 20/02/2024 - Lógica de manejo de edición de username
   editUsername() {
-    this.perfilService.updateUser(this.newUsername, this.passwordActual, undefined, undefined).subscribe({
-      next: (response) => {
-        if (response.error) {
-          this.errorMessage = response.message;
-        } else {
-          console.log('Perfil actualizado con éxito:', response.message);
-          this.setOpen(false);
-          this.presentUpdateSuccessAlert();
-        }
-      },
-      error: (err) => {
-        console.error('Error al actualizar el perfil:', err);
-        this.errorMessage = err.error.message || 'Ocurrió un error al actualizar el perfil.';
-        this.presentErrorAlert(this.errorMessage); // Mostrar alerta de error
-      }
+    this.loadingCtrl.create({
+        message: 'Actualizando perfil...'
+    }).then(loading => {
+        loading.present(); 
+
+        this.perfilService.updateUser(this.newUsername, this.passwordActual, undefined, undefined).subscribe({
+            next: (response) => {
+                loading.dismiss(); 
+                if (response.error) {
+                    this.errorMessage = response.message;
+                    this.presentErrorAlert(this.errorMessage); 
+                } else {
+                    console.log('Perfil actualizado con éxito:', response.message);
+                    this.setOpen(false);
+                    this.presentUpdateSuccessAlert(); 
+                }
+            },
+            error: (err) => {
+                loading.dismiss(); 
+                console.error('Error al actualizar el perfil:', err);
+                this.errorMessage = err.error.message || 'Hay problemas de conexión a la hora de actualizar las credenciales. Por favor, inténtalo de nuevo o reinicia la aplicación.';
+                this.presentErrorAlert(this.errorMessage); 
+            }
+        });
     });
   }
   
@@ -166,11 +177,13 @@ export class PerfilPage implements OnInit {
   async presentConfirmEditPassword() {
     if (!this.passwordActual || !this.password || !this.confirmPassword) {
       this.errorMessage = 'Todos los campos son requeridos.';
+      this.presentErrorAlert(this.errorMessage); 
       return;
     }
   
     if (this.password !== this.confirmPassword) {
       this.errorMessage = 'Las contraseñas no coinciden.';
+      this.presentErrorAlert(this.errorMessage); 
       return;
     }
 
@@ -215,28 +228,37 @@ export class PerfilPage implements OnInit {
 
   // AGM 20/02/2024 - Lógica de manejo de edición de password
   editPassword() {
-    this.perfilService.updateUser(undefined, this.passwordActual, this.password, this.confirmPassword).subscribe({
-      next: (response) => {
-        if (response.error) {
-          this.errorMessage = response.message;
-        } else {
-          console.log('Perfil actualizado con éxito:', response.message);
-          this.setSecondOpen(false);
-          this.presentUpdateSuccessAlert();
-        }
-      },
-      error: (err) => {
-        console.error('Error al actualizar el perfil:', err);
-        this.errorMessage = err.error.message || 'Ocurrió un error al actualizar el perfil.';
-        this.presentErrorAlert(this.errorMessage); // Mostrar alerta de error
-      }
+    this.loadingCtrl.create({
+        message: 'Actualizando contraseña...'
+    }).then(loading => {
+        loading.present();
+
+        this.perfilService.updateUser(undefined, this.passwordActual, this.password, this.confirmPassword).subscribe({
+            next: (response) => {
+                loading.dismiss(); 
+                if (response.error) {
+                    this.errorMessage = response.message;
+                    this.presentErrorAlert(this.errorMessage); 
+                } else {
+                    console.log('Perfil actualizado con éxito:', response.message);
+                    this.setSecondOpen(false);
+                    this.presentUpdateSuccessAlert(); 
+                }
+            },
+            error: (err) => {
+                loading.dismiss(); 
+                console.error('Error al actualizar el perfil:', err);
+                this.errorMessage = err.error.message || 'Hay problemas de conexión a la hora de actualizar las credenciales. Por favor, inténtalo de nuevo o reinicia la aplicación.';
+                this.presentErrorAlert(this.errorMessage); 
+            }
+        });
     });
   }
 
   // AGM 20/02/2024 - Alerta que confirma que el perfil ha sido actualizado
   async presentUpdateSuccessAlert() {
     const alert = await this.alertController.create({
-      header: 'Actualización Exitosa',
+      header: 'Actualización de credenciales exitosa:',
       message: 'Los cambios han sido efectuados en tu perfil, serás redirigido al login.',
       buttons: [{
         text: 'Aceptar',
@@ -258,7 +280,7 @@ export class PerfilPage implements OnInit {
   // AGM 20/02/2024 - Alerta para todos los errores
   async presentErrorAlert(message: string) {
     const alert = await this.alertController.create({
-      header: 'Error al modificar credenciales',
+      header: 'Error al modificar credenciales:',
       message: message,
       buttons: ['OK']
     });
