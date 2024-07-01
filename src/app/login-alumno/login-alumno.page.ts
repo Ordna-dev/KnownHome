@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, AlertController } from '@ionic/angular';
+import { IonicModule, AlertController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { CapacitorCookies } from '@capacitor/core';
 import { AuthService } from '../services/auth.service'; 
 import {
   IonContent,
@@ -14,12 +13,9 @@ import {
   IonIcon,
   IonItem,
   IonLabel,
-  IonAlert
+  IonAlert,
+  IonLoading
 } from '@ionic/angular/standalone';
-
-const getCookies = () => {
-  return document.cookie;
-};
 
 @Component({
   selector: 'app-login-alumno',
@@ -37,7 +33,8 @@ const getCookies = () => {
     IonIcon,
     IonItem,
     IonLabel,
-    IonAlert
+    IonAlert,
+    IonLoading
   ]  
 })
 export class LoginAlumnoPage implements OnInit {
@@ -45,15 +42,17 @@ export class LoginAlumnoPage implements OnInit {
   password: string = '';
   showPassword: boolean = false;
   errorMessage: string = '';
-  jsonData: any[] = []; // Array para almacenar los datos JSON
   alertButtons = ['Action'];
 
-  constructor(private router: Router, private authService: AuthService, private alertController: AlertController) {} 
+  constructor(private router: Router, private authService: AuthService, private alertController: AlertController, private loadingCtrl: LoadingController) {} 
 
   ngOnInit() {
   }
 
   goToStudentLogin() {
+    this.password = '';
+    this.username = '';
+    this.errorMessage = '';
     this.router.navigate(['/login']);
   }
 
@@ -62,42 +61,52 @@ export class LoginAlumnoPage implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
-  onLogin() {
+  async onLogin() {
     if (!this.username || !this.password) {
       this.errorMessage = 'Se requieren ambos campos';
       console.log('Los campos están vacíos');
-      this.showErrorAlert('Error de autenticación', 'Se requieren ambos campos');
+      await this.showErrorAlert('Error de autenticación:', 'Se requieren ambos campos');
       return;
     }
   
     console.log('Enviando solicitud de inicio de sesión', this.username);
-  
+
+    const loading = await this.loadingCtrl.create({
+      message: 'Iniciando sesión...'
+    });
+    await loading.present();  // Mostrar el recuadro de carga
+
     this.authService.studentLogin(this.username, this.password).subscribe({
       next: async (data) => {
         console.log('Datos de respuesta', data);
+        await loading.dismiss();  // Ocultar el recuadro de carga
         if (data.error !== false) {
           this.errorMessage = data.message;
-          await this.showErrorAlert('Error de inicio de sesión', this.errorMessage);
+          await this.showErrorAlert('Error de autenticación:', this.errorMessage);
         } else {
+          this.password = '';
+          this.username = '';
+          this.errorMessage = '';
           console.log('Inicio de sesión exitoso, redirigiendo...');
           this.router.navigate(['/dashboard-alumno'], { state: { userInfo: data } });
         }
       },
       error: async (error) => {
-        console.error('Error en el proceso de inicio de sesión:', error);
-        this.errorMessage = 'Error al conectar con el servidor';
-        await this.showErrorAlert('Error de conexión', this.errorMessage);
+        console.error('Error de autenticación:', error);
+        this.errorMessage = 'Error de conexión, revisa tu conexión a internet. Inténtalo de nuevo o reinicia la aplicación.';
+        await loading.dismiss();  
+        await this.showErrorAlert('Error al iniciar sesión:', this.errorMessage);
       }
     });
   }
 
   async showErrorAlert(header: string, message: string) {
-      const alert = await this.alertController.create({
-        header: header,
-        message: message,
-        buttons: ['OK'],
-        backdropDismiss: false
-      });
-      await alert.present();
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['Aceptar'],
+      backdropDismiss: false
+    });
+    await alert.present();
   }
 }

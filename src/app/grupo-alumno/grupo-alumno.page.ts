@@ -5,6 +5,7 @@ import { LoadingController, ModalController, NavController } from '@ionic/angula
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular/standalone';
 import { GrupoAlumnoService } from '../services/grupo-alumno.service';
+import { DashboardAlumnoService } from '../services/dashboard-alumno.service';
 import {
   IonMenu,
   IonContent,
@@ -76,7 +77,8 @@ export class GrupoAlumnoPage implements OnInit {
 
   // AGM 31/01/2024
   constructor(
-    private grupoAlumnoService: GrupoAlumnoService, 
+    private grupoAlumnoService: GrupoAlumnoService,
+    private dashboardAlumnoService: DashboardAlumnoService, 
     private route: ActivatedRoute,
     private router: Router, 
     private navCtrl: NavController,
@@ -92,10 +94,34 @@ export class GrupoAlumnoPage implements OnInit {
     this.router.navigate(['/dashboard-alumno', { timestamp: Date.now() }]));
   }
 
-  // AGM 31/01/2024 - Cerrar sesion
+  // AGM 31/01/2024 - Cerrar sesión y redirigir a la página de inicio de sesión
   redirectToLogin() {
-    this.router.navigateByUrl('/login-alumno', {skipLocationChange: true}).then(()=>
-    this.router.navigate(['/login-alumno', { timestamp: Date.now() }]));
+    this.loadingController.create({
+      message: 'Cerrando sesión...'
+    }).then(loading => {
+      loading.present(); 
+  
+      this.dashboardAlumnoService.logOut().subscribe({
+        next: (html) => {
+          console.log(html);
+          loading.dismiss();
+          this.router.navigateByUrl('/login-alumno', {skipLocationChange: true}).then(() =>
+            this.router.navigate(['/login-alumno', { timestamp: Date.now() }])
+          );
+        },
+        error: async (error) => {
+          console.error('Error al cerrar sesión:', error);
+          loading.dismiss(); 
+          const alert = await this.alertController.create({
+            header: 'Error al cerrar sesión:',
+            message: 'No se pudo cerrar sesión correctamente debido a problemas de conexión. Por favor, inténtalo de nuevo o reinicia la aplicación.',
+            buttons: ['Aceptar'],
+            backdropDismiss: false
+          });
+          await alert.present();
+        }
+      });
+    });
   }
 
   // AGM 19/02/2024 - Refrescar pagina
@@ -136,8 +162,8 @@ export class GrupoAlumnoPage implements OnInit {
         }
       }, error: async(error) => {
         const errorAlert = await this.alertController.create({
-          header: 'Error',
-          message: 'No se pudieron mostrar las imagenes del profesor. Por favor intente de nuevo',
+          header: 'Error:',
+          message: 'No se pudieron mostrar las imagenes del profesor debido a problemas de conexión. Por favor intente de nuevo o reinicie la aplicación.',
           buttons: ['Aceptar']   
         });
         await errorAlert.present();
@@ -170,7 +196,7 @@ export class GrupoAlumnoPage implements OnInit {
       },error: async(error) => {
         const errorAlert = await this.alertController.create({
           header: 'Error',
-          message: 'No se pudieron mostrar las imagenes del alumno. Por favor intente de nuevo.',
+          message: 'No se pudieron mostrar las imagenes del alumno debido a problemas de conexión. Por favor intente de nuevo o reinicie la aplicación.',
           buttons: ['Aceptar']
         });
         await errorAlert.present();
@@ -273,7 +299,7 @@ export class GrupoAlumnoPage implements OnInit {
   async leaveGroup() {
     if (this.grupoId) {
       const alert = await this.alertController.create({
-        header: 'Confirmar',
+        header: 'Confirmar salida:',
         message: '¿Estás seguro de salir del grupo?',
         buttons: [
           {
@@ -295,48 +321,71 @@ export class GrupoAlumnoPage implements OnInit {
       await alert.present();
     } else {
       console.error('Error: No se ha proporcionado un ID de grupo válido.');
+      const alert = await this.alertController.create({
+        header: 'Error al salir del grupo:',
+        message: 'Error de conexión. Intenta de nuevo o reinicia la aplicación.',
+        buttons: [
+          {
+            text: 'Aceptar',
+            handler: (blah) => {
+              console.log('Acción de salir cancelada');
+            }
+          }
+        ]
+      });
     }
   }
 
   private confirmLeaveGroup() {
-    this.grupoAlumnoService.leaveGroup(this.grupoId).subscribe({
-      next: async (response) => {
-        console.log(response.message);
-
-        const redirectToDashboard = () => {
-          this.router.navigateByUrl('/dashboard-alumno', {skipLocationChange: true}).then(()=>
-          this.router.navigate(['/dashboard-alumno', { timestamp: Date.now() }]));
-        };
+    // Crear y mostrar el recuadro de carga
+    this.loadingController.create({
+      message: 'Saliendo del grupo...'
+    }).then(loading => {
+      loading.present();
   
-        const alert = await this.alertController.create({
-          header: 'Salida del grupo',
-          message: 'Has salido del grupo. Vas a ser redirigido a la pantalla principal.',
-          buttons: [{
-            text: 'Aceptar',
-            handler: () => redirectToDashboard()
-          }],
-          backdropDismiss: false 
-        });
+      this.grupoAlumnoService.leaveGroup(this.grupoId).subscribe({
+        next: async (response) => {
+          console.log(response.message);
+          // Ocultar el recuadro de carga antes de mostrar la alerta
+          loading.dismiss();
   
-        alert.onDidDismiss().then((detail) => {
-          if (detail.role === 'backdrop' || detail.role === 'cancel') {
-            redirectToDashboard();
-          }
-        });
+          const redirectToDashboard = () => {
+            this.router.navigateByUrl('/dashboard-alumno', {skipLocationChange: true}).then(()=>
+            this.router.navigate(['/dashboard-alumno', { timestamp: Date.now() }]));
+          };
   
-        await alert.present();
-      },
-      error: async (error) => {
-        console.error('Error al salir del grupo:', error);
-        const errorAlert = await this.alertController.create({
-          header: 'Error',
-          message: 'No se pudo salir del grupo. Por favor, intenta de nuevo.',
-          buttons: ['Aceptar']
-        });
-        await errorAlert.present();
-      }
+          const alert = await this.alertController.create({
+            header: 'Salida del grupo:',
+            message: 'Has salido del grupo. Vas a ser redirigido a la pantalla principal.',
+            buttons: [{
+              text: 'Aceptar',
+              handler: () => redirectToDashboard()
+            }],
+            backdropDismiss: false 
+          });
+  
+          alert.onDidDismiss().then((detail) => {
+            if (detail.role === 'backdrop' || detail.role === 'cancel') {
+              redirectToDashboard();
+            }
+          });
+  
+          await alert.present();
+        },
+        error: async (error) => {
+          console.error('Error al salir del grupo:', error);
+          // Ocultar el recuadro de carga en caso de error
+          loading.dismiss();
+          const errorAlert = await this.alertController.create({
+            header: 'Error al salir del grupo:',
+            message: 'Error de conexión. Intenta de nuevo o reinicia la aplicación.',
+            buttons: ['Aceptar']
+          });
+          await errorAlert.present();
+        }
+      });
     });
-  }  
+  }
 
   // AGM 22/02/2024 - Lógica para tomar una foto en la app 
   async takePicture(groupId: number) {
@@ -350,35 +399,34 @@ export class GrupoAlumnoPage implements OnInit {
 
     const loading = await this.loadingController.create({
       message: 'Subiendo fotografía',
-      duration: 100000,
     });
 
     loading.present();
-  
+
     if (image.webPath) {
       // Convertir la imagen a un Blob, luego a un File
       const response = await fetch(image.webPath);
       const blob = await response.blob();
       const file = new File([blob], 'photo.jpg', { type: 'image/jpeg' });
-  
+
       // Utilizar el servicio para subir la foto
       this.grupoAlumnoService.uploadPhoto(groupId, file).subscribe(
         async (response) => {
           loading.dismiss();
-          if (response.error ==  false){
+          if (response.error == false){
             const alert = await this.alertController.create({
-              header: 'Fotografía subida',
-              message: 'La fotografía ha sido subido exitosamente, espera a que el profesor la valide',
+              header: 'Fotografía subida:',
+              message: 'La fotografía ha sido subida exitosamente, espera a que el profesor la valide para su visualización.',
               buttons: [{
                 text: 'Aceptar',
               }],
               backdropDismiss: true 
             });
             await alert.present();
-          }else{
+          } else {
             const alert = await this.alertController.create({
-              header: 'Fotografía no subida',
-              message: 'Error al subir la foto, porfavor vuelva a intentar',
+              header: 'Error, fotografía no subida:',
+              message: 'Error al subir la fotografía, por favor vuelva a intentar o reinicie la aplicación',
               buttons: [{
                 text: 'Aceptar',
               }],
@@ -388,8 +436,15 @@ export class GrupoAlumnoPage implements OnInit {
             console.log(response.message);
           }
         },
-        (error) => {
+        async (error) => {
+          loading.dismiss(); 
           console.error('Error subiendo la foto', error);
+          const errorAlert = await this.alertController.create({
+            header: 'Error, fotografía no subida:',
+            message: 'Se ha producido un error de conexión. Por favor, verifica tu conexión a internet o reinicie la aplicación.',
+            buttons: ['Aceptar']
+          });
+          await errorAlert.present();
         }
       );
     }

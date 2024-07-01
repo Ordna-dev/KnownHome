@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 import { DashboardAlumnoService } from '../services/dashboard-alumno.service';
 import { AlertController } from '@ionic/angular/standalone';
 import {
@@ -27,7 +28,8 @@ import {
   IonList,
   IonLabel,
   IonMenuButton,
-  IonButtons
+  IonButtons,
+  IonLoading
 } from '@ionic/angular/standalone';
 
 
@@ -61,7 +63,8 @@ import {
     IonList,
     IonLabel,
     IonMenuButton,
-    IonButtons
+    IonButtons,
+    IonLoading
   ]
 })
 export class DashboardAlumnoPage implements OnInit {
@@ -73,7 +76,8 @@ export class DashboardAlumnoPage implements OnInit {
   constructor(
     private alertController: AlertController, 
     private dashboardAlumnoService: DashboardAlumnoService, 
-    private router: Router) { }
+    private router: Router,
+    private loadingCtrl: LoadingController) { }
 
   // AGM 19/02/2024 - Refrescar pagina
   handleRefresh() {
@@ -90,15 +94,30 @@ export class DashboardAlumnoPage implements OnInit {
 
   // AGM 31/01/2024 - Redireccionamiento al cierre de sesion
   logOut() {
-    this.dashboardAlumnoService.logOut().subscribe({
-      next: (html) => {
-        console.log(html); // Mostrar la respuesta HTML en consola
-        this.router.navigateByUrl('/login-alumno', {skipLocationChange: true}).then(()=>
-        this.router.navigate(['/login-alumno', { timestamp: Date.now() }]));
-      },
-      error: (error) => {
-        console.error('Error:', error);
-      }
+    this.loadingCtrl.create({
+      message: 'Cerrando sesión...'
+    }).then(loading => {
+      loading.present();
+
+      this.dashboardAlumnoService.logOut().subscribe({
+        next: (html) => {
+          console.log(html);
+          loading.dismiss();
+          this.router.navigateByUrl('/login-alumno', {skipLocationChange: true}).then(()=>
+          this.router.navigate(['/login-alumno', { timestamp: Date.now() }]));
+        },
+        error: async (error) => {
+          console.error('Error:', error);
+          loading.dismiss();
+          const alert = await this.alertController.create({
+            header: 'Error al cerrar sesión',
+            message: 'No se pudo cerrar sesión correctamente. Por favor, inténtalo de nuevo o reinicia la aplicación.',
+            buttons: ['Aceptar'],
+            backdropDismiss: false
+          });
+          await alert.present();
+        }
+      });
     });
   }
 
@@ -143,38 +162,53 @@ export class DashboardAlumnoPage implements OnInit {
 
   enrollStudentInGroup() {
     if (this.groupCode) {
-      this.dashboardAlumnoService.enrollStudentInGroup(this.groupCode).subscribe({
-        next: async (response) => {
-          this.setOpen(false);
-          console.log('Respuesta del servidor:', response);
-          this.getGroups();
-          const alert = await this.alertController.create({
-            header: 'Inscripción exitosa',
-            message: 'Te has inscrito al grupo "' + response.nombre_grupo + '".',
-            buttons: ['OK'],
-            backdropDismiss: false
-          });
-          await alert.present();
-        },
-        error: async (error) => {
-          if (error.error && error.error.message) {
-            this.errorMessage = error.error.message;
-          } else {
-            this.errorMessage = 'Error al inscribir al alumno en el grupo: ' + (error.message || 'Error desconocido');
-          }
-          console.error('Error completo:', error);
+      this.loadingCtrl.create({
+        message: 'Inscribiendo en grupo...'
+      }).then(loading => {
+        loading.present();
   
-          const alert = await this.alertController.create({
-            header: 'Error al inscribir',
-            message: this.errorMessage,
-            buttons: ['OK'],
-            backdropDismiss: false
-          });
-          await alert.present();
-        }
+        this.dashboardAlumnoService.enrollStudentInGroup(this.groupCode).subscribe({
+          next: async (response) => {
+            console.log('Respuesta del servidor:', response);
+            this.getGroups();
+            loading.dismiss();
+            this.setOpen(false);
+            
+            const alert = await this.alertController.create({
+              header: 'Inscripción exitosa:',
+              message: 'Te has inscrito al grupo "' + response.nombre_grupo + '".',
+              buttons: ['OK'],
+              backdropDismiss: false
+            });
+            await alert.present();
+          },
+          error: async (error) => {
+            loading.dismiss();
+            if (error.error && error.error.message) {
+              this.errorMessage = error.error.message;
+            } else {
+              this.errorMessage = 'Error de conexión, verifica tu conexión a internet o reinicia la aplicación.';
+            }
+            console.error('Error completo:', error);
+    
+            const alert = await this.alertController.create({
+              header: 'Error:',
+              message: this.errorMessage,
+              buttons: ['Aceptar'],
+              backdropDismiss: false
+            });
+            await alert.present();
+          }
+        });
       });
     } else {
       this.errorMessage = 'El código del grupo es necesario para la inscripción';
+      this.alertController.create({
+        header: 'Error:',
+        message: this.errorMessage,
+        buttons: ['Aceptar'],
+        backdropDismiss: false
+      }).then(alert => alert.present());
     }
   }
 
@@ -194,7 +228,7 @@ export class DashboardAlumnoPage implements OnInit {
         error: (error) => console.error('Error al buscar grupos:', error),
       });
     } else {
-      this.getGroups();  // Restaurar la lista original si no hay consulta
+      this.getGroups();  
     }
   }
 

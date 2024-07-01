@@ -48,29 +48,12 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {}
 
-  async showLoading() {
-    const loading = await this.loadingCtrl.create({
-      message: 'Dismissing after 3 seconds...',
-      duration: 3000,
-    });
-
-    loading.present();
-  }
-
   alertButtons = ['Action'];
 
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      header: 'A Short Title Is Best',
-      subHeader: 'A Sub Header Is Optional',
-      message: 'A message should be a short, complete sentence.',
-      buttons: ['Action'],
-    });
-
-    await alert.present();
-  }
-
   goToStudentLogin() {
+    this.password = '';
+    this.username = '';
+    this.errorMessage = '';
     this.router.navigate(['/login-alumno']);
   }
 
@@ -89,32 +72,43 @@ export class LoginPage implements OnInit {
   
     console.log('Enviando solicitud de inicio de sesión', this.username);
   
-    this.authService.teacherLogin(this.username, this.password).subscribe({
-      next: async (data) => {
-        console.log(data);
-        if (data.error !== false) {
-          this.errorMessage = data.message;
-          await this.showErrorAlert('Error de inicio de sesión', this.errorMessage);
-        } else {
-          console.log('Inicio de sesión exitoso, redirigiendo...');
-          this.router.navigate(['/dashboard-maestro'], { state: { userInfo: data } });
+    this.loadingCtrl.create({
+      message: 'Iniciando sesión...'
+    }).then(loading => {
+      loading.present();
+
+      this.authService.teacherLogin(this.username, this.password).subscribe({
+        next: async (data) => {
+          console.log(data);
+          loading.dismiss();
+          if (data.error !== false) {
+            this.errorMessage = data.message;
+            await this.showErrorAlert('Error al iniciar sesión:', this.errorMessage);
+          } else {
+            this.password = '';
+            this.username = '';
+            this.errorMessage = '';
+            console.log('Inicio de sesión exitoso, redirigiendo...');
+            this.router.navigate(['/dashboard-maestro'], { state: { userInfo: data } });
+          }
+        },
+        error: async (error) => {
+          console.error('Error al iniciar sesión:', error);
+          this.errorMessage = 'Error al conectar con el servidor, revisa tu conexión a internet';
+          loading.dismiss();
+          await this.showErrorAlert('Error al iniciar sesión:', this.errorMessage);
         }
-      },
-      error: async (error) => {
-        console.error('Error en el proceso de inicio de sesión:', error);
-        this.errorMessage = 'Error al conectar con el servidor';
-        await this.showErrorAlert('Error de conexión', this.errorMessage);
-      }
+      });
     });
   }
 
   async showErrorAlert(header: string, message: string) {
-      const alert = await this.alertController.create({
-        header: header,
-        message: message,
-        buttons: ['OK'],
-        backdropDismiss: false
-      });
-      await alert.present();
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['Aceptar'],
+      backdropDismiss: false
+    });
+    await alert.present();
   }
 }
