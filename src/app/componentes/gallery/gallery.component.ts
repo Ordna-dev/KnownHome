@@ -7,6 +7,14 @@ import { PhotoDetailComponent } from '../photo-detail/photo-detail.component';
 import { AlertController } from '@ionic/angular/standalone';
 import { GrupoMaestroService } from '../../services/grupo-maestro.service';
 import { EvaluatePhotoComponent } from '../evaluate-photo/evaluate-photo.component';
+import {
+  IonBadge,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-gallery',
@@ -20,7 +28,13 @@ import { EvaluatePhotoComponent } from '../evaluate-photo/evaluate-photo.compone
     IonToolbar,
     IonTitle,
     IonButton,
-    IonIcon
+    IonIcon,
+    IonBadge,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent
   ],
   providers: [ModalController]
 })

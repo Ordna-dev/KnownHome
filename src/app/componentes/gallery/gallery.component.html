@@ -11,25 +11,60 @@
   <div class="image-authorization-container" *ngFor="let image of images; let i=index">
     <!-- Formato para la vista del estudiante -->
     <div *ngIf="teacherLogged == 0">
-      <img [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="studentShowImageDetail(image.user_id, image.image_id)" [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked">
+      <ion-card [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="studentShowImageDetail(image.user_id, image.image_id)">
+        <img [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked" />
+        <ion-card-header>
+          <ion-card-title>Card Title</ion-card-title>
+          <ion-card-subtitle><ion-badge color="success">Esta imagen está autorizada por el profesor.</ion-badge></ion-card-subtitle>
+        </ion-card-header>
+      
+        <ion-card-content>
+          Esta imagen es visible para todos los que están inscritos en el grupo.
+        </ion-card-content>
+      </ion-card>
+      <!--<img [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="studentShowImageDetail(image.user_id, image.image_id)" [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked"> -->
     </div>
     <!-- Formato para la vista del maestro consultando sus imagenes -->
     <div *ngIf="teacherLogged == 1 && teacherImgs == 1">
-      <div class="image-button-container">
-        <img [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="teacherShowImageDetail(image.user_id, image.image_id)" [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked">
-        <ion-button color="danger" (click)="confirmDeleteImageFromTeacher(image.image_id)"><ion-icon color="light" name="trash"></ion-icon></ion-button>
-        <ion-button *ngIf="teacherLogged == 1 && image.authorized == 0" (click)="checkTeacherImage(image.image_id)" color="success"><ion-icon name="checkbox-outline" style="color: black;"></ion-icon></ion-button>
-      </div>
+      <ion-card [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="teacherShowImageDetail(image.user_id, image.image_id)">
+        <img [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked" />
+        <ion-card-header>
+          <ion-card-title>Card Title</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          Esta imagen es visible para todos los que están inscritos en el grupo.
+        </ion-card-content>
+        <div class="button-container">
+          <ion-button color="danger" (click)="confirmDeleteImageFromTeacher(image.image_id)">
+            <ion-icon color="light" name="trash"></ion-icon>
+          </ion-button>
+          <ion-button *ngIf="teacherLogged == 1 && image.authorized == 0" (click)="checkTeacherImage(image.image_id)" color="success">
+              <ion-icon name="checkbox-outline" style="color: black;"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card>
     </div>
     <!-- Formato para la vista del maestro consultando las imagenes del alumno -->
     <div *ngIf="teacherLogged == 1 && teacherImgs == 0">
-      <div class="image-button-container">
-        <img [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="teacherShowImageDetail(image.user_id, image.image_id)" [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked">
-        <div class="button-group">
-          <ion-button color="danger" (click)="confirmDeleteImage(image.image_id)"><ion-icon color="light" name="trash"></ion-icon></ion-button>
-          <ion-button *ngIf="teacherLogged == 1 && image.authorized == 0" (click)="checkStudentImage(image.image_id)" color="success"><ion-icon name="checkbox-outline" style="color: black;"></ion-icon></ion-button>
+      <ion-card [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="teacherShowImageDetail(image.user_id, image.image_id)">
+        <img [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked" />
+        <ion-card-header>
+          <ion-card-title>Card Title</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          Esta imagen es visible para todos los que están inscritos en el grupo.
+        </ion-card-content>
+        <div class="button-container">
+          <ion-button color="danger" (click)="confirmDeleteImage(image.image_id)">
+              <ion-icon color="light" name="trash"></ion-icon>
+          </ion-button>
+          <ion-button *ngIf="teacherLogged == 1 && image.authorized == 0" (click)="checkStudentImage(image.image_id)" color="success">
+              <ion-icon name="checkbox-outline" style="color: black;"></ion-icon>
+          </ion-button>
         </div>
-      </div>
+      </ion-card>
     </div>
   </div>
 </ion-content>

@@ -9,30 +9,44 @@
     <div class="photo-image">
       <img [src]="'https://knownhome.xyz/'+image.image_path" alt="Objeto identificado">
     </div>
-    
-    <div class="photo-text">
-      <h3>Objeto identificado:</h3>
-      <p>{{image?.object}}</p>
-    </div>
-    
-    <div class="photo-text">
-      <h3>Nivel de incidencia:</h3>
-        <p>{{image?.danger_level}}</p>  
-    </div>
 
-    <div class="photo-text">
-      <h3>Descripción:</h3>
-      <p>{{image?.description}}</p>
-    </div>
+    <ion-card class="photo-text" style="margin-top: 30px;">
+      <ion-card-header>
+        <ion-card-title><b>Objeto identificado:</b></ion-card-title>
+        <ion-card-subtitle color="dark">{{image?.object}}</ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
 
-    <div class="photo-text">
-      <h3>Sugerencia:</h3>
-      <p>{{image?.suggest}}</p>
-    </div>
+    <ion-card class="photo-text">
+      <ion-card-header>
+        <ion-card-title><b>Nivel de incidencia:</b></ion-card-title>
+        <ion-card-subtitle>
+          <ion-badge [ngClass]="getDangerClass(image.danger_level)">
+            {{image?.danger_level}}
+          </ion-badge>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
 
-    <div class="photo-text">
-      <h3>Foto tomada por:</h3>
-      <p>{{image?.user}}</p>
-    </div>
+    <ion-card class="photo-text">
+      <ion-card-header>
+        <ion-card-title><b>Descripción:</b></ion-card-title>
+        <ion-card-subtitle color="dark">{{image?.description}}</ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+    <ion-card class="photo-text">
+      <ion-card-header>
+        <ion-card-title><b>Sugerencia:</b></ion-card-title>
+        <ion-card-subtitle color="dark">{{image?.suggest}}</ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+    <ion-card class="photo-text">
+      <ion-card-header>
+        <ion-card-title><b>Foto tomada por:</b></ion-card-title>
+        <ion-card-subtitle color="dark">{{image?.user}}</ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
   </div>
 </ion-content>

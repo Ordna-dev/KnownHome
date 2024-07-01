@@ -9,6 +9,44 @@ ion-title {
     margin-top: 10px;
 }
 
+ion-card {
+    margin: 15px 0;
+    border: 2px solid white; 
+    border-radius: 15px;
+    box-sizing: border-box;
+    padding: 10px;
+
+    ion-card-content {
+        padding: 10px; // Relleno dentro del contenido de la tarjeta, si ya lo tienes
+    }
+}
+
+ion-badge {
+    // Define un color de texto común por defecto, blanco en este caso puede funcionar bien para todos
+    color: #fff;
+
+    &.low {
+        --background: #0000FF; 
+        color: #fff; 
+    }
+    &.low-middle {
+        --background: #008000; 
+        color: #fff; 
+    }
+    &.middle {
+        --background: linear-gradient(45deg, #FFE25D, #FDF7DC); 
+        color: #333; 
+    }
+    &.middle-danger {
+        --background: #FFFF00; 
+        color: #333; 
+    }
+    &.danger {
+        --background: #FF0000; 
+        color: #fff; 
+    }
+}
+
 // Sección de los modals
 // Ícono a la izquierda en modales - Usado para botones de retroceso en los modales
 .icon-modal-left {
@@ -28,8 +66,10 @@ ion-title {
     img {
         width: 80%;
         max-width: 300px; 
+        max-height: 400px;
         margin-top: 20px;
         border-radius: 10px;
+        border: 3px solid white;
     }
     .photo-image{
         width: 100%;
@@ -65,11 +105,7 @@ ion-title {
 }
 
 .low {
-    --ion-background-color: #E3FFDE;
-    --ion-background-color: linear-gradient(225deg, #E3FFDE, #46C94D);
-    .photo-text{
-        color: #2B2B2B;
-    }
+    --ion-background-color: #0000FF;
 
     /*--ion-background-color: linear-gradient(90deg, rgba(154,255,152,1) 8%, rgba(93,252,78,1) 100%); // Verdes suaves
     .photo-text {
@@ -78,11 +114,7 @@ ion-title {
 }
 
 .low-middle {
-    --ion-background-color: #5DA2FF;
-    --ion-background-color: linear-gradient(45deg, #5DA2FF, #89E0FF);
-    .photo-text{
-        color: #2B2B2B;
-    }
+    --ion-background-color: #008000;
 
     /*--ion-background-color: linear-gradient(90deg, rgba(152,242,255,1) 8%, rgba(78,228,252,1) 100%); // Azules suaves
     .photo-text {
@@ -93,9 +125,6 @@ ion-title {
 .middle {
     --ion-background-color: #FFE25D;
     --ion-background-color: linear-gradient(45deg, #FFE25D, #FDF7DC);
-    .photo-text{
-        color: #2B2B2B;
-    }
 
     /*--ion-background-color: linear-gradient(90deg, rgba(255,150,150,1) 8%, rgba(252,78,78,1) 100%); //linear-gradient(90deg, rgba(253,255,170,1) 8%, rgba(251,255,85,1) 100%);
     .photo-text {
@@ -104,11 +133,7 @@ ion-title {
 }
 
 .middle-danger {
-    --ion-background-color: #FF9C01;
-    --ion-background-color: linear-gradient(45deg, #FF9C01, #FFD098);
-    .photo-text{
-        color: #2B2B2B;
-    }
+    --ion-background-color: #FFFF00;
 
     /*--ion-background-color: linear-gradient(90deg, rgba(255,221,126,1) 8%, rgba(252,200,78,1) 100%); // Naranjas
     .photo-text {
@@ -117,11 +142,7 @@ ion-title {
 }
 
 .danger {
-    --ion-background-color: #CC4545;
-    --ion-background-color: linear-gradient(45deg, #CC4545, #f68a8a);
-    .photo-text{
-        color: #2B2B2B;
-    }
+    --ion-background-color: #FF0000;
     
     /*--ion-background-color: linear-gradient(45deg, #CC4545, #f68a8a); // Rojos intensos
     .photo-text {

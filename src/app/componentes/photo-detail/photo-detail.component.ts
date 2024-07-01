@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalController } from '@ionic/angular';
-import { IonContent, IonHeader, IonToolbar, IonTitle, IonButton, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonToolbar, IonTitle, IonButton, IonIcon, IonBadge, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonText } from '@ionic/angular/standalone';
 
 interface DangerLevelsClasses {
   Bajo: string,
@@ -22,7 +22,14 @@ interface DangerLevelsClasses {
     IonToolbar,
     IonTitle,
     IonButton,
-    IonIcon
+    IonIcon,
+    IonBadge,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent,
+    IonText
   ]
 })
 

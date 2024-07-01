@@ -175,6 +175,7 @@ export class GrupoAlumnoPage implements OnInit {
     this.grupoAlumnoService.getStudentPhotos(this.grupoId, studentId).subscribe({
       next: async(response) => {
         if (response.error == false){
+          console.log(response)
           const modal = await this.modalCtrl.create({
             component: GalleryComponent,
             componentProps:{

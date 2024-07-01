@@ -28,7 +28,8 @@ import {
   IonSearchbar,
   IonMenuButton,
   IonButtons,
-  IonLoading
+  IonLoading,
+  IonBadge
 } from '@ionic/angular/standalone';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -66,7 +67,8 @@ import { EvaluatePhotoComponent } from '../componentes/evaluate-photo/evaluate-p
     IonSearchbar,
     IonMenuButton,
     IonButtons,
-    IonLoading
+    IonLoading,
+    IonBadge
   ],
   providers: [ModalController],
 })
@@ -163,6 +165,7 @@ export class GrupoMaestroPage implements OnInit {
       next: async(response) => {
         if(response.error == false){
           // crear una instancia del modal galery
+          console.log(response);
           const modal = await this.modalCtrl.create({
             component: GalleryComponent,
             componentProps:{
@@ -197,6 +200,7 @@ export class GrupoMaestroPage implements OnInit {
     this.grupoMaestroService.getStudentPhotos(this.grupoId, studentId).subscribe({
       next: async(response) => {
         if(response.error == false){
+          console.log(response);
           //Crear una instancia del modal galery
           const modal = await this.modalCtrl.create({
             component: GalleryComponent,
