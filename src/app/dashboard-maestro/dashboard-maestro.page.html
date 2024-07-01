@@ -8,9 +8,9 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding ion-text-right"> 
-    <h1 class="menu-h1">Usuario</h1>
+    <h1 class="menu-h1" style="margin-top: 20px;">Usuario</h1>
     <ion-text color="medium">
-      <h5 (click)="goToProfile()">Visualizar o ver perfil</h5>
+      <h5 (click)="goToProfile()">Visualizar perfil</h5>
     </ion-text>
     <ion-text color="danger">
       <h5 (click)="logOut()">Cerrar sesión</h5>
@@ -18,7 +18,7 @@
 
     <h1>Grupos</h1>
     <ion-text color="medium">
-      <h5 (click)="setFifthOpen(true)">Ver o gestionar mis grupos</h5>
+      <h5 (click)="setFifthOpen(true)">Gestionar mis grupos</h5>
     </ion-text>
     <ion-text color="medium">
       <h5 (click)="setOpen(true)">Registrar un grupo</h5>
@@ -32,7 +32,7 @@
       <h5 (click)="setThirdOpen(true)">Registrar varios alumnos</h5>
     </ion-text>
     <ion-text color="medium">
-      <h5 (click)="setFourthOpen(true)">Alumnos registrados por mí</h5>
+      <h5 (click)="setFourthOpen(true)">Gestionar alumnos</h5>
     </ion-text>
     
     <h1>Tutoriales</h1>
@@ -80,7 +80,7 @@
       </ion-card-header>
     
       <ion-card-content>
-        Si eres nuevo en la app, estos tutoriales te guiarán a través de sus características y grupos.
+        Si eres nuevo en la app, estos tutoriales te guiarán a través de sus características y grupos:
         <br>
         <ion-button class="fixed-button" color="success" (click)="goToTutorialMaestroDashboard()">Guía inicial</ion-button>
         <ion-button class="fixed-button" color="danger" (click)="goToTutorialMaestroGrupos()">Grupos</ion-button>
@@ -94,9 +94,9 @@
       </ion-card-header>
     
       <ion-card-content>
-        Si aún no sabes cómo registrar un grupo, puedes pulsar el botón de abajo.
+        Si aún no sabes cómo registrar un grupo, puedes pulsar el botón de abajo:
         <br>
-        <ion-button class="fixed-button" (click)="setOpen(true)">Registrar a un grupo</ion-button>
+        <ion-button class="fixed-button" (click)="setOpen(true)">Registrar un grupo</ion-button>
       </ion-card-content>
     </ion-card>
     

@@ -13,7 +13,7 @@
       <h5 (click)="setOpen(true)">Código de acceso del grupo</h5>
     </ion-text>
     <ion-text color="warning">
-      <h5 (click)="setSecondOpen(true)">Modificar propiedades del grupo</h5>
+      <h5 (click)="setSecondOpen(true)">Modificar información del grupo</h5>
     </ion-text>
     <ion-text color="danger">
       <h5 (click)="confirmGroupDeletion(group?.id || 'Id de grupo no disponible')">Eliminar grupo</h5>
@@ -31,7 +31,7 @@
     
     <h1>Sesión</h1>
     <ion-text color="medium">
-      <h5 (click)="redirectToProfile()">Ver o gestionar mi perfil</h5>
+      <h5 (click)="redirectToProfile()">Ver mi perfil</h5>
     </ion-text>
     <ion-text color="danger">
       <h5 (click)="redirectToLogin()">Cerrar sesión</h5>
@@ -159,11 +159,11 @@
               <h1>Modificación de grupo</h1>
   
               <ion-item class="separator">
-                  <ion-input [(ngModel)]="tempNombre" placeholder="Escribe aquí el nuevo nombre del grupo." label="Nuevo nombre del grupo:" labelPlacement="stacked"></ion-input>
+                  <ion-input [(ngModel)]="tempNombre" placeholder="Escribe aquí el nuevo nombre del grupo." label="Nuevo nombre del grupo:" labelPlacement="stacked" [counter]="true" maxlength="50"></ion-input>
               </ion-item>
               
               <ion-item>
-                  <ion-textarea [(ngModel)]="tempDescripcion" placeholder="Escribe aquí la nueva descripción del grupo." label="Nueva descripción del grupo:" labelPlacement="stacked"></ion-textarea>
+                  <ion-textarea [(ngModel)]="tempDescripcion" placeholder="Escribe aquí la nueva descripción del grupo." label="Nueva descripción del grupo:" labelPlacement="stacked" [counter]="true" maxlength="100"></ion-textarea>
               </ion-item>
   
               <ion-text class="ion-text-center" color="danger" *ngIf="errorMessage">

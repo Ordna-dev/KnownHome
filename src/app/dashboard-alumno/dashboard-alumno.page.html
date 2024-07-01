@@ -8,9 +8,9 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding ion-text-right"> 
-    <h1 class="menu-h1">Grupos</h1>
+    <h1 class="menu-h1" style="margin-top: 20px;">Grupos</h1>
     <ion-text color="medium">
-      <h5 (click)="setOpen(true)">Registrarse a un grupo</h5>
+      <h5 (click)="setOpen(true)">Registrarse en un grupo</h5>
     </ion-text>
 
     <h1>Tutorial</h1>
@@ -59,7 +59,7 @@
       </ion-card-header>
     
       <ion-card-content>
-        Si es tu primera vez utilizando la app, estos tutoriales te guiarán a través de sus características.
+        Si es tu primera vez utilizando la app, estos tutoriales te guiarán a través de sus características:
         <br>
         <ion-button class="fixed-button" color="success" (click)="goToTutorialAlumnoDashboard()">Guía inicial</ion-button>
         <ion-button class="fixed-button" color="danger" (click)="goToTutorialAlumnoGrupos()">Grupos</ion-button>
@@ -73,7 +73,7 @@
       </ion-card-header>
     
       <ion-card-content>
-        Si aún no sabes cómo registrarte a un grupo, puedes registrarte en un grupo mediante el botón de abajo.
+        Si aún no sabes cómo registrarte en un grupo, pulsa el botón de abajo:
         <br>
         <ion-button class="fixed-button" (click)="setOpen(true)">Registrarse a un grupo</ion-button>
       </ion-card-content>
