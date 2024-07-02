@@ -451,6 +451,53 @@ export class GrupoAlumnoPage implements OnInit {
     }
   }
 
+  // AGM 01/07/2024 - Reload de la pagina actualizado
+  updatePage() {
+    if (!this.grupoId) {
+        console.error('No se ha proporcionado el ID del grupo.');
+        this.presentNetworkErrorAlert(); 
+        return;
+    }
+
+    this.loadingController.create({
+        message: 'Actualizando información del grupo...',
+        spinner: 'circles'
+    }).then(loading => {
+        loading.present(); 
+        Promise.all([
+            this.grupoAlumnoService.getEnrolledStudents(this.grupoId).toPromise(),
+            this.grupoAlumnoService.getEnrolledStudents(this.grupoId).toPromise(),
+            this.grupoAlumnoService.getGroup(this.grupoId).toPromise()
+        ]).then(([studentsModalResponse, studentsResponse, groupResponse]) => {
+            this.studentsModal = studentsModalResponse.estudiantes || [];
+
+            this.students = studentsResponse.estudiantes || [];
+            console.log('Alumnos inscritos:', this.students);
+
+            if (!groupResponse.error && groupResponse.grupo && groupResponse.grupo.length > 0) {
+                this.grupo = groupResponse.grupo[0];
+            } else {
+                console.error('La estructura de la respuesta del servidor no es la esperada.');
+            }
+            
+            loading.dismiss(); 
+        }).catch(error => {
+            console.error('Error al obtener la información:', error);
+            loading.dismiss(); 
+            this.presentNetworkErrorAlert(); 
+        });
+    });
+  }
+
+  async presentNetworkErrorAlert() {
+      const alert = await this.alertController.create({
+          header: 'Error de conexión',
+          message: 'Error de conexión al actualizar la información del grupo. Por favor, intente de nuevo o reinicie la aplicación.',
+          buttons: ['Aceptar']
+      });
+      await alert.present();
+  }
+
   // AGM 17/02/2024 - Al iniciar la pagina, obtiene la informacion del grupo y de los alumnos
   ngOnInit() {
     const currentNavigation = this.router.getCurrentNavigation();

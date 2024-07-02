@@ -11,8 +11,8 @@
   <div class="image-authorization-container" *ngFor="let image of images; let i=index">
     <!-- Formato para la vista del estudiante -->
     <div *ngIf="teacherLogged == 0">
-      <ion-card [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="studentShowImageDetail(image.user_id, image.image_id)">
-        <img [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked" />
+      <ion-card [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')">
+        <img (click)="studentShowImageDetail(image.user_id, image.image_id)" [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked" />
         <ion-card-header>
           <ion-card-title>Card Title</ion-card-title>
           <ion-card-subtitle><ion-badge color="success">Esta imagen está autorizada por el profesor.</ion-badge></ion-card-subtitle>
@@ -26,8 +26,8 @@
     </div>
     <!-- Formato para la vista del maestro consultando sus imagenes -->
     <div *ngIf="teacherLogged == 1 && teacherImgs == 1">
-      <ion-card [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="teacherShowImageDetail(image.user_id, image.image_id)">
-        <img [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked" />
+      <ion-card [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')">
+        <img (click)="teacherShowImageDetail(image.user_id, image.image_id)" [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked" />
         <ion-card-header>
           <ion-card-title>Card Title</ion-card-title>
         </ion-card-header>
@@ -47,8 +47,8 @@
     </div>
     <!-- Formato para la vista del maestro consultando las imagenes del alumno -->
     <div *ngIf="teacherLogged == 1 && teacherImgs == 0">
-      <ion-card [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="teacherShowImageDetail(image.user_id, image.image_id)">
-        <img [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked" />
+      <ion-card [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')">
+        <img (click)="teacherShowImageDetail(image.user_id, image.image_id)" [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked" />
         <ion-card-header>
           <ion-card-title>Card Title</ion-card-title>
         </ion-card-header>

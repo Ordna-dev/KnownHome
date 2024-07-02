@@ -637,6 +637,58 @@ export class GrupoMaestroPage implements OnInit {
     }
   }
 
+  updatePage() {
+    if (!this.grupoId) {
+        console.error('No se ha proporcionado el ID del grupo.');
+        this.presentNetworkErrorAlert();
+        return;
+    }
+
+    this.loadingController.create({
+        message: 'Actualizando información del grupo...',
+        spinner: 'circles'
+    }).then(loading => {
+        loading.present(); // Mostrar el recuadro de carga
+
+        Promise.all([
+            this.grupoMaestroService.getGroup(this.grupoId).toPromise(),
+            this.grupoMaestroService.getEnrolledStudents(this.grupoId).toPromise(),
+            this.grupoMaestroService.getEnrolledStudentsModal(this.grupoId).toPromise()
+        ]).then(([groupData, studentsData, modalStudentsData]) => {
+            // Procesar la información del grupo
+            if (!groupData.error && groupData.grupo) {
+                this.group = groupData.grupo;
+                console.log('Datos del grupo:', this.group);
+            } else {
+                console.error('Error al obtener los detalles del grupo o grupo no encontrado');
+            }
+
+            // Procesar los estudiantes inscritos
+            this.enrolledStudents = studentsData.estudiantes || [];
+            console.log('Alumnos inscritos:', this.enrolledStudents);
+
+            // Procesar los estudiantes inscritos en el modal
+            this.modalEnrolledStudents = modalStudentsData.estudiantes || [];
+            console.log('Alumnos inscritos en el modal:', this.modalEnrolledStudents);
+
+            loading.dismiss(); // Ocultar el recuadro de carga
+        }).catch(error => {
+            console.error('Error al obtener la información:', error);
+            loading.dismiss(); // Ocultar el recuadro de carga
+            this.presentNetworkErrorAlert();
+        });
+    });
+  }
+
+  async presentNetworkErrorAlert() {
+      const alert = await this.alertController.create({
+          header: 'Error de conexión:',
+          message: 'Error de conexión al actualizar la información del grupo. Por favor, intente de nuevo o reinicie la aplicación.',
+          buttons: ['Aceptar']
+      });
+      await alert.present();
+  }
+
   // AGM 11/02/2024 Lógica al iniciar la página
   ngOnInit() {
     const navigation = this.router.getCurrentNavigation();
