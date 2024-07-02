@@ -11,9 +11,11 @@ ion-title {
 
 .button-container {
   display: flex;
-  justify-content: center; 
+  justify-content: flex-end; 
+  align-items: center;
   width: 100%; 
-  padding: 10px 0; 
+  padding: 0px 20px 20px 0px;
+  box-sizing: border-box; 
 }
 
 ion-button {
@@ -41,6 +43,15 @@ ion-button {
     border-top: 1px solid #ccc;
     padding-top: 20px;
     padding-bottom: 25px;
+    
+    .card-container { 
+      width: 100%; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      /*min-height: 450px;
+      max-height: 600px;*/
+    }
 
     .slideLeft {
       animation: slideLeftAnimation 1s ease-in-out forwards;
@@ -80,17 +91,39 @@ ion-button {
         box-shadow: 2px 2px 16px lightcoral;
       }
     }
-  
-    .card-image-tooked {
-      display: block; 
-      margin: 20px auto 20px; 
-      max-width: 200px; 
-      max-height: 500px; 
-      height: auto; 
-      border-radius: 10px; 
-      border: 3px solid #ccc;
+
+    .low {
+      box-shadow: 0 0 15px #0000FF;
+    
+      ion-badge {
+        background-color: #0000FF;
+      }
     }
-  
+    
+    .low-middle {
+      box-shadow: 0 0 15px #008000;
+    
+      ion-badge {
+        background-color: #008000;
+      }
+    }
+    
+    .middle-danger {
+      box-shadow: 0 0 15px #FFFF00;
+    
+      ion-badge {
+        background-color: #FFFF00;
+      }
+    }
+    
+    .danger {
+      box-shadow: 0 0 15px #FF0000;
+    
+      ion-badge {
+        background-color: #FF0000;
+      }
+    }
+
     @keyframes slideLeftAnimation {
       from {
         transform: translateX(-50px);
@@ -115,23 +148,57 @@ ion-button {
 }  
 
 ion-card {
-  width: 90%; // Ancho fijo de la tarjeta
+  max-width: 85%;
+  min-width: 70%;
+  height: 90%;
   border: 2px solid #ccc; // Color del borde exterior
   border-radius: 15px; // Bordes redondeados para la tarjeta
-  box-shadow: 0 0 15px #FF8888; // Sombra de color pastel
   display: flex;
   flex-direction: column;
   justify-content: space-between; // Distribuye el espacio interior uniformemente
 
-  ion-card-header {
-    border-top: 2px solid #ccc; // Borde superior gris claro
+  .card-image-tooked {
+    display: block; 
+    margin: 20px auto 20px; 
+    max-width: 200px; 
+    max-height: 400px; 
+    height: auto; 
+    border-radius: 10px; 
+    border: 3px solid #ccc;
+    box-sizing: border-box;
   }
 
-  ion-card-content {
-    padding: 10px;
-    overflow-y: auto; // Añade desplazamiento si el contenido excede la altura
+  ion-card-header {
+    border-top: 2px solid #ccc; // Borde superior gris claro
+    padding: 10px 10px 0px 10px;
+  }
+
+  ion-card-title { 
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 10px 0px 10px;
+    text-align: center;
+  }
+
+  ion-card-content:nth-child(3) {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 20px 10px 20px;
+    text-align: center;
+    font-size: 1.2em;
+  }
+
+  ion-card-content:nth-child(4) {
+    padding: 0px 20px 10px 20px;
+    overflow-y: auto; 
+    box-sizing: border-box;
+    font-size: 1.1em;
+    width: 100%;
+    text-align: center;
   }
 }
+
+
 
 //Contenedor en caso de que no haya imagenes para mostrar
 .no-images-container{

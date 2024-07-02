@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { NavController, AlertController, ModalController, LoadingController } from '@ionic/angular';
+import { NavController, AlertController, ModalController, LoadingController, ActionSheetController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -91,6 +91,7 @@ export class GrupoMaestroPage implements OnInit {
     private navCtrl: NavController,
     private ngZone: NgZone,
     private dashboardMaestroService: DashboardMaestroService,
+    private actionSheetController: ActionSheetController,
   ) { }
 
   // AGM 31/01/2024 - Redireccionamiento a perfil, cierre de sesion o dashboard
@@ -524,14 +525,34 @@ export class GrupoMaestroPage implements OnInit {
     });
   }  
 
+  async presentActionSheet(groupId: number) {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Seleccionar fuente de la fotografía:',
+      buttons: [{
+        text: 'Tomar foto',
+        icon: 'camera',
+        handler: () => {
+          this.takePicture(groupId, CameraSource.Camera);
+        }
+      }, {
+        text: 'Seleccionar de la galería',
+        icon: 'images',
+        handler: () => {
+          this.takePicture(groupId, CameraSource.Photos);
+        }
+      }]
+    });
+    await actionSheet.present();
+  }
+
   // AGM 22/02/2024 - Lógica para tomar una foto en la app 
-  takePicture = async (groupId: number) => {
+  takePicture = async (groupId: number, source: CameraSource) => {
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.Uri,
-      source: CameraSource.Prompt,
-      saveToGallery: true
+      source: source,
+      saveToGallery: source === CameraSource.Camera
     });
 
     const loading = await this.loadingController.create({

@@ -6,7 +6,7 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class PerfilService {
-  private baseUrl: string = 'https://knownhome.xyz';
+  private baseUrl: string = 'http://localhost:5000';
   // 192.168.1.69:5000 147.182.172.29
 
   constructor(private http: HttpClient) {}

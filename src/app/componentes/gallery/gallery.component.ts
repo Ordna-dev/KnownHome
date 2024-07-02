@@ -16,6 +16,13 @@ import {
   IonCardContent
 } from '@ionic/angular/standalone';
 
+interface DangerLevelsClasses {
+  Bajo: string,
+  'Medio-Bajo': string,
+  'Medio-Alto': string,
+  Alto: string
+}
+
 @Component({
   selector: 'app-gallery',
   templateUrl: './gallery.component.html',
@@ -53,6 +60,20 @@ export class GalleryComponent{
     private grupoMaestroService: GrupoMaestroService,
     private alertController: AlertController
   ){}
+
+  dangerLevelsClasses:DangerLevelsClasses = {
+    Bajo: 'low',
+    'Medio-Bajo': 'low-middle',
+    'Medio-Alto': 'middle-danger',
+    Alto: 'danger'
+  };
+
+  getDangerClass(danger_level : keyof DangerLevelsClasses, index: number) {
+    const slideClass = index % 2 === 0 ? 'slideLeft' : 'slideRight';
+    const dangerClass = this.dangerLevelsClasses[danger_level];
+    const class_css = slideClass + ' ' + dangerClass;
+    return class_css;
+  }
 
   dismiss(){
     return this.modalCtrl.dismiss();

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { LoadingController, ModalController, NavController } from '@ionic/angular';
+import { LoadingController, ModalController, NavController, ActionSheetController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular/standalone';
 import { GrupoAlumnoService } from '../services/grupo-alumno.service';
@@ -85,7 +85,8 @@ export class GrupoAlumnoPage implements OnInit {
     private alertController: AlertController,
     private loadingController: LoadingController,
     private domSanitizer: DomSanitizer,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private actionSheetController: ActionSheetController,
   ) { }
 
   // AGM 31/01/2024 - Volver a la pagina anterior
@@ -388,14 +389,34 @@ export class GrupoAlumnoPage implements OnInit {
     });
   }
 
+  async presentActionSheet(groupId: number) {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Seleccionar fuente de la fotografía:',
+      buttons: [{
+        text: 'Tomar fotografía',
+        icon: 'camera',
+        handler: () => {
+          this.takePicture(groupId, CameraSource.Camera);
+        }
+      }, {
+        text: 'Seleccionar de la galería',
+        icon: 'images',
+        handler: () => {
+          this.takePicture(groupId, CameraSource.Photos);
+        }
+      }]
+    });
+    await actionSheet.present();
+  }
+
   // AGM 22/02/2024 - Lógica para tomar una foto en la app 
-  async takePicture(groupId: number) {
+  async takePicture(groupId: number, source: CameraSource) {
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.Uri,
-      source: CameraSource.Prompt,
-      saveToGallery: true
+      source: source, 
+      saveToGallery: source === CameraSource.Camera
     });
 
     const loading = await this.loadingController.create({

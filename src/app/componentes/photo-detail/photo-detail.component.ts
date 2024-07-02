@@ -41,7 +41,7 @@ export class PhotoDetailComponent {
     Bajo: 'low',
     'Medio-Bajo': 'low-middle',
     'Medio-Alto': 'middle-danger',
-    Alto: 'middle-danger'
+    Alto: 'danger'
   };
 
   constructor(private modalCtrl: ModalController) {}

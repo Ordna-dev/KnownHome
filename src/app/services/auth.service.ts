@@ -7,9 +7,9 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
     // AGM 15/02/2024 - Código del login refactorizado
-    private baseUrl: string = 'https://knownhome.xyz/auth';
+    private baseUrl: string = 'http://localhost:5000/auth';
     // 192.168.1.69:5000
-    // https://knownhome.xyz
+    // http://localhost:5000
 
     constructor(private http: HttpClient) {}
 

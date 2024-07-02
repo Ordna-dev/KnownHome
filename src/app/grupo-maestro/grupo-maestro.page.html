@@ -21,7 +21,7 @@
 
     <h1>Fotografías</h1>
     <ion-text color="medium">
-      <h5 (click)="takePicture(group?.id)">Tomar fotografía</h5>
+      <h5 (click)="presentActionSheet(group?.id)">Tomar fotografía</h5>
     </ion-text>
     
     <h1>Alumnos</h1>
@@ -57,8 +57,8 @@
           <ion-icon name="arrow-back-outline" class="icon-size-start" (click)="goBack()"></ion-icon>
         </ion-buttons>
         <ion-buttons slot="end">
-          <ion-icon name="reload-circle-outline" class="icon-size-end" (click)="updatePage()"></ion-icon>
-          <ion-icon name="camera" class="icon-size-end" (click)="takePicture(group?.id)"></ion-icon>
+          <ion-icon name="reload-outline" class="icon-size-reload" (click)="updatePage()"></ion-icon>
+          <ion-icon name="camera" class="icon-size-end" (click)="presentActionSheet(group?.id)"></ion-icon>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>

@@ -10,31 +10,49 @@
 <ion-content class="ion-padding" *ngIf="images.length > 0">
   <div class="image-authorization-container" *ngFor="let image of images; let i=index">
     <!-- Formato para la vista del estudiante -->
-    <div *ngIf="teacherLogged == 0">
-      <ion-card [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')">
-        <img (click)="studentShowImageDetail(image.user_id, image.image_id)" [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked" />
+    <div *ngIf="teacherLogged == 0" class="card-container">
+      <ion-card [ngClass]="getDangerClass(image.incidencia, i)">
+        <img (click)="studentShowImageDetail(image.user_id, image.image_id)" [src]="'http://localhost:5000/'+image.image_path" class="card-image-tooked" />
         <ion-card-header>
-          <ion-card-title>Card Title</ion-card-title>
-          <ion-card-subtitle><ion-badge color="success">Esta imagen está autorizada por el profesor.</ion-badge></ion-card-subtitle>
+          <ion-card-title *ngIf="image.objeto == '' || image.incidencia == ''">Imagen no autorizada</ion-card-title>
+          <ion-card-title *ngIf="image.objeto != '' || image.incidencia != ''">{{image.objeto}}</ion-card-title>
         </ion-card-header>
-      
-        <ion-card-content>
-          Esta imagen es visible para todos los que están inscritos en el grupo.
+        
+        <ion-card-content *ngIf="image.objeto == '' || image.incidencia == ''">
+          Esta imagen todavía no ha sido revisada, sin información disponible.
         </ion-card-content>
-      </ion-card>
-      <!--<img [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="studentShowImageDetail(image.user_id, image.image_id)" [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked"> -->
-    </div>
-    <!-- Formato para la vista del maestro consultando sus imagenes -->
-    <div *ngIf="teacherLogged == 1 && teacherImgs == 1">
-      <ion-card [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')">
-        <img (click)="teacherShowImageDetail(image.user_id, image.image_id)" [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked" />
-        <ion-card-header>
-          <ion-card-title>Card Title</ion-card-title>
-        </ion-card-header>
+
+        <ion-card-content *ngIf="image.objeto != '' || image.incidencia != ''">
+          <ion-badge><b>Nivel de incidencia: </b>{{image.incidencia}}</ion-badge>
+        </ion-card-content>
 
         <ion-card-content>
-          Esta imagen es visible para todos los que están inscritos en el grupo.
+          <b>Imagen tomada por: </b>{{image.username}}
         </ion-card-content>
+      </ion-card>
+      <!--<img [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')" (click)="studentShowImageDetail(image.user_id, image.image_id)" [src]="'http://localhost:5000/'+image.image_path" class="card-image-tooked"> -->
+    </div>
+    <!-- Formato para la vista del maestro consultando sus imagenes -->
+    <div *ngIf="teacherLogged == 1 && teacherImgs == 1" class="card-container">
+      <ion-card [ngClass]="getDangerClass(image.incidencia, i)">
+        <img (click)="teacherShowImageDetail(image.user_id, image.image_id)" [src]="'http://localhost:5000/'+image.image_path" class="card-image-tooked" />
+        <ion-card-header>
+          <ion-card-title *ngIf="image.objeto == '' || image.incidencia == ''">Imagen no autorizada</ion-card-title>
+          <ion-card-title *ngIf="image.objeto != '' || image.incidencia != ''">{{image.objeto}}</ion-card-title>
+        </ion-card-header>
+        
+        <ion-card-content *ngIf="image.objeto == '' || image.incidencia == ''">
+          Esta imagen todavía no ha sido revisada, sin información disponible.
+        </ion-card-content>
+
+        <ion-card-content *ngIf="image.objeto != '' || image.incidencia != ''">
+          <ion-badge><b>Nivel de incidencia: </b>{{image.incidencia}}</ion-badge>
+        </ion-card-content>
+
+        <ion-card-content>
+          <b>Imagen tomada por: </b>{{image.username}}
+        </ion-card-content>
+        
         <div class="button-container">
           <ion-button color="danger" (click)="confirmDeleteImageFromTeacher(image.image_id)">
             <ion-icon color="light" name="trash"></ion-icon>
@@ -44,18 +62,29 @@
           </ion-button>
         </div>
       </ion-card>
+      
     </div>
     <!-- Formato para la vista del maestro consultando las imagenes del alumno -->
-    <div *ngIf="teacherLogged == 1 && teacherImgs == 0">
-      <ion-card [ngClass]="(i % 2 === 0 ? 'slideLeft' : 'slideRight')">
-        <img (click)="teacherShowImageDetail(image.user_id, image.image_id)" [src]="'https://knownhome.xyz/'+image.image_path" class="card-image-tooked" />
+    <div *ngIf="teacherLogged == 1 && teacherImgs == 0" class="card-container">
+      <ion-card [ngClass]="getDangerClass(image.incidencia, i)">
+        <img (click)="teacherShowImageDetail(image.user_id, image.image_id)" [src]="'http://localhost:5000/'+image.image_path" class="card-image-tooked" />
         <ion-card-header>
-          <ion-card-title>Card Title</ion-card-title>
+          <ion-card-title *ngIf="image.objeto == '' || image.incidencia == ''">Imagen no autorizada</ion-card-title>
+          <ion-card-title *ngIf="image.objeto != '' || image.incidencia != ''">{{image.objeto}}</ion-card-title>
         </ion-card-header>
 
-        <ion-card-content>
-          Esta imagen es visible para todos los que están inscritos en el grupo.
+        <ion-card-content *ngIf="image.objeto == '' || image.incidencia == ''">
+          Esta imagen todavía no ha sido revisada, sin información disponible.
         </ion-card-content>
+
+        <ion-card-content *ngIf="image.objeto != '' || image.incidencia != ''">
+          <ion-badge><b>Nivel de incidencia: </b>{{image.incidencia}}</ion-badge>
+        </ion-card-content>
+
+        <ion-card-content>
+          <b>Imagen tomada por: </b>{{image.username}}
+        </ion-card-content>
+
         <div class="button-container">
           <ion-button color="danger" (click)="confirmDeleteImage(image.image_id)">
               <ion-icon color="light" name="trash"></ion-icon>

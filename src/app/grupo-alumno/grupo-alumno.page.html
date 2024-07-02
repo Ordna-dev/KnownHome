@@ -15,7 +15,7 @@
 
     <h1>Apartado de acciones</h1>
     <ion-text color="medium">
-      <h5 (click)="takePicture(grupo?.id)">Tomar fotografía</h5>
+      <h5 (click)="presentActionSheet(grupo?.id)">Tomar fotografía</h5>
     </ion-text> 
     <ion-text color="danger">
       <h5 (click)="leaveGroup()">Salir del grupo</h5>
@@ -46,8 +46,8 @@
           <ion-icon name="arrow-back-outline" class="icon-size-start" (click)="goBack()"></ion-icon>
         </ion-buttons>
         <ion-buttons slot="end">
-          <ion-icon name="reload-circle-outline" class="icon-size-end" (click)="updatePage()"></ion-icon>
-          <ion-icon name="camera" class="icon-size-end" (click)="takePicture(grupo?.id)"></ion-icon>
+          <ion-icon name="reload-outline" class="icon-size-reload" (click)="updatePage()"></ion-icon>
+          <ion-icon name="camera" class="icon-size-end" (click)="presentActionSheet(grupo?.id)"></ion-icon>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
