@@ -87,7 +87,7 @@
 
     <!-- Contenedor para las tarjetas de los grupos -->
     <div *ngIf="grupos && grupos.length; else noGroupsTemplate">
-      <ion-card color="light" class="fixed-margin-card" *ngFor="let grupo of grupos">
+      <ion-card color="light" class="fixed-margin-card grupo-card" *ngFor="let grupo of grupos">
         <div class="icon-container">
           <ion-icon name="people-outline" class="icon-size"></ion-icon>
         </div>

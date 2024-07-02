@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class GrupoAlumnoService {
-  private baseUrl: string = 'http://localhost:5000';
+  private baseUrl: string = 'https://knownhome.xyz';
   // 192.168.1.69:5000
 
   constructor(private http: HttpClient) {}

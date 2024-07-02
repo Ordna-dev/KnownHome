@@ -105,7 +105,7 @@
     <b><h3 class="groups-message">Tus grupos:</h3></b>
 
     <!-- AGM 30/01/2024 - Cartas de los grupos creados por el maestro --> 
-    <ion-card color="light" class="fixed-margin-card" *ngFor="let grupo of grupos">
+    <ion-card color="light" class="fixed-margin-card grupo-card" *ngFor="let grupo of grupos">
       <div class="icon-container">
         <ion-icon name="people-outline" class="icon-size"></ion-icon>
       </div>
@@ -113,14 +113,14 @@
       <div class="text-container">
         <ion-card-header class="ion-text-center">
           <ion-text color="primary">
-            <ion-card-title>{{ grupo.nombre }}</ion-card-title>
+            <ion-card-title>
+              {{ grupo.nombre }}
+            </ion-card-title>
           </ion-text>
         </ion-card-header>
       
         <ion-card-content class="ion-text-center multiline-text">
-          <ng-container *ngFor="let part of getSplitDescription(grupo.descripcion, 30)">
-            {{ part }}<br/>
-          </ng-container>
+          {{ grupo.descripcion }}
         </ion-card-content>
       </div>
       
@@ -253,7 +253,7 @@
     
           <h1 class="fixed-title-modal">Alumnos registrados por mí</h1>
           
-          <ion-card *ngFor="let student of students" color="light" class="fixed-margin-card-modal">
+          <ion-card *ngFor="let student of students" color="light" class="fixed-margin-card-modal grupo-card">
             <div class="icon-container">
               <ion-icon name="accessibility" class="icon-size"></ion-icon>
             </div>

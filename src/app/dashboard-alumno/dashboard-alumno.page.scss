@@ -76,6 +76,29 @@ ion-content h1:not(:first-child) {
     padding: 3px;
 }
 
+.grupo-card {
+    .text-container {
+        flex-grow: 1;
+        overflow: hidden;
+    }
+  
+    ion-card-title {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+    }
+  
+    ion-card-content {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
 // Contenedor de los iconos - Usado en toda la pagina en general
 .icon-container {
     margin-left: 20px; 

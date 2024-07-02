@@ -707,6 +707,7 @@ export class DashboardMaestroPage implements OnInit {
                     console.error('Error updating group:', error);
                     loading.dismiss(); // También ocultar el recuadro de carga en caso de error
 
+                    this.errorMessage = error.error && error.error.mensaje ? error.error.mensaje : 'Hay problemas de conexión a la hora de modificar la información del grupo. Por favor, inténtalo de nuevo o reinicia la aplicación.';
                     const errorMessageFromEditGroup = error.error && error.error.mensaje ? error.error.mensaje : 'Hay problemas de conexión a la hora de modificar la información del grupo. Por favor, inténtalo de nuevo o reinicia la aplicación.';
                     const alert = await this.alertController.create({
                         header: 'Error al actualizar la información del grupo:',
@@ -731,34 +732,6 @@ export class DashboardMaestroPage implements OnInit {
       },
       error: (error) => console.error('Error al obtener los grupos:', error)
     });
-  }
-
-  // AGM 17/06/2024 - Invocacion del metodo de partición de string de la descripcion
-  getSplitDescription(description: string, length: number): string[] {
-    return this.splitDescription(description, length);
-  }
-
-  // AGM 17/06/2024 - Hacer que la descripción de particione en máximo 20 caracteres
-  splitDescription(description: string, length: number): string[] {
-    const result = [];
-    let startIndex = 0;
-    let endIndex = length;
-
-    while (startIndex < description.length) {
-      // Encuentra el último espacio en el rango actual
-      let sliceEnd = description.lastIndexOf(' ', endIndex);
-      // Si no hay espacio, corta en el final del rango
-      if (sliceEnd === -1 || sliceEnd <= startIndex) {
-        sliceEnd = endIndex;
-      }
-
-      // Añadir el segmento a la lista de resultados
-      result.push(description.slice(startIndex, sliceEnd).trim());
-      startIndex = sliceEnd;
-      endIndex = startIndex + length;
-    }
-
-    return result;
   }
 
   getGroupsForModal() { // Nuevo método para obtener los grupos del modal

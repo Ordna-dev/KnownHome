@@ -115,7 +115,7 @@ ion-content h1:not(:first-child) {
 // Margen fijo para tarjetas - Usado en las tarjetas de la sección de grupos
 .fixed-margin-card {
     display: flex;
-    align-items: center; 
+    align-items: center;
     margin-left: 5%;
     margin-right: 5%;
     margin-bottom: 15px;
@@ -159,7 +159,38 @@ ion-content h1:not(:first-child) {
 // Contenedor de texto flexible - Usado en las tarjetas de grupos y alumnos
 .text-container {
     flex-grow: 1; 
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;  // Número de líneas permitidas antes de cortar
+    text-overflow: ellipsis;
 }
+
+// Estilos específicos para las tarjetas de grupo
+.grupo-card {
+    .text-container {
+      flex-grow: 1;
+      overflow: hidden; // Mantiene todo el contenido dentro del contenedor sin desbordar
+    }
+  
+    ion-card-title {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+    }
+  
+    ion-card-content {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4; // Permite hasta 3 líneas para el contenido
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal; // Permite que el texto se ajuste a múltiples líneas
+    }
+  }
 
 /* Estilo para ajustar texto en múltiples líneas y truncarlo */
 .multiline-text {
