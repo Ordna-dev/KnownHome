@@ -26,6 +26,41 @@ ion-refresher ion-refresher-content {
 // Mensaje de bienvenida - Centrado en el grupo de cabecera
 .welcome-message {
     font-size: 32px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.menu-button {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; 
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.specific-card {
+    .text-container {
+      flex-grow: 1;
+      overflow: hidden; // Mantiene todo el contenido dentro del contenedor sin desbordar
+    }
+  
+    ion-card-title {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+    }
+  
+    ion-card-content {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4; // Permite hasta 3 líneas para el contenido
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal; // Permite que el texto se ajuste a múltiples líneas
+    }
 }
 
 .teacher-main-text {

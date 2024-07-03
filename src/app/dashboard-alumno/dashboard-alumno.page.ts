@@ -93,22 +93,33 @@ export class DashboardAlumnoPage implements OnInit {
   }
 
   // AGM 31/01/2024 - Redireccionamiento al cierre de sesion
-  logOut() {
-    this.loadingCtrl.create({
-      message: 'Cerrando sesión...'
-    }).then(loading => {
-      loading.present();
-
+  async logOut() {
+    this.setOptionsOpen(false); 
+  
+    const initialLoading = await this.loadingCtrl.create({
+      message: 'Preparando para cerrar sesión...'
+    });
+  
+    await initialLoading.present();
+  
+    setTimeout(async () => {
+      initialLoading.dismiss();
+  
+      const sessionLoading = await this.loadingCtrl.create({
+        message: 'Cerrando sesión...'
+      });
+      await sessionLoading.present();
+  
       this.dashboardAlumnoService.logOut().subscribe({
         next: (html) => {
           console.log(html);
-          loading.dismiss();
-          this.router.navigateByUrl('/login-alumno', {skipLocationChange: true}).then(()=>
-          this.router.navigate(['/login-alumno', { timestamp: Date.now() }]));
+          sessionLoading.dismiss();
+          this.router.navigateByUrl('/login-alumno', {skipLocationChange: true}).then(() =>
+            this.router.navigate(['/login-alumno', { timestamp: Date.now() }]));
         },
         error: async (error) => {
           console.error('Error:', error);
-          loading.dismiss();
+          sessionLoading.dismiss();
           const alert = await this.alertController.create({
             header: 'Error al cerrar sesión',
             message: 'No se pudo cerrar sesión correctamente. Por favor, inténtalo de nuevo o reinicia la aplicación.',
@@ -118,19 +129,41 @@ export class DashboardAlumnoPage implements OnInit {
           await alert.present();
         }
       });
+    }, 3000);  
+  }
+
+  async goToTutorialAlumnoDashboard() {
+    this.setOptionsOpen(false);
+  
+    const loading = await this.loadingCtrl.create({
+      message: 'Cargando tutorial...',
+      duration: 2000
     });
+  
+    await loading.present();
+  
+    setTimeout(() => {
+      loading.dismiss();
+      this.router.navigateByUrl('/tutorial-alumno-dashboard', {skipLocationChange: true}).then(() =>
+        this.router.navigate(['/tutorial-alumno-dashboard', { timestamp: Date.now() }]));
+    }, 2000);
   }
-
-  // AGM 20/06/2024 - Redireccionamiento al tutorial de dashboard del alumno
-  goToTutorialAlumnoDashboard() {
-    this.router.navigateByUrl('/tutorial-alumno-dashboard', {skipLocationChange: true}).then(()=>
-    this.router.navigate(['/tutorial-alumno-dashboard', { timestamp: Date.now() }]));
-  }
-
-  // AGM 20/06/2024 - Redireccionamiento al tutorial de grupos del alumno
-  goToTutorialAlumnoGrupos() {
-    this.router.navigateByUrl('/tutorial-alumno-grupos', {skipLocationChange: true}).then(()=>
-    this.router.navigate(['/tutorial-alumno-grupos', { timestamp: Date.now() }]));
+  
+  async goToTutorialAlumnoGrupos() {
+    this.setOptionsOpen(false);
+  
+    const loading = await this.loadingCtrl.create({
+      message: 'Cargando tutorial de grupos...',
+      duration: 2000
+    });
+  
+    await loading.present();
+  
+    setTimeout(() => {
+      loading.dismiss();
+      this.router.navigateByUrl('/tutorial-alumno-grupos', {skipLocationChange: true}).then(() =>
+        this.router.navigate(['/tutorial-alumno-grupos', { timestamp: Date.now() }]));
+    }, 2000);
   }
 
   // AGM 31/01/2024 - Abrir o cerrar el primer modal
@@ -140,6 +173,13 @@ export class DashboardAlumnoPage implements OnInit {
     this.isModalOpen = isOpen;
     this.groupCode = '';
     this.errorMessage = ''; 
+  }
+
+  // AGM 31/01/2024 - Estado del modal de opciones del usuario
+  isOptionsModalOpen = false;
+
+  setOptionsOpen(isOpen: boolean) {
+    this.isOptionsModalOpen = isOpen;
   }
 
   // AGM 31/01/2024 - Abrir o cerrar el quinto modal
@@ -230,6 +270,32 @@ export class DashboardAlumnoPage implements OnInit {
     } else {
       this.getGroups();  
     }
+  }
+
+  async updatePage() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Cargando información...'
+    });
+    await loading.present(); 
+  
+    this.dashboardAlumnoService.getGroups().subscribe({
+      next: (json) => {
+        console.log(json);
+        this.grupos = json.grupos;
+        this.username = json.username;
+        loading.dismiss(); 
+      },
+      error: async (error) => {
+        console.error('Error al obtener los grupos:', error);
+        await loading.dismiss();
+        const alert = await this.alertController.create({
+          header: 'Error:',
+          message: 'Error al cargar la información de la pagina. Por favor, inténtalo de nuevo o reinicia la aplicación.',
+          buttons: ['Aceptar']
+        });
+        await alert.present();
+      }
+    });
   }
 
   ngOnInit() {

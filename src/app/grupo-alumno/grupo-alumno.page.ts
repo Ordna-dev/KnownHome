@@ -74,6 +74,7 @@ export class GrupoAlumnoPage implements OnInit {
   // AGM 31/01/2024 - Estado de los modals de la visualizacion de alumnos, visualización de fotografías del profesor y autorizadas del alumno y visualizacion de imagen 
   isFourthModalOpen = false; 
   isSeventhModalOpen = false;
+  isStudentGroupOptionsModalOpen = false;
 
   // AGM 31/01/2024
   constructor(
@@ -97,6 +98,7 @@ export class GrupoAlumnoPage implements OnInit {
 
   // AGM 31/01/2024 - Cerrar sesión y redirigir a la página de inicio de sesión
   redirectToLogin() {
+    this.setStudentGroupOptionsModalOpen(false);
     this.loadingController.create({
       message: 'Cerrando sesión...'
     }).then(loading => {
@@ -134,7 +136,10 @@ export class GrupoAlumnoPage implements OnInit {
 
   setFourthOpen(isOpen: boolean) {
     this.isFourthModalOpen = isOpen;
-    
+  }
+
+  setStudentGroupOptionsModalOpen(isOpen: boolean) {
+    this.isStudentGroupOptionsModalOpen = isOpen;
   }
   
   //Función para obtener las fotos del profesor y crear el modal de galeria para mostrar dichas fotos
@@ -339,7 +344,8 @@ export class GrupoAlumnoPage implements OnInit {
   }
 
   private confirmLeaveGroup() {
-    // Crear y mostrar el recuadro de carga
+    this.setStudentGroupOptionsModalOpen(false);  
+
     this.loadingController.create({
       message: 'Saliendo del grupo...'
     }).then(loading => {
@@ -389,34 +395,14 @@ export class GrupoAlumnoPage implements OnInit {
     });
   }
 
-  async presentActionSheet(groupId: number) {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Seleccionar fuente de la fotografía:',
-      buttons: [{
-        text: 'Tomar fotografía',
-        icon: 'camera',
-        handler: () => {
-          this.takePicture(groupId, CameraSource.Camera);
-        }
-      }, {
-        text: 'Seleccionar de la galería',
-        icon: 'images',
-        handler: () => {
-          this.takePicture(groupId, CameraSource.Photos);
-        }
-      }]
-    });
-    await actionSheet.present();
-  }
-
   // AGM 22/02/2024 - Lógica para tomar una foto en la app 
-  async takePicture(groupId: number, source: CameraSource) {
+  async takePicture(groupId: number) {
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.Uri,
-      source: source, 
-      saveToGallery: source === CameraSource.Camera
+      source: CameraSource.Prompt,
+      saveToGallery: true
     });
 
     const loading = await this.loadingController.create({

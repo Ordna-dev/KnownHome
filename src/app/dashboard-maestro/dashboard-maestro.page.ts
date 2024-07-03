@@ -97,6 +97,7 @@ export class DashboardMaestroPage implements OnInit {
   isSixthModalOpen = false;
   isSeventhModalOpen = false;
   isEighthModalOpen = false;
+  isOptionsModalTeacherOpen = false;
 
   // AGM 30/01/2024 - Declarar la variable del archivo txt
   fileName: string | null = null;
@@ -132,6 +133,9 @@ export class DashboardMaestroPage implements OnInit {
   // AGM 30/01/2024 - Abrir o cerrar el tercer modal
   setThirdOpen(isOpen: boolean) {
     this.errorMessage = "";
+    this.errorMessageArray = [];
+    this.successMessageArray = [];
+    this.fileName = null; 
     this.isThirdModalOpen = isOpen; 
   }
 
@@ -176,6 +180,10 @@ export class DashboardMaestroPage implements OnInit {
     this.getInactiveStudents();
     this.isEighthModalOpen = isOpen;
   }
+
+  setOptionsModalTeacherOpen(isOpen: boolean) {
+    this.isOptionsModalTeacherOpen = isOpen;
+  }
   
   // AGM 19/02/2024 - Refrescar pagina
   handleRefresh() {
@@ -185,41 +193,77 @@ export class DashboardMaestroPage implements OnInit {
   }
 
   // AGM 30/01/2024 - Redireccionamiento a perfil, grupo y login (Logout)
-  goToProfile() {
-    this.router.navigateByUrl('/perfil', {skipLocationChange: true}).then(()=>
-    this.router.navigate(['/perfil', { timestamp: Date.now() }]));
+  async goToProfile() {
+    this.setOptionsModalTeacherOpen(false);  
+  
+    const loading = await this.loadingCtrl.create({
+      message: 'Cargando perfil...',
+      duration: 2000  
+    });
+  
+    await loading.present();
+
+    setTimeout(() => {
+      loading.dismiss();  
+      this.router.navigateByUrl('/perfil', {skipLocationChange: true}).then(()=>
+      this.router.navigate(['/perfil', { timestamp: Date.now() }]));
+    }, 2000);
   }
 
   // AGM 20/06/2024 - Redireccionamiento al tutorial de dashboard del maestro
-  goToTutorialMaestroDashboard() {
-    this.router.navigateByUrl('/tutorial-maestro-dashboard', {skipLocationChange: true}).then(()=>
-    this.router.navigate(['/tutorial-maestro-dashboard', { timestamp: Date.now() }]));
+  async goToTutorialMaestroDashboard() {
+    this.setOptionsModalTeacherOpen(false);
+  
+    const loading = await this.loadingCtrl.create({
+      message: 'Cargando tutorial principal...',
+      duration: 2000
+    });
+  
+    await loading.present();
+  
+    setTimeout(() => {
+      loading.dismiss();
+      this.router.navigateByUrl('/tutorial-maestro-dashboard', {skipLocationChange: true}).then(() =>
+        this.router.navigate(['/tutorial-maestro-dashboard', { timestamp: Date.now() }]));
+    }, 2000);
   }
-
-  // AGM 20/06/2024 - Redireccionamiento al tutorial de grupos del maestro
-  goToTutorialMaestroGrupos() {
-    this.router.navigateByUrl('/tutorial-maestro-grupos', {skipLocationChange: true}).then(()=>
-    this.router.navigate(['/tutorial-maestro-grupos', { timestamp: Date.now() }]));
-  }
+  
+  async goToTutorialMaestroGrupos() {
+    this.setOptionsModalTeacherOpen(false);
+  
+    const loading = await this.loadingCtrl.create({
+      message: 'Cargando tutorial de grupos...',
+      duration: 2000
+    });
+  
+    await loading.present();
+  
+    setTimeout(() => {
+      loading.dismiss();
+      this.router.navigateByUrl('/tutorial-maestro-grupos', {skipLocationChange: true}).then(() =>
+        this.router.navigate(['/tutorial-maestro-grupos', { timestamp: Date.now() }]));
+    }, 2000);
+  }  
   
   // AGM 20/06/2024 - Logout
   logOut() {
+    this.setOptionsModalTeacherOpen(false);
+
     this.loadingCtrl.create({
       message: 'Cerrando sesión...'
     }).then(loading => {
-      loading.present(); // Mostrar el recuadro de carga
+      loading.present(); 
   
       this.dashboardMaestroService.logOutService().subscribe({
         next: (html) => {
-          console.log(html); // Mostrar la respuesta HTML en consola
-          loading.dismiss(); // Ocultar el recuadro de carga al completar con éxito
+          console.log(html); 
+          loading.dismiss(); 
           this.router.navigateByUrl('/login', {skipLocationChange: true}).then(() =>
             this.router.navigate(['/login', { timestamp: Date.now() }]));
         },
         error: async (error) => {
           console.error('Error:', error);
-          loading.dismiss(); // También ocultar el recuadro de carga en caso de error
-          // Mostrar una alerta en caso de error
+          loading.dismiss(); 
           const alert = await this.alertController.create({
             header: 'Error al cerrar sesión:',
             message: 'No se pudo cerrar sesión correctamente debido a problemas de conexión. Por favor, inténtalo de nuevo o reinicie la aplicación.',
@@ -291,6 +335,8 @@ export class DashboardMaestroPage implements OnInit {
 
   // AGM 30/01/2024 - Función para leer y mostrar el contenido del archivo txt
   async readAndDisplayFileContent() {
+    this.errorMessageArray = [];
+    this.successMessageArray = [];
     // Crear el recuadro de carga
     const loading = await this.loadingCtrl.create({
       message: 'Registrando alumnos en la plataforma...',
@@ -1100,6 +1146,62 @@ export class DashboardMaestroPage implements OnInit {
         buttons: ['OK']
       });
       await errorAlert.present();
+  }
+
+  updatePage() {
+    this.loadingCtrl.create({
+      message: 'Cargando datos...',
+      spinner: 'circles'
+    }).then(loading => {
+      loading.present(); // Mostrar el recuadro de carga
+  
+      const groupsPromise = this.dashboardMaestroService.getGroupsService().toPromise();
+      const activeStudentsPromise = this.dashboardMaestroService.getActiveStudents().toPromise();
+      const inactiveStudentsPromise = this.dashboardMaestroService.getInactiveStudents().toPromise();
+  
+      Promise.all([groupsPromise, activeStudentsPromise, inactiveStudentsPromise])
+        .then(([groupsResponse, activeStudentsResponse, inactiveStudentsResponse]) => {
+          if (!groupsResponse.error) {
+            this.grupos = groupsResponse.grupos;
+            this.username = groupsResponse.username;
+            console.log('Grupos:', this.grupos);
+          } else {
+            console.error('Error al cargar grupos:', groupsResponse.error);
+          }
+  
+          if (!activeStudentsResponse.error) {
+            this.students = activeStudentsResponse.estudiantes;
+            console.log('Estudiantes activos:', this.students);
+          } else {
+            console.error('Error al cargar estudiantes activos:', activeStudentsResponse.error);
+            this.students = [];
+          }
+  
+          if (!inactiveStudentsResponse.error) {
+            this.inactiveStudents = inactiveStudentsResponse.estudiantes;
+            console.log('Estudiantes inactivos:', this.inactiveStudents);
+          } else {
+            console.error('Error al cargar estudiantes inactivos:', inactiveStudentsResponse.error);
+            this.inactiveStudents = [];
+          }
+  
+          loading.dismiss(); 
+        })
+        .catch(error => {
+          console.error('Error durante la carga de datos:', error);
+          loading.dismiss(); 
+          this.presentNetworkErrorAlert(); 
+        });
+    });
+  }
+
+  async presentNetworkErrorAlert() {
+    const alert = await this.alertController.create({
+        header: 'Error de conexión:',
+        message: 'Error de conexión al actualizar la información del dashboard. Por favor, intente de nuevo o reinicie la aplicación.',
+        buttons: ['Aceptar']
+    });
+    await alert.present();
   }
 
   // AGM 08/02/2024 - Al iniciar la página, automáticamente obtiene los grupos del maestro

@@ -9,7 +9,18 @@
 
 .welcome-message {
     font-size: 32px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
     // margin-left: 40px;
+}
+
+.menu-button {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 .welcome-container {
@@ -111,10 +122,21 @@ ion-content h1:not(:first-child) {
     font-size: 40px; 
 }
 
-.icon-size-welcome {
+.icon-size-welcome-right-end {
     font-size: 40px;
     margin-right: 20px;
 }
+
+.icon-size-welcome-right {
+    font-size: 40px;
+    margin-right: 20px;
+}
+
+.icon-size-welcome-left {
+    font-size: 40px;
+    margin-left: 20px;
+}
+
   
 // Contenedor de texto - Usado en las tarjetas en general
 .text-container {

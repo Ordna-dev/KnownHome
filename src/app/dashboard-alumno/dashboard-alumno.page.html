@@ -39,17 +39,29 @@
 
     <!-- AGM 30/01/2024 - Mensaje de bienvenida -->
     <ion-header translucent class="ion-no-border">
-      <ion-toolbar>
-        <div class="ion-text-center welcome-container">
-          <h1 class="welcome-message">
-            <b>¡Bienvenido! </b><br>
-            <ion-text color="primary">
-              {{ username }}
-            </ion-text>
+      <ion-toolbar style="margin-top: 20px;">
+        <ion-title class="ion-text-center">
+          <h1>
+            <b>¡Bienvenido!</b>
           </h1>
-        </div>
+        </ion-title>
+        <ion-buttons slot="start">
+          <ion-icon name="log-out-outline" color="danger" class="icon-size-welcome-left" (click)="logOut()"></ion-icon>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-icon name="reload-outline" class="icon-size-welcome-right-end" (click)="updatePage()"></ion-icon>
+          <ion-icon name="menu" class="icon-size-welcome-right" (click)="setOptionsOpen(true)"></ion-icon>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
+
+    <ion-text color="primary" class="ion-text-center">
+      <h1 class="welcome-message">
+        <b>
+          {{ username }}
+        </b>
+      </h1>
+    </ion-text>
 
     <!-- AGM 18/06/2024 - Recuadro de la versión del programa y tutoriales --> 
     <ion-card class="fixed-margin" color="dark">
@@ -198,5 +210,39 @@
       </ng-template>
     </ion-modal>
 
+    <!-- AGM 30/01/2024 - Modal de opciones del menú del usuario -->
+    <ion-modal [isOpen]="isOptionsModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title style="margin-left: 40px;">Menú del alumno</ion-title>
+            <ion-buttons slot="start">
+              <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setOptionsOpen(false)"></ion-icon>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+    
+        <ion-content class="ion-padding">
+          <!-- Opciones de Grupos -->
+          <ion-text class="ion-text-center">
+            <h2>Grupos:</h2>
+          </ion-text>
+          <ion-button class="menu-button" color="primary" (click)="setOpen(true)">Registrarse en un grupo</ion-button>
+    
+          <!-- Opciones de Tutoriales -->
+          <ion-text class="ion-text-center">
+            <h2>Tutorial:</h2>
+          </ion-text>
+          <ion-button class="menu-button" color="success" (click)="goToTutorialAlumnoDashboard()">Consultar tutorial inicial</ion-button>
+          <ion-button class="menu-button" color="success" (click)="goToTutorialAlumnoGrupos()">Consultar tutorial de grupos</ion-button>
+    
+          <!-- Opciones de Sesión -->
+          <ion-text class="ion-text-center">
+            <h2>Sesión:</h2>
+          </ion-text>
+          <ion-button class="menu-button" color="danger" (click)="logOut()">Cerrar sesión</ion-button>
+        </ion-content>
+      </ng-template>
+    </ion-modal>    
   </div>
 </ion-content>

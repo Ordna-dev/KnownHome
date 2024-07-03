@@ -15,7 +15,7 @@
 
     <h1>Apartado de acciones</h1>
     <ion-text color="medium">
-      <h5 (click)="presentActionSheet(grupo?.id)">Tomar fotografía</h5>
+      <h5 (click)="takePicture(grupo?.id)">Tomar fotografía</h5>
     </ion-text> 
     <ion-text color="danger">
       <h5 (click)="leaveGroup()">Salir del grupo</h5>
@@ -47,7 +47,8 @@
         </ion-buttons>
         <ion-buttons slot="end">
           <ion-icon name="reload-outline" class="icon-size-reload" (click)="updatePage()"></ion-icon>
-          <ion-icon name="camera" class="icon-size-end" (click)="presentActionSheet(grupo?.id)"></ion-icon>
+          <ion-icon name="camera" class="icon-size-end" (click)="takePicture(grupo?.id)"></ion-icon>
+          <ion-icon name="menu" class="icon-size-end" (click)="setStudentGroupOptionsModalOpen(true)"></ion-icon>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -65,7 +66,7 @@
     <b><h3 class="ion-text-center teacher-main-text">Profesor del grupo:</h3></b>
 
     <!-- AGM 31/01/2024 - Tarjeta del profesor -->
-    <ion-card color="light" class="fixed-margin-card-teacher" *ngIf="grupo">
+    <ion-card color="light" class="fixed-margin-card-teacher specific-card" *ngIf="grupo">
       <div class="icon-container">
         <ion-icon name="person-outline" class="icon-size"></ion-icon>
       </div>
@@ -90,7 +91,7 @@
     <!-- Itera sobre la lista de estudiantes para mostrar cada uno -->
     
     <div *ngIf="students && students.length; else noStudentsTemplate">
-      <ion-card color="light" class="fixed-margin-card-student" *ngFor="let student of students">
+      <ion-card color="light" class="fixed-margin-card-student specific-card" *ngFor="let student of students">
         <div class="icon-container">
           <ion-icon name="person-circle-outline" class="icon-size"></ion-icon>
         </div>
@@ -129,7 +130,7 @@
         <ion-content class="ion-padding ion-text-center">
           <ion-searchbar class="search-bar-modal" animated="true" placeholder="Buscar alumno por nombre" color="light" [debounce]="500" (ionInput)="handleModalSearchInput($event)"></ion-searchbar>
           <div *ngIf="studentsModal && studentsModal.length; else noStudentsModalTemplate">
-            <ion-card color="light" class="fixed-margin-card-modal" *ngFor="let student of studentsModal">
+            <ion-card color="light" class="fixed-margin-card-modal specific-card" *ngFor="let student of studentsModal">
               <div class="icon-container">
                 <ion-icon name="accessibility" class="icon-size"></ion-icon>
               </div>
@@ -154,5 +155,39 @@
       </ng-template>
     </ion-modal>
     
+    <!-- AGM 31/01/2024 - Modal de opciones del grupo para el alumno -->
+    <ion-modal [isOpen]="isStudentGroupOptionsModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title style="margin-left: 40px;">Menú para el alumno</ion-title>
+            <ion-buttons slot="start">
+              <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setStudentGroupOptionsModalOpen(false)"></ion-icon>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+    
+        <ion-content class="ion-padding">
+          <!-- Opciones de Grupo -->
+          <ion-text class="ion-text-center">
+            <h2>Grupo:</h2>
+          </ion-text>
+          <ion-button class="menu-button" color="tertiary" (click)="setFourthOpen(true)">Listado de alumnos inscritos</ion-button>
+    
+          <!-- Apartado de acciones -->
+          <ion-text class="ion-text-center">
+            <h2>Fotografía:</h2>
+          </ion-text>
+          <ion-button class="menu-button" color="primary" (click)="takePicture(grupo?.id)">Tomar fotografía</ion-button>
+          <ion-button class="menu-button" color="danger" (click)="leaveGroup()">Salir del grupo</ion-button>
+    
+          <!-- Opciones de Sesión -->
+          <ion-text class="ion-text-center">
+            <h2>Sesión:</h2>
+          </ion-text>
+          <ion-button class="menu-button" color="danger" (click)="redirectToLogin()">Cerrar sesión</ion-button>
+        </ion-content>
+      </ng-template>
+    </ion-modal>    
   </div>
 </ion-content>

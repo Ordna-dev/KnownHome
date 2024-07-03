@@ -95,12 +95,26 @@ export class GrupoMaestroPage implements OnInit {
   ) { }
 
   // AGM 31/01/2024 - Redireccionamiento a perfil, cierre de sesion o dashboard
-  redirectToProfile() {
-    this.router.navigateByUrl('/perfil', {skipLocationChange: true}).then(()=>
-    this.router.navigate(['/perfil', { timestamp: Date.now() }]));
+  async redirectToProfile() {
+    this.setGroupOptionsModalOpen(false);  // Cierra cualquier modal abierto antes de proceder
+  
+    const loading = await this.loadingController.create({
+      message: 'Cargando perfil...',
+      duration: 2000  // Esta duración garantiza que el recuadro se muestre por 2 segundos
+    });
+  
+    await loading.present(); // Muestra el recuadro de carga
+  
+    setTimeout(() => {
+      loading.dismiss();  // Cierra el recuadro de carga
+      this.router.navigateByUrl('/perfil', {skipLocationChange: true}).then(() =>
+        this.router.navigate(['/perfil', { timestamp: Date.now() }]));
+    }, 2000); // Asegura que el recuadro de carga se muestra durante al menos 2 segundos antes de proceder
   }
   
   redirectToLogin() {
+    this.setGroupOptionsModalOpen(false);
+
     this.loadingController.create({
       message: 'Cerrando sesión...'
     }).then(loading => {
@@ -138,7 +152,8 @@ export class GrupoMaestroPage implements OnInit {
   isModalOpen = false;
   isSecondModalOpen = false;
   isThirdModalOpen = false;
-  isFourthModalOpen = false;;
+  isFourthModalOpen = false;
+  isGroupOptionsModalOpen = false;
 
   // AGM 31/01/2024 - Abrir o cerrar los modals
   setOpen(isOpen: boolean) {
@@ -159,6 +174,11 @@ export class GrupoMaestroPage implements OnInit {
   setFourthOpen(isOpen: boolean) {
     this.isFourthModalOpen = isOpen;
   }
+
+  setGroupOptionsModalOpen(isOpen: boolean) {
+    this.isGroupOptionsModalOpen = isOpen;
+  }
+
 
   //Función para obtener las fotos del profesor y crear el modal de galeria para mostrar dichas fotos
   async showTeacherGallery() {
@@ -375,6 +395,9 @@ export class GrupoMaestroPage implements OnInit {
 
   // AGM 31/01/2024 - Se manda una alerta al maestro de que se eliminó el grupo
   async presentGroupDeletedAlert() {
+
+    this.setGroupOptionsModalOpen(false);
+    
     const redirectAction = () => {
       this.router.navigateByUrl('/dashboard-maestro', { skipLocationChange: true })
         .then(() => this.router.navigate(['/dashboard-maestro', { timestamp: Date.now() }]));
@@ -525,34 +548,14 @@ export class GrupoMaestroPage implements OnInit {
     });
   }  
 
-  async presentActionSheet(groupId: number) {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Seleccionar fuente de la fotografía:',
-      buttons: [{
-        text: 'Tomar foto',
-        icon: 'camera',
-        handler: () => {
-          this.takePicture(groupId, CameraSource.Camera);
-        }
-      }, {
-        text: 'Seleccionar de la galería',
-        icon: 'images',
-        handler: () => {
-          this.takePicture(groupId, CameraSource.Photos);
-        }
-      }]
-    });
-    await actionSheet.present();
-  }
-
   // AGM 22/02/2024 - Lógica para tomar una foto en la app 
-  takePicture = async (groupId: number, source: CameraSource) => {
+  takePicture = async (groupId: number) => {
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.Uri,
-      source: source,
-      saveToGallery: source === CameraSource.Camera
+      source: CameraSource.Prompt,
+      saveToGallery: true
     });
 
     const loading = await this.loadingController.create({
@@ -657,7 +660,7 @@ export class GrupoMaestroPage implements OnInit {
       this.getEnrolledStudentsModal(this.grupoId);
     }
   }
-
+  
   updatePage() {
     if (!this.grupoId) {
         console.error('No se ha proporcionado el ID del grupo.');

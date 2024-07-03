@@ -11,6 +11,9 @@
 .welcome-message {
     // margin-left: 40px;
     font-size: 32px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
 }
 
 ion-header {
@@ -37,6 +40,14 @@ ion-refresher ion-refresher-content {
 .fixed-button {
     margin-top: 5%;
     margin-right: 20px;
+}
+
+.menu-button {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 // Mensaje para secciones de grupos - Usado en el encabezado de la sección de grupos
@@ -93,9 +104,19 @@ ion-content h1:not(:first-child) {
     font-size: 40px; 
 }
 
-.icon-size-welcome {
+.icon-size-welcome-right-end {
     font-size: 40px;
     margin-right: 20px;
+}
+
+.icon-size-welcome-right {
+    font-size: 40px;
+    margin-right: 20px;
+}
+
+.icon-size-welcome-left {
+    font-size: 40px;
+    margin-left: 20px;
 }
 
 // Ícono a la derecha en modales - Usado en los modales para cerrar o acciones adicionales
@@ -221,6 +242,10 @@ ion-content h1:not(:first-child) {
 // Titulo dentro del modal
 ion-title {
     margin-top: 10px;
+}
+
+.no-margin-title {
+    margin: 0;
 }
 
 // Barra de búsqueda en el dashboard

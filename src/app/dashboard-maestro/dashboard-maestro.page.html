@@ -58,19 +58,29 @@
     
     <!-- AGM 30/01/2024 - Mensaje de bienvenida al maestro --> 
     <ion-header translucent class="ion-no-border">
-      <ion-toolbar>
-        <div class="ion-text-center welcome-container">
-          <ion-text>
-            <h1 class="welcome-message">
-              <b>¡Bienvenido!</b> <br>
-              <ion-text color="primary">
-                {{ username }}
-              </ion-text>
-            </h1>
-          </ion-text>
-        </div>
+      <ion-toolbar style="margin-top: 20px;">
+        <ion-title class="ion-text-center no-margin-title">
+          <h1>
+            <b>¡Bienvenido!</b>
+          </h1>
+        </ion-title>
+        <ion-buttons slot="start">
+          <ion-icon name="log-out-outline" color="danger" class="icon-size-welcome-left" (click)="logOut()"></ion-icon>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-icon name="reload-outline" class="icon-size-welcome-right-end" (click)="updatePage()"></ion-icon>
+          <ion-icon name="menu" class="icon-size-welcome-right" (click)="setOptionsModalTeacherOpen(true)"></ion-icon>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
+
+    <ion-text color="primary" class="ion-text-center">
+      <h1 class="welcome-message">
+        <b>
+          {{ username }}
+        </b>
+      </h1>
+    </ion-text>
 
     <!-- AGM 18/06/2024 - Recuadro de la versión del programa y tutoriales --> 
     <ion-card class="fixed-margin" color="dark">
@@ -410,7 +420,7 @@
           </ion-item>
     
           <ion-item>
-            <ion-input [(ngModel)]="selectedStudent.password" [type]="showPassword2 ? 'text' : 'password'" label="Contraseña del alumno:" labelPlacement="stacked" placeholder="Escribe aquí la contraseña del alumno."></ion-input>
+            <ion-input [(ngModel)]="selectedStudent.password" [type]="showPassword2 ? 'text' : 'password'" label="Contraseña del alumno:" labelPlacement="stacked" placeholder="Escribe aquí la nueva contraseña del alumno."></ion-input>
             <ion-icon
               [name]="showPassword2 ? 'eye-off' : 'eye'"
               slot="end"
@@ -424,6 +434,51 @@
           
           <ion-button class="btn-cancelar" (click)="setEighthOpen(false)" color="danger">Cancelar</ion-button>
           <ion-button class="btn-registrar" (click)="modifyStudentCredentials()" color="warning">Modificar credenciales</ion-button>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <!-- AGM 30/01/2024 - Modal de opciones del maestro -->
+    <ion-modal [isOpen]="isOptionsModalTeacherOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title style="margin-left: 40px;">Menú del maestro</ion-title>
+            <ion-buttons slot="start">
+              <ion-icon name="arrow-back-outline" class="icon-modal-left" (click)="setOptionsModalTeacherOpen(false)"></ion-icon>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+
+        <ion-content class="ion-padding">
+          <!-- Opciones de Usuario -->
+          <ion-text class="ion-text-center">
+            <h2>Usuario:</h2>
+          </ion-text>
+          <ion-button class="menu-button" color="primary" (click)="goToProfile()">Visualizar perfil</ion-button>
+          <ion-button class="menu-button" color="danger" (click)="logOut()">Cerrar sesión</ion-button>
+
+          <!-- Opciones de Grupos -->
+          <ion-text class="ion-text-center">
+            <h2>Grupos:</h2>
+          </ion-text>
+          <ion-button class="menu-button" color="primary" (click)="setOpen(true)">Registrar un grupo</ion-button>
+          <ion-button class="menu-button" color="tertiary" (click)="setFifthOpen(true)">Gestionar mis grupos</ion-button>
+
+          <!-- Opciones de Alumnos -->
+          <ion-text class="ion-text-center">
+            <h2>Alumnos:</h2>
+          </ion-text>
+          <ion-button class="menu-button" color="primary" (click)="setSecondOpen(true)">Registrar un alumno</ion-button>
+          <ion-button class="menu-button" color="secondary" (click)="setThirdOpen(true)">Registrar varios alumnos</ion-button>
+          <ion-button class="menu-button" color="tertiary" (click)="setFourthOpen(true)">Gestionar alumnos</ion-button>
+
+          <!-- Opciones de Tutoriales -->
+          <ion-text class="ion-text-center">
+            <h2>Tutoriales:</h2>
+          </ion-text>
+          <ion-button class="menu-button" color="success" (click)="goToTutorialMaestroDashboard()">Tutorial inicial</ion-button>
+          <ion-button class="menu-button" color="success" (click)="goToTutorialMaestroGrupos()">Tutorial de grupos</ion-button>
         </ion-content>
       </ng-template>
     </ion-modal>

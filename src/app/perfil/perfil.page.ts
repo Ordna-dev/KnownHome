@@ -85,17 +85,40 @@ export class PerfilPage implements OnInit {
 
   // AGM 20/02/2024 - Efectuar el LogOut del actual usuario
   logOut() {
-    this.perfilService.logOutService().subscribe({
-      next: (html) => {
-        console.log(html); 
-        this.zone.run(() => {
-          this.navCtrl.navigateRoot('/login');
-        });
-      },
-      error: (error) => {
-        console.error('Error:', error);
-        this.navCtrl.navigateRoot('/login');
-      }
+    this.zone.run(() => {
+      this.setSecondOpen(false);
+      this.setOpen(false);
+    });
+  
+    this.loadingCtrl.create({
+      message: 'Cerrando sesión...'
+    }).then(loading => {
+      loading.present();
+  
+      this.perfilService.logOutService().subscribe({
+        next: (html) => {
+          console.log(html);
+          loading.dismiss();
+          this.zone.run(() => {
+            this.router.navigateByUrl('/login', {skipLocationChange: true}).then(()=>
+              this.router.navigate(['/login', { timestamp: Date.now() }]));
+          });
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          loading.dismiss();
+          // Crear y mostrar una alerta de error
+          this.alertController.create({
+            header: 'Error al cerrar sesión',
+            message: 'No se pudo cerrar sesión correctamente. Verifica tu conexión a internet e inténtalo de nuevo.',
+            buttons: ['Aceptar']
+          }).then(alert => {
+            alert.present();
+          });
+          this.router.navigateByUrl('/login', {skipLocationChange: true}).then(()=>
+            this.router.navigate(['/login', { timestamp: Date.now() }]));
+        }
+      });
     });
   }
 
